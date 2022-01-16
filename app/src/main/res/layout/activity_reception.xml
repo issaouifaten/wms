@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:background="@color/colorPrimaryDark"
-                    android:text="Cancel"
+                    android:text="Annuler"
                     android:textColor="@color/colortext" />
             </LinearLayout>
 

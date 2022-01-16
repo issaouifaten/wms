@@ -110,7 +110,7 @@
                                 android:id="@+id/imageView"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                app:srcCompat="@drawable/icon_balance" />
+                                android:src="@drawable/icon_balance" />
                         </LinearLayout>
 
                         <LinearLayout

@@ -64,9 +64,10 @@ public class ScanEtiquetteActivity extends AppCompatActivity implements View.OnT
         bt_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FillListConsult("036660301032210012");
+                FillListConsult("036660301032260048");
             }
         });
+
 
 
     }
