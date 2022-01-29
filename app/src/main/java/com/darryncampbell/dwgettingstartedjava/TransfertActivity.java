@@ -51,11 +51,12 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
 
     Button bt_scan, btnDelete, bt_create, btn_list;
     String searchScan = "";
-    TextView output, txt_to, txt_from,txt_qt_max;
+    TextView output, txt_to, txt_from, txt_qt_max;
     EditText edt_transfert;
 
     String baseUrlListDepot = "";
     String baseUrlCreateTransfert = "";
+    String typeTransfert = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,6 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
         txt_to = (TextView) findViewById(R.id.txt_to);
         txt_qt_max = (TextView) findViewById(R.id.txt_qt_max);
         edt_transfert = (EditText) findViewById(R.id.edt_transfert);
-
         helper = new Helper(getApplicationContext());
 
         bt_create = (Button) findViewById(R.id.btn_create);
@@ -83,40 +83,57 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-               // startActivity(intent);
+                // startActivity(intent);
                 output.setText("BORANG");
 
                 searchScanDepot("BORANG");
 
             }
         });
+        Intent intent = getIntent();
+        if (intent.getStringExtra("EAN") != null) {
+            txt_to.setText(intent.getStringExtra("toBin"));
+            output.setText(intent.getStringExtra("EAN"));
+            searchScanDepot(intent.getStringExtra("EAN"));
+            bt_scan.setVisibility(View.GONE);
+            edt_transfert.setVisibility(View.GONE);
+            typeTransfert = "1";
+        } else {
+            initList();
+        }
 
 
         DWUtilities.CreateDWProfile(co, "com.transfert.action");
         Button btnScan = findViewById(R.id.btnScanprev);
         btnScan.setOnTouchListener(this);
-        initList();
+
         bt_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if(txt_from.getText().toString().equals(txt_to.getText().toString()))
-               {
-                   Toast.makeText(getApplicationContext(), "depot de départ et le meme que de sortie", Toast.LENGTH_SHORT).show();
-               }else{
+                if (typeTransfert.equals("0")) {
+                    if (txt_from.getText().toString().equals(txt_to.getText().toString())) {
+                        Toast.makeText(getApplicationContext(), "depot de départ et le meme que de sortie", Toast.LENGTH_SHORT).show();
+                    } else {
 
-                if (edt_transfert.getText().toString().equals("") || txt_from.getText().toString().equals("") || txt_from.getText().toString().equals("") || txt_to.getText().toString().equals(""))
-                    Toast.makeText(getApplicationContext(), "champs vide", Toast.LENGTH_SHORT).show();
-                else
-                {
-                   float qt = Float.parseFloat(edt_transfert.getText().toString());
-                    float qt_max = Float.parseFloat(txt_qt_max.getText().toString());
-                    if(qt>qt_max)
-                        Toast.makeText(getApplicationContext(),"Quantité à transferer est supérieur",Toast.LENGTH_SHORT).show();
-                    else
+                        if (edt_transfert.getText().toString().equals("") || txt_from.getText().toString().equals("") || txt_from.getText().toString().equals("") || txt_to.getText().toString().equals(""))
+                            Toast.makeText(getApplicationContext(), "champs vide", Toast.LENGTH_SHORT).show();
+                        else {
+                            float qt = Float.parseFloat(edt_transfert.getText().toString());
+                            float qt_max = Float.parseFloat(txt_qt_max.getText().toString());
+                            if (qt > qt_max)
+                                Toast.makeText(getApplicationContext(), "Quantité à transferer est supérieur", Toast.LENGTH_SHORT).show();
+                            else
+                                CreateTransfert();
+
+
+                        }
+                    }
+                } else {
+                    if (!txt_to.getText().toString().equals("")) {
                         CreateTransfert();
-
-
-                }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "choisir un depot", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -192,11 +209,9 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                                             @Override
                                             public void onClick(View view) {
 
-                                                if(txt_code.getText().toString().equals(txt_from.getText().toString()))
-                                                {
+                                                if (txt_code.getText().toString().equals(txt_from.getText().toString())) {
                                                     Toast.makeText(getApplicationContext(), "depot de départ et le meme que de sortie", Toast.LENGTH_SHORT).show();
-                                                }
-                                                else{
+                                                } else {
                                                     txt_to.setText(txt_code.getText().toString());
                                                 }
 
@@ -329,11 +344,9 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                                         btplus.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
-                                                if(txt_code.getText().toString().equals(txt_to.getText().toString()))
-                                                {
+                                                if (txt_code.getText().toString().equals(txt_to.getText().toString())) {
                                                     Toast.makeText(getApplicationContext(), "depot de départ et le meme que de sortie", Toast.LENGTH_SHORT).show();
-                                                }
-                                                else{
+                                                } else {
                                                     txt_from.setText(txt_code.getText().toString());
                                                     txt_qt_max.setText(txt_qt.getText().toString());
                                                 }
@@ -413,6 +426,7 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
     }
 
     @Override
+
     public boolean onTouch(View view, MotionEvent motionEvent) {
 
 
@@ -442,7 +456,8 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
             JSONObject obj = new JSONObject().put("EAN", output.getText().toString())
                     .put("Quantite", edt_transfert.getText().toString())
                     .put("FromBin", txt_from.getText().toString())
-                    .put("ToBin", txt_to.getText().toString());
+                    .put("ToBin", txt_to.getText().toString())
+                    .put("Type", typeTransfert);
 
 //"{\"EAN\":\"3268840001008\",\"FromBin\":\"A001\",\"ToBin\":\"A002\",\"Quantite\":\"2\"}"
             final JSONObject jsonBody = new JSONObject();
@@ -458,9 +473,8 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                             progressBar.setVisibility(View.GONE);
 
 
-
                             Toast.makeText(getApplicationContext(), "transfert  crée avec succés", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(getApplicationContext(),MenuActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                             startActivity(intent);
 
 
@@ -473,7 +487,7 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                             // TODO Auto-generated method stub
                             Log.e("ERROR", "error => " + error.getLocalizedMessage());
                             Log.e("ERROR", "error => " + error.getMessage());
-                            Log.e("ERROR", "error => " +jsonBody.toString());
+                            Log.e("ERROR", "error => " + jsonBody.toString());
                             Toast.makeText(getApplicationContext(), "error vollety" + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }

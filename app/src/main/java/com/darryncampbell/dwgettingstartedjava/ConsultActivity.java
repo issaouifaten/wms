@@ -59,11 +59,13 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
         Button btnScan = findViewById(R.id.btnScan);
         output = findViewById(R.id.txtOutput);
         btnScan.setOnTouchListener(this);
+       output.setText("3274080005003")         ;
+       FillListConsult("3274080005003");
 
 
     }
 
-    void FillListConsult(String scan) {
+    void FillListConsult(final String scan) {
         try {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlConsult;
@@ -120,16 +122,46 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
                                         final LayoutInflater layoutInflater = LayoutInflater.from(co);
                                         convertView = layoutInflater.inflate(R.layout.item_consult_article, null);
                                         final TextView txt_item_num = (TextView) convertView.findViewById(R.id.txt_item_num);
+                                        final TextView txt_title_100 = (TextView) convertView.findViewById(R.id.txt_title_100);
+                                        final TextView txt_capacite = (TextView) convertView.findViewById(R.id.txt_capacite);
                                         final TextView txt_location_code = (TextView) convertView.findViewById(R.id.txt_location_code);
                                         final TextView txt_sum_qty_base = (TextView) convertView.findViewById(R.id.txt_sum_qty_base);
                                         final TextView txt_bin_code = (TextView) convertView.findViewById(R.id.txt_bin_code);
+                                        final Button bt_transfert = (Button) convertView.findViewById(R.id.bt_transfert);
+                                        final TextView txt_poids = (TextView) convertView.findViewById(R.id.txt_poids);
                                         Log.d("tag****", finalData.getValue().get(position).toString());
-                                        Value val = finalData.getValue().get(position);
+                                        final Value val = finalData.getValue().get(position);
                                         Log.d("tag****", val.getArticle());
                                         txt_item_num.setText(val.getArticle());
                                         txt_location_code.setText(val.getPiece());
                                         txt_sum_qty_base.setText(val.getQuantite() + "");
                                         txt_bin_code.setText(val.getEntrepot());
+                                        txt_capacite.setText(val.getCapacité());
+                                        txt_title_100.setText(val.getTitre());
+                                        txt_poids.setText(val.getPoids());
+                                        if(val.getCapacité().equals("")||val.getCapacité().equals("0"))
+                                        {    bt_transfert.setVisibility(View.INVISIBLE);
+
+
+                                        }else {
+                                            if(Float.parseFloat(val.getPoids())<Float.parseFloat(val.getCapacité()))
+                                            {
+                                                bt_transfert.setVisibility(View.VISIBLE);
+                                            }else{
+                                                bt_transfert.setVisibility(View.INVISIBLE);
+                                            }
+
+                                        }
+                                        bt_transfert.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent=new Intent(getApplicationContext(),TransfertActivity.class);
+                                                intent.putExtra("EAN",output.getText().toString());
+                                                intent.putExtra("toBin",val.getPiece());
+                                                startActivity(intent);
+                                            }
+                                        });
+
 
 
                                         return convertView;

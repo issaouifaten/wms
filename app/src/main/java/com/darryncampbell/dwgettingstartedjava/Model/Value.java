@@ -10,6 +10,34 @@ public class Value{
 
     public String Entrepot;
     public String Quantite;
+    public String Poids;
+
+    public String getPoids() {
+        return Poids;
+    }
+
+    public void setPoids(String poids) {
+        Poids = poids;
+    }
+
+    public String getTitre() {
+        return Titre;
+    }
+
+    public void setTitre(String titre) {
+        Titre = titre;
+    }
+
+    public String getCapacité() {
+        return Capacité;
+    }
+
+    public void setCapacité(String capacité) {
+        Capacité = capacité;
+    }
+
+    public String Titre;
+    public String Capacité;
 
     public String getEAN() {
         return EAN;
