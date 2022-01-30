@@ -65,7 +65,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
     ProgressBar progressBar;
     Helper helper;
     LinearLayout layout_valider;
-    Button bt_view, btAdd, bt_valid_list, bt_scan, bt_view_ligne, btnDelete, bt_create;
+    Button bt_view, btAdd, bt_valid_list, bt_scan, bt_view_ligne, btnDelete, bt_create,bt_ecart;
     String searchScan = "";
     TextView output;
     String baseUrlLigneBC = "";
@@ -77,7 +77,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prelevement);
           baseUrlLigneBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnSelectedSalesLigne?$format=application/json;odata.metadata=none";
-          baseUrlCreatePrelevement = getResources().getString(R.string.base_url) + "WmsApp_CreatePick";
+          baseUrlCreatePrelevement = getResources().getString(R.string.base_url) + "WmsApp_RegisterPick?$format=application/json;odata.metadata=none";
           baseUrlListBC = getResources().getString(R.string.base_url) + "GetReleasedSalesDocs?$format=application/json;odata.metadata=none";
 
         grid_prelevement = (GridView) findViewById(R.id.grid_prelevement);
@@ -88,6 +88,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
         btAdd = (Button) findViewById(R.id.bt_add);
         bt_view_ligne = (Button) findViewById(R.id.bt_view_ligne);
         bt_create = (Button) findViewById(R.id.btn_create);
+        bt_ecart = (Button) findViewById(R.id.bt_ecart);
         bt_scan = (Button) findViewById(R.id.btnScanprev);
         bt_valid_list = (Button) findViewById(R.id.bt_valid_list);
         btAdd.setOnClickListener(new View.OnClickListener() {
@@ -120,13 +121,24 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
 
             }
         });
+        bt_ecart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                FillEcartPrelevement fillList = new FillEcartPrelevement();
+                fillList.execute("");
+
+
+            }
+        });
         layout_valider.setVisibility(View.GONE);
         bt_view.setVisibility(View.VISIBLE);
         bt_valid_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
+                    if( helper.getListCommandPrelevement().getCount()>0)
+                    {
                     helper.AddValideCommandePrelevement("test");
                     bt_scan.setVisibility(View.VISIBLE);
                     bt_view_ligne.setVisibility(View.VISIBLE);
@@ -135,7 +147,10 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                     btAdd.setVisibility(View.GONE);
                     bt_valid_list.setVisibility(View.GONE);
 
-                    FillLigneBonCommande();
+                    FillLigneBonCommande();}else{
+                        Toast.makeText(getApplicationContext(),"selectionner une ou plusieures lignes ",Toast.LENGTH_SHORT).show();
+
+                    }
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
@@ -491,7 +506,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                             // TODO Auto-generated method stub
                             Log.d("ERROR", "error => " + error.getLocalizedMessage());
                             Log.d("ERROR", "error => " + error.getMessage());
-                            Toast.makeText(getApplicationContext(), "error vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
             ) {
@@ -693,7 +708,6 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                 @Override
                 public View getView(final int pos, View convertView, ViewGroup parent) {
                     final LayoutInflater layoutInflater = LayoutInflater.from(co);
-                    convertView = layoutInflater.inflate(R.layout.item_bc, null);
 
                     convertView = layoutInflater.inflate(R.layout.item_prelevement, null);
                     final TextView txt_noDoc = (TextView) convertView.findViewById(R.id.txt_noDoc);
@@ -722,8 +736,10 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                     btmoin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt--;
+                            if(qt<0)
+                            { qt=0;}
                             edt_qt_scan.setText("" + qt);
                             helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
@@ -733,7 +749,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                     btplus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt++;
 
 
@@ -750,7 +766,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                             String s = edt_qt_scan.getText().toString();
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
-                                    Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                                    float qt = Float.valueOf(edt_qt_scan.getText().toString());
                                     helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
                                 }
@@ -758,6 +774,99 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                             return false;
                         }
                     });
+                    return convertView;
+                }
+            };
+            grid_prelevement.setAdapter(baseAdapter);
+
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                cr = helper.getListLigneCommandPrelevement();
+
+
+                if (cr.moveToFirst()) {
+                    do {
+                        Log.e("cursor", cr.getString(cr.getColumnIndex("Article")));
+                    } while (cr.moveToNext());
+                }
+
+
+            } catch (Exception ex) {
+                z = "list" + ex.toString();
+
+            }
+            return z;
+        }
+    }
+    public class FillEcartPrelevement extends AsyncTask<String, String, String> {
+        String z = "";
+
+        List<Map<String, String>> prolist = new ArrayList<Map<String, String>>();
+        ArrayList<String> list;
+        Cursor cr;
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+
+        }
+
+        @Override
+        protected void onPostExecute(String r) {
+
+
+            progressBar.setVisibility(View.GONE);
+
+            BaseAdapter baseAdapter = new BaseAdapter() {
+                @Override
+                public int getCount() {
+                    return cr.getCount();
+                }
+
+                @Override
+                public Object getItem(int position) {
+                    return null;
+                }
+
+                @Override
+                public long getItemId(int position) {
+                    return 0;
+                }
+
+                @Override
+                public View getView(final int pos, View convertView, ViewGroup parent) {
+                    final LayoutInflater layoutInflater = LayoutInflater.from(co);
+
+
+                    convertView = layoutInflater.inflate(R.layout.item_ecart_prelevement, null);
+                    final TextView txt_article = (TextView) convertView.findViewById(R.id.txt_article);
+
+                    final TextView txt_piece = (TextView) convertView.findViewById(R.id.txt_piece);
+                    final TextView txt_qt = (TextView) convertView.findViewById(R.id.txt_qt);
+                    final TextView txt_ecart = (TextView) convertView.findViewById(R.id.txt_ecart);
+                    final TextView edt_qt_scan = (TextView) convertView.findViewById(R.id.txt_qt_scan);
+                       //noDoc TEXT  ,Code TEXT, Quantite INTEGER, QuantiteScan INTEGER
+                    cr = helper.getListLigneCommandPrelevement();
+                    if (cr.move(pos + 1)) {
+
+                        txt_article.setText(cr.getString(cr.getColumnIndex("Article")));
+
+                        txt_qt.setText(cr.getString(cr.getColumnIndex("Quantite")));
+                        txt_piece.setText(cr.getString(cr.getColumnIndex("Piece")));
+
+                        edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
+                       float ecart= Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))-Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
+
+                        txt_ecart.setText(""+ecart);
+
+                    }
+
+
                     return convertView;
                 }
             };
@@ -857,7 +966,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                             String s = edt_qt_scan.getText().toString();
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
-                                    Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                                    float qt = Float.valueOf(edt_qt_scan.getText().toString());
                                     helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
                                 }
@@ -869,8 +978,10 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                     btmoin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt--;
+                            if(qt<0)
+                            { qt=0;}
                             edt_qt_scan.setText("" + qt);
                             helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
@@ -880,7 +991,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                     btplus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt++;
 
 

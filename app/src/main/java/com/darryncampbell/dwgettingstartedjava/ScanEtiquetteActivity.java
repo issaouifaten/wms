@@ -157,7 +157,7 @@ public class ScanEtiquetteActivity extends AppCompatActivity implements View.OnT
                             // TODO Auto-generated method stub
                             Log.d("ERROR", "error => " + error.getLocalizedMessage());
                             Log.d("ERROR", "error => " + error.getMessage());
-                            Toast.makeText(getApplicationContext(), "error vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
             ) {

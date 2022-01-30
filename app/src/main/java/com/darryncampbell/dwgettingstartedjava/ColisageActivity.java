@@ -956,11 +956,13 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     btmoin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt--;
+                            if(qt<0)
+                            { qt=0;}
                             edt_qt_scan.setText("" + qt);
 
-                            helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), qt.toString()));
+                            helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
 
 
                         }
@@ -968,7 +970,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     btplus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            float qt = Float.parseFloat(edt_qt_scan.getText().toString());
                             qt++;
                             float pt = calculPoidsTotal();
                             float pu = Float.parseFloat(txt_poids.getText().toString());
@@ -976,7 +978,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             if (pr <= Float.parseFloat(txt_poids_max.getText().toString())) {
 
                                 edt_qt_scan.setText("" + qt);
-                                helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), qt.toString()));
+                                helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), Float.toString(qt)));
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "POIDS MAX DÉPASSER", Toast.LENGTH_SHORT).show();
@@ -993,7 +995,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             String s = edt_qt_scan.getText().toString();
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
-                                    Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                                    float qt = Float.valueOf(edt_qt_scan.getText().toString());
 
                                     float pt = calculPoidsTotal();
                                     float pu = Float.parseFloat(txt_poids.getText().toString());
@@ -1005,7 +1007,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                     float poids = pt + ptu - poldscan;
                                     if (poids <= Float.parseFloat(txt_poids_max.getText().toString())) {
                                         edt_qt_scan.setText("" + qt);
-                                        helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), qt.toString()));
+                                        helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
 
                                     } else {
                                         Toast.makeText(getApplicationContext(), "POIDS MAX DÉPASSER", Toast.LENGTH_SHORT).show();
@@ -1133,10 +1135,12 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     btmoin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt--;
+                            if(qt<0)
+                            { qt=0;}
                             edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), qt.toString()));
+                            helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
 
 
                         }
@@ -1144,7 +1148,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     btplus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt++;
 
                             float pt = calculPoidsTotal();
@@ -1152,7 +1156,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             float pr = pt + pu;
                             if (pr <= Float.parseFloat(txt_poids_max.getText().toString())) {
                                 edt_qt_scan.setText("" + qt);
-                                helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), qt.toString()));
+                                helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "POIDS MAX DÉPASSER", Toast.LENGTH_SHORT).show();
@@ -1168,7 +1172,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             String s = edt_qt_scan.getText().toString();
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
-                                    Float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                                    float qt = Float.valueOf(edt_qt_scan.getText().toString());
                                     float pt = calculPoidsTotal();
                                     float pu = Float.parseFloat(txt_poids.getText().toString());
                                     float ptu = qt * pu;
@@ -1179,7 +1183,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                     float poids = pt + ptu - poldscan;
                                     if (poids <= Float.parseFloat(txt_poids_max.getText().toString())) {
                                         edt_qt_scan.setText("" + qt);
-                                        helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), qt.toString()));
+                                        helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
 
                                     } else {
                                         Toast.makeText(getApplicationContext(), "POIDS MAX DÉPASSER", Toast.LENGTH_SHORT).show();
@@ -1275,7 +1279,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             // TODO Auto-generated method stub
                             Log.d("ERROR", "error => " + error.getLocalizedMessage());
                             Log.d("ERROR", "error => " + error.getMessage());
-                            Toast.makeText(getApplicationContext(), "error vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
             ) {

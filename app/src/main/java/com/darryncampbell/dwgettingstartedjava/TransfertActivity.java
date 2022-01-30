@@ -235,7 +235,7 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                             // TODO Auto-generated method stub
                             Log.d("ERROR", "error => " + error.getLocalizedMessage());
                             Log.d("ERROR", "error => " + error.getMessage());
-                            Toast.makeText(getApplicationContext(), "error vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
             ) {
@@ -371,7 +371,7 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                             // TODO Auto-generated method stub
                             Log.d("ERROR", "error => " + error.getLocalizedMessage());
                             Log.d("ERROR", "error => " + error.getMessage());
-                            Toast.makeText(getApplicationContext(), "error vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
             ) {
@@ -488,7 +488,7 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                             Log.e("ERROR", "error => " + error.getLocalizedMessage());
                             Log.e("ERROR", "error => " + error.getMessage());
                             Log.e("ERROR", "error => " + jsonBody.toString());
-                            Toast.makeText(getApplicationContext(), "error vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
             ) {

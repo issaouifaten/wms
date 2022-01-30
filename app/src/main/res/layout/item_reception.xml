@@ -39,31 +39,17 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/txt_noDoc"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="1dp">
-
-                        <TextView
-                            android:id="@+id/txt_noDoc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="fill_vertical"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="5dp"
-                            android:text="TextView"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/txt_piece"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="TextView" />
-
-                    </LinearLayout>
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="fill_vertical"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="5dp"
+                        android:text="TextView"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -111,6 +97,98 @@
                         </LinearLayout>
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/epaisseur"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="Epaisseur"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/txt_epaisseur"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center|right"
+                            android:padding="3dp"
+                            android:text="TextView"
+                            android:textColor="@color/colorTextMenu"
+                            android:textStyle="bold|italic" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:id="@+id/nb_paquet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="Nb Exemplaire Paquet"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/txt_nb_paquet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:padding="3dp"
+                            android:text="TextView"
+                            android:textColor="@color/colorTextMenu"
+                            android:textStyle="bold|italic" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:id="@+id/nb_couche"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_weight="1"
+                            android:gravity="center|left"
+                            android:text="Nb paquet couche"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/txt_nb_couche"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:padding="3dp"
+                            android:text="TextView"
+                            android:textColor="@color/colorTextMenu"
+                            android:textStyle="bold|italic" />
+
+                        <TextView
+                            android:id="@+id/txt_piece"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="TextView"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
                     <View
                         android:id="@+id/view2"
                         android:layout_width="match_parent"
@@ -123,9 +201,18 @@
 
                     <LinearLayout
                         android:id="@+id/layout_edit"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="NB couche"
+                            android:textSize="16sp"
+                            android:textStyle="bold|italic" />
 
                         <Button
                             android:id="@+id/btmoin"
@@ -143,7 +230,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
-                            android:layout_weight="1"
                             android:ems="10"
                             android:gravity="center"
                             android:inputType="number|numberDecimal"
@@ -157,6 +243,31 @@
                             android:textColor="@android:color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="QT Totale : "
+                            android:textSize="16sp"
+                            android:textStyle="bold|italic" />
+
+                        <TextView
+                            android:id="@+id/qt_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:text="0"
+                            android:textSize="16sp"
+                            android:textStyle="bold|italic" />
                     </LinearLayout>
 
                 </LinearLayout>

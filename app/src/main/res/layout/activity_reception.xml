@@ -75,6 +75,15 @@
                 android:visibility="visible">
 
                 <Button
+                    android:id="@+id/bt_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorValid"
+                    android:text="BC selectionnée"
+                    android:textColor="@color/colortext" />
+
+                <Button
                     android:id="@+id/bt_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -82,6 +91,13 @@
                     android:background="@color/colorAccent"
                     android:text="Liste BC"
                     android:textColor="@color/colortext" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/bt_valid_list"
@@ -91,12 +107,6 @@
                     android:background="@color/colorValid"
                     android:text="Valider"
                     android:textColor="@color/colortext" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/bt_view_ligne"
@@ -114,15 +124,6 @@
                     android:layout_weight="1"
                     android:background="@color/colorPrimary"
                     android:text="scan"
-                    android:textColor="@color/colortext" />
-
-                <Button
-                    android:id="@+id/bt_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/colorValid"
-                    android:text="BC selectionnée"
                     android:textColor="@color/colortext" />
 
             </LinearLayout>

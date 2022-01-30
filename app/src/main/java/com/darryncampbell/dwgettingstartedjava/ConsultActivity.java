@@ -59,8 +59,8 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
         Button btnScan = findViewById(R.id.btnScan);
         output = findViewById(R.id.txtOutput);
         btnScan.setOnTouchListener(this);
-       output.setText("3274080005003")         ;
-       FillListConsult("3274080005003");
+      // output.setText("3274080005003")         ;
+      // FillListConsult("3274080005003");
 
 
     }
@@ -180,7 +180,7 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
                             // TODO Auto-generated method stub
                             Log.d("ERROR", "error => " + error.getLocalizedMessage());
                             Log.d("ERROR", "error => " + error.getMessage());
-                            Toast.makeText(getApplicationContext(), "error vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
             ) {
