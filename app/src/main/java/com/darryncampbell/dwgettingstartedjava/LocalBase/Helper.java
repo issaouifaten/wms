@@ -497,6 +497,11 @@ public class Helper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         db.delete("Valide_Command_Prelevement", "", null);
     }
+    public void DeleteListType() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        db.delete("Ligne_Colis_Created", "", null);
+    }
 
     public void DeleteValideBonCommandPrelevementColisage() {
         SQLiteDatabase db = this.getWritableDatabase();

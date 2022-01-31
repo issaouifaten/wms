@@ -70,7 +70,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reception);
-          baseUrlCreateReception = getResources().getString(R.string.base_url) + "WmsApp_ValidateReception?$format=application/json;odata.metadata=none";
+          baseUrlCreateReception = getResources().getString(R.string.base_url) + "WmsApp_ValiderReception?$format=application/json;odata.metadata=none";
           baseUrlLigneBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnSelectedPurchaseLigne"; baseUrlListBc = getResources().getString(R.string.base_url) + "CommandesAchat?$format=application/json;odata.metadata=none";
 
         grid_reception = (GridView) findViewById(R.id.grid_reception);

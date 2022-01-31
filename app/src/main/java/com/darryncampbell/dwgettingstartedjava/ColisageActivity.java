@@ -3,7 +3,6 @@ package com.darryncampbell.dwgettingstartedjava;
 import static android.view.KeyEvent.KEYCODE_DEL;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -40,7 +39,9 @@ import com.darryncampbell.dwgettingstartedjava.Model.Colis.LigneColis;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.ListColis;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.ListColisCreated;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.ListPreparation;
+import com.darryncampbell.dwgettingstartedjava.Model.Colis.ListSearchColi;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.PreparationColisLigne;
+import com.darryncampbell.dwgettingstartedjava.Model.Colis.SearchColis;
 import com.darryncampbell.dwgettingstartedjava.Model.TypeColis.TypeColis;
 import com.google.gson.Gson;
 
@@ -69,6 +70,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
     String baseUrlListColisCreated = "";
     String baseUrlTypeColis = "";
     String baseUrlPreparationColis = "";
+    String baseUrlSearchColis = "";
     Boolean select_prelevement = false;
 
     @Override
@@ -81,6 +83,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
         baseUrlListColisCreated = getResources().getString(R.string.base_url) + "WmsApp_ReturnColis?$format=application/json;odata.metadata=none";
         baseUrlTypeColis = getResources().getString(R.string.base_url) + "TypeColis?$format=application/json;odata.metadata=none";
         baseUrlPreparationColis = getResources().getString(R.string.base_url) + "WmsApp_CreateColis?$format=application/json;odata.metadata=none";
+        baseUrlSearchColis = getResources().getString(R.string.base_url) + "WmsApp_SelectColisFromSSCC?$format=application/json;odata.metadata=none";
         grid_prelevement = (GridView) findViewById(R.id.grid_prelevement);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -134,7 +137,22 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface di, int i) {
-                                        di.cancel();
+                                    di.cancel();
+//                                        searchScan = "3274080005003";
+//
+//                                        output.setText("3274080005003");
+//                                        Log.e("txt_no_colis",txt_no_colis.getText().toString());
+//                                        if(txt_no_colis.getText().toString().equals(""))
+//                                        {Toast.makeText(getApplicationContext(),"search",Toast.LENGTH_SHORT).show();
+//
+//                                        searchColi();
+//
+//
+//                                        }else{
+//                                           FillListColisToScanSearch fillListColisToScanSearch = new FillListColisToScanSearch();
+//                                            fillListColisToScanSearch.execute("");
+//                                        }
+
                                     }
                                 });
 
@@ -185,7 +203,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     FillListBonPrelevement();
                 else if (TypeColis.equals(""))
                     FillListTypeColis();
-                else if (NoColis.equals(""))
+                else if (NoColis!=null&&NoColis.equals(""))
                     PreparationColis();
                 else if (helper.getListLigneCommandPrelevementColisage().getCount() > 0) {
                     FillListColisToScan fillListColisToScan = new FillListColisToScan();
@@ -297,7 +315,9 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                                 btplus.setVisibility(View.GONE);
                                                 txt_no_doc.setText(txt_code.getText().toString());
                                                 helper.AddBonCommandePrelevementColisage(new PreparationColisLigne(txt_code.getText().toString(), "", "", ""));
-                                                FillListTypeColis();
+                                               if(helper.getListColisCreated().getCount()<=0)
+                                               {
+                                                FillListTypeColis();}
 
                                             }
                                         });
@@ -360,6 +380,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
             String url = baseUrlTypeColis;
             progressBar.setVisibility(View.VISIBLE);
 
+
             StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                     new Response.Listener<String>() {
                         @Override
@@ -410,7 +431,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
 
                                         final com.darryncampbell.dwgettingstartedjava.Model.TypeColis.Value val = finalData.getValue().get(position);
                                         txt_type.setText(val.getType() + "");
-                                        txt_volume.setText(val.getVolume() + "");
+                                        txt_volume.setText(val.getPoids() + "");
                                         bt_add.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
@@ -610,11 +631,12 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                 Gson gson = new Gson();
                                 data = gson.fromJson(jsonList.toString(), ListColisCreated.class);
                                 final ListColisCreated finalData = data;
-                                for (int i = 0; i < finalData.getValue().size(); i++) {
+                                if(!(helper.getListColisCreated().getCount()>0))
+                                { for (int i = 0; i < finalData.getValue().size(); i++) {
                                     LigneColisCreated ligne = finalData.getValue().get(i);
 
                                     helper.AddLigneColisCreated(ligne);
-                                }
+                                }}
                                 FillListColisCreated fillListColisCreated = new FillListColisCreated();
                                 fillListColisCreated.execute("");
 
@@ -663,7 +685,99 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
 
         }
     }
+    void searchColi() {
+        try {
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = baseUrlSearchColis;
+            progressBar.setVisibility(View.VISIBLE);
 
+            JSONObject json = new JSONObject().put("SSCC", output.getText().toString());
+
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("inputJson", json.toString());
+
+            final String mRequestBody = jsonBody.toString();
+            StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // response
+                            progressBar.setVisibility(View.GONE);
+                            Log.d("tag****searchcolis", response);
+
+                            bt_scan.setVisibility(View.VISIBLE);
+                            JSONObject obj = null;
+                            SearchColis data = new SearchColis();
+                            try {
+                                obj = new JSONObject(response);
+                                Log.d("tag****Response", obj.getString("value"));
+
+
+                                Gson gson = new Gson();
+                                data = gson.fromJson(obj.getString("value"), SearchColis.class);
+                                final SearchColis finalData = data;
+                                Log.d("tag****Response", ""+finalData.getColis());
+                                txt_no_colis.setText(finalData.getColis());
+                                Cursor cr = helper.getListCommandPrelevementColisage();
+
+                                String numDoc = "";
+                                String NoColis = "";
+                                String TypeColis = "";
+                                String PoidsMax = "";
+                                if (cr.move(1)) {
+                                    numDoc = cr.getString(cr.getColumnIndex("NoDoc"));
+                                    NoColis = cr.getString(cr.getColumnIndex("NoColis"));
+                                    TypeColis = cr.getString(cr.getColumnIndex("TypeColis"));
+                                    PoidsMax = cr.getString(cr.getColumnIndex("PoidsMax"));
+                                    txt_no_colis.setText(finalData.getColis());
+                                helper.UpdateBonCommandePrelevementColisage(new PreparationColisLigne(numDoc, TypeColis,finalData.getColis(), PoidsMax));
+                                FillLigneColisToScan();
+                                }
+                            } catch (JSONException e) {
+                                Log.e("errorlistlignebc", e.toString());
+                            }
+
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressBar.setVisibility(View.GONE);
+                            // TODO Auto-generated method stub
+                            Log.d("ERROR", "error => " + error.toString());
+                            Toast.makeText(getApplicationContext(), "eror vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", getResources().getString(R.string.key_autorisation));
+                    params.put("Content-Type", "application/json");
+                    params.put("Company", getResources().getString(R.string.company_name));
+
+                    return params;
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                        Log.e("ERROR", "errorgetbody => " + uee.toString());
+                        return null;
+                    }
+                }
+            };
+            queue.add(getRequest);
+        } catch (Exception e) {
+            // Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
+            Log.e("error", e.toString());
+
+        }
+    }
     void PreparationColis() {
         try {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -687,6 +801,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             // response
                             progressBar.setVisibility(View.GONE);
                             Log.d("tag****ResponsePreparationColis", response);
+
                             FillColisCreated();
 
 
@@ -748,8 +863,10 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
         searchScan = scan;
 
         output.setText(scan);
+        if(txt_no_colis.getText().toString().equals(""))
+        {searchColi();}else{
         FillListColisToScanSearch fillListColisToScanSearch = new FillListColisToScanSearch();
-        fillListColisToScanSearch.execute("");
+        fillListColisToScanSearch.execute("");}
 
 
     }
@@ -1060,19 +1177,19 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
             cr = helper.getLignePrelevementColisageArticle(searchScan);
-            cr.move( 1);
-            float pt = calculPoidsTotal();
-            float pu = Float.parseFloat(cr.getString(cr.getColumnIndex("poidsUnite")));
-            float pr = pt + pu;
-            if (pr <= Float.parseFloat(txt_poids_max.getText().toString())) {
+            if(cr.getCount()>0) {
+                cr.move(1);
+                float pt = calculPoidsTotal();
+                float pu = Float.parseFloat(cr.getString(cr.getColumnIndex("poidsUnite")));
+                float pr = pt + pu;
+                if (pr <= Float.parseFloat(txt_poids_max.getText().toString())) {
 
 
-
-                helper.UpdateLignePrelevementColisageByScan(searchScan);
-            } else {
-                Toast.makeText(getApplicationContext(), "POIDS MAX DÉPASSER", Toast.LENGTH_SHORT).show();
+                    helper.UpdateLignePrelevementColisageByScan(searchScan);
+                } else {
+                    Toast.makeText(getApplicationContext(), "POIDS MAX DÉPASSER", Toast.LENGTH_SHORT).show();
+                }
             }
-
         }
 
         @Override

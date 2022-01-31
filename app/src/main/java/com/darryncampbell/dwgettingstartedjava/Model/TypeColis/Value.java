@@ -2,7 +2,7 @@ package com.darryncampbell.dwgettingstartedjava.Model.TypeColis;
 
 public class Value {
     String Type;
-    String Volume;
+    String Poids;
 
     public String getType() {
         return Type;
@@ -12,11 +12,11 @@ public class Value {
         Type = type;
     }
 
-    public String getVolume() {
-        return Volume;
+    public String getPoids() {
+        return Poids;
     }
 
-    public void setVolume(String volume) {
-        Volume = volume;
+    public void setPoids(String poids) {
+        Poids = poids;
     }
 }

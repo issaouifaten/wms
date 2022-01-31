@@ -144,7 +144,7 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
 
 
                                         }else {
-                                            if(Float.parseFloat(val.getPoids())<Float.parseFloat(val.getCapacité()))
+                                            if(Float.parseFloat(val.getPoids())/Float.parseFloat(val.getQuantite())<Float.parseFloat(val.getCapacité()))
                                             {
                                                 bt_transfert.setVisibility(View.VISIBLE);
                                             }else{
