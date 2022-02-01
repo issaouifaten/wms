@@ -86,6 +86,7 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("NoDoc", c.getNoDoc());
         cv.put("NoCommande", c.getNoCommande());
         cv.put("NoColis", c.getNoColis());
+        cv.put("PoidsMax", c.getPoidsMax());
 
 
         db.insert("Ligne_Colis_Created", null, cv);

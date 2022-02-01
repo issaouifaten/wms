@@ -932,7 +932,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     final LayoutInflater layoutInflater = LayoutInflater.from(co);
                     convertView = layoutInflater.inflate(R.layout.item_colis, null);
                     final TextView txt_colis = (TextView) convertView.findViewById(R.id.txt_colis);
-                    final TextView txt_poids_max = (TextView) convertView.findViewById(R.id.txt_poids_max);
+                    final TextView txt_poids_max_item = (TextView) convertView.findViewById(R.id.txt_poids_max);
                     final TextView txt_no_command = (TextView) convertView.findViewById(R.id.txt_no_command);
                     final Button bt_add = (Button) convertView.findViewById(R.id.bt_add);
 
@@ -940,7 +940,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     if (cr.move(pos + 1)) {
 
                         txt_colis.setText(cr.getString(cr.getColumnIndex("NoColis")));
-                        txt_poids_max.setText(cr.getString(cr.getColumnIndex("PoidsMax")));
+                        txt_poids_max_item.setText(cr.getString(cr.getColumnIndex("PoidsMax")));
                         txt_no_command.setText(cr.getString(cr.getColumnIndex("NoCommande")));
 
 
@@ -953,9 +953,10 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
 
 
                             if (cr.move(1)) {
+                                Log.d("***poidsmax",cr.toString());
                                 String numDoc = cr.getString(cr.getColumnIndex("NoDoc"));
                                 String TypeColis = cr.getString(cr.getColumnIndex("TypeColis"));
-                                String PoidsMax = cr.getString(cr.getColumnIndex("PoidsMax"));
+                                String PoidsMax =  txt_poids_max_item.getText().toString();
 
 
                                 txt_no_doc.setText(numDoc);

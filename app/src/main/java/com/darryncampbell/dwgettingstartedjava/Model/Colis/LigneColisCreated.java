@@ -38,4 +38,14 @@ public class LigneColisCreated {
     public void setPoidsMax(String poidsMax) {
         PoidsMax = poidsMax;
     }
+
+    @Override
+    public String toString() {
+        return "LigneColisCreated{" +
+                "NoDoc='" + NoDoc + '\'' +
+                ", NoCommande='" + NoCommande + '\'' +
+                ", NoColis='" + NoColis + '\'' +
+                ", PoidsMax='" + PoidsMax + '\'' +
+                '}';
+    }
 }
