@@ -729,9 +729,13 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                     NoColis = cr.getString(cr.getColumnIndex("NoColis"));
                                     TypeColis = cr.getString(cr.getColumnIndex("TypeColis"));
                                     PoidsMax = cr.getString(cr.getColumnIndex("PoidsMax"));
-                                    txt_no_colis.setText(finalData.getColis());
-                                helper.UpdateBonCommandePrelevementColisage(new PreparationColisLigne(numDoc, TypeColis,finalData.getColis(), PoidsMax));
-                                FillLigneColisToScan();
+                                    if(numDoc.equals(txt_no_doc.getText().toString()))
+                                    {  txt_no_colis.setText(finalData.getColis());
+                                     helper.UpdateBonCommandePrelevementColisage(new PreparationColisLigne(numDoc, TypeColis,finalData.getColis(), PoidsMax));
+                                     FillLigneColisToScan();}else{
+                                        Toast.makeText(getApplicationContext(),"SSCC ne correspond pas",Toast.LENGTH_SHORT).show();
+
+                                    }
                                 }
                             } catch (JSONException e) {
                                 Log.e("errorlistlignebc", e.toString());
