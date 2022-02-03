@@ -46,40 +46,40 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="fill_vertical"
-                        android:paddingLeft="5dp"
                         android:paddingTop="5dp"
                         android:text="TextView"
+                        android:textColor="@android:color/background_dark"
                         android:textStyle="bold" />
 
 
                     <TextView
                         android:id="@+id/tx_nom_client"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="1"
 
-                        android:text="TextView"
                         android:textStyle="bold|italic" />
 
                     <Button
                         android:id="@+id/bt_cloture"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
                         android:background="@color/colorPrimaryDark"
                         android:text="cloturer"
-                        android:textColor="@color/colortext" />
+                        android:textColor="@color/colortext"
+                        android:textSize="12sp" />
 
                     <Button
                         android:id="@+id/btplus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
 
 
+                        android:layout_marginLeft="1dp"
                         android:background="@color/colorValid"
                         android:text="remplir"
                         android:textColor="@color/colortext"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <Button
                         android:id="@+id/btdelete"
