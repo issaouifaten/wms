@@ -150,12 +150,21 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/btn_list_pr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="Liste PR"
+                    android:textColor="@color/colortext" />
+
+                <Button
                     android:id="@+id/btn_list"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="@color/colorAccent"
-                    android:text="Liste"
+                    android:text="Liste scan"
                     android:textColor="@color/colortext" />
 
                 <Button

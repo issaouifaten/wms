@@ -61,7 +61,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
     ProgressBar progressBar;
     Helper helper;
 
-    Button bt_scan, btnDelete, bt_create, btn_list;
+    Button bt_scan, btnDelete, bt_create, btn_list,btn_list_pr;
     String searchScan = "";
     TextView output, txt_no_doc, txt_no_colis, txt_poids_max;
     String baseUrlLigneColisToScan = "";
@@ -71,6 +71,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
     String baseUrlTypeColis = "";
     String baseUrlPreparationColis = "";
     String baseUrlSearchColis = "";
+    String baseUrlClotureColis = "";
     Boolean select_prelevement = false;
 
     @Override
@@ -84,6 +85,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
         baseUrlTypeColis = getResources().getString(R.string.base_url) + "TypeColis?$format=application/json;odata.metadata=none";
         baseUrlPreparationColis = getResources().getString(R.string.base_url) + "WmsApp_CreateColis?$format=application/json;odata.metadata=none";
         baseUrlSearchColis = getResources().getString(R.string.base_url) + "WmsApp_SelectColisFromSSCC?$format=application/json;odata.metadata=none";
+        baseUrlClotureColis = getResources().getString(R.string.base_url) + "WmsApp_CloseRegistredPick?$format=application/json;odata.metadata=none";
         grid_prelevement = (GridView) findViewById(R.id.grid_prelevement);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -96,6 +98,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
         bt_create = (Button) findViewById(R.id.btn_create);
         bt_scan = (Button) findViewById(R.id.btnScanprev);
         btn_list = (Button) findViewById(R.id.btn_list);
+        btn_list_pr = (Button) findViewById(R.id.btn_list_pr);
 
         DWUtilities.CreateDWProfile(co, "com.colisage.action");
         Button btnScan = findViewById(R.id.btnScanprev);
@@ -104,7 +107,23 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
         btn_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              initList();
+                initList();
+
+
+            }
+        });
+        btn_list_pr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                txt_poids_max.setText("");
+                txt_no_doc.setText("");
+                txt_no_colis.setText("");
+                helper.DeleteListBonCommandPrelevementColisage();
+                helper.DeleteLigneBonCommandPrelevementColisage();
+                helper.DeleteLigneColisCreated();
+                helper.DeleteValideBonCommandPrelevementColisage();
+                FillListBonPrelevement();
+
 
 
             }
@@ -137,7 +156,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface di, int i) {
-                                    di.cancel();
+                                        di.cancel();
 //                                        searchScan = "3274080005003";
 //
 //                                        output.setText("3274080005003");
@@ -203,7 +222,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     FillListBonPrelevement();
                 else if (TypeColis.equals(""))
                     FillListTypeColis();
-                else if (NoColis!=null&&NoColis.equals(""))
+                else if (NoColis != null && NoColis.equals(""))
                     PreparationColis();
                 else if (helper.getListLigneCommandPrelevementColisage().getCount() > 0) {
                     FillListColisToScan fillListColisToScan = new FillListColisToScan();
@@ -223,7 +242,6 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
             Cursor cr = helper.getListLigneCommandPrelevementColisage();
 
 
-
             if (cr.moveToFirst()) {
                 do {
                     if (!cr.getString(cr.getColumnIndex("poidsUnite")).equals(""))
@@ -231,7 +249,6 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
 
                 } while (cr.moveToNext());
             }
-
 
 
         } catch (Exception ex) {
@@ -292,32 +309,31 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                     @Override
                                     public View getView(int position, View convertView, ViewGroup parent) {
                                         final LayoutInflater layoutInflater = LayoutInflater.from(co);
-                                        convertView = layoutInflater.inflate(R.layout.item_bc, null);
+                                        convertView = layoutInflater.inflate(R.layout.item_list_prelevement_colis, null);
                                         final TextView txt_code = (TextView) convertView.findViewById(R.id.txt_code);
                                         final TextView txt_nom_client = (TextView) convertView.findViewById(R.id.tx_nom_client);
                                         final Button btplus = (Button) convertView.findViewById(R.id.btplus);
                                         final Button btdelete = (Button) convertView.findViewById(R.id.btdelete);
+                                        final Button bt_cloture = (Button) convertView.findViewById(R.id.bt_cloture);
+                                        bt_cloture.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                ClotureColis(txt_code.getText().toString());
+                                            }
+                                        });
 
                                         final PreparationColisLigne val = finalData.getValue().get(position);
-                                        if (helper.testExistBonCommandPrelevementColisage(val.getNoDoc())) {
-                                            btdelete.setVisibility(View.VISIBLE);
-                                            btplus.setVisibility(View.GONE);
-                                        } else {
-                                            btdelete.setVisibility(View.GONE);
-                                            btplus.setVisibility(View.VISIBLE);
-                                        }
+
 
                                         btplus.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
                                                 helper.DeleteListBonCommandPrelevementColisage();
-                                                btdelete.setVisibility(View.VISIBLE);
-                                                btplus.setVisibility(View.GONE);
-                                                txt_no_doc.setText(txt_code.getText().toString());
+                                                 txt_no_doc.setText(txt_code.getText().toString());
                                                 helper.AddBonCommandePrelevementColisage(new PreparationColisLigne(txt_code.getText().toString(), "", "", ""));
-                                               if(helper.getListColisCreated().getCount()<=0)
-                                               {
-                                                FillListTypeColis();}
+                                                if (helper.getListColisCreated().getCount() <= 0) {
+                                                    FillListTypeColis();
+                                                }
 
                                             }
                                         });
@@ -631,12 +647,13 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                 Gson gson = new Gson();
                                 data = gson.fromJson(jsonList.toString(), ListColisCreated.class);
                                 final ListColisCreated finalData = data;
-                                if(!(helper.getListColisCreated().getCount()>0))
-                                { for (int i = 0; i < finalData.getValue().size(); i++) {
-                                    LigneColisCreated ligne = finalData.getValue().get(i);
+                                if (!(helper.getListColisCreated().getCount() > 0)) {
+                                    for (int i = 0; i < finalData.getValue().size(); i++) {
+                                        LigneColisCreated ligne = finalData.getValue().get(i);
 
-                                    helper.AddLigneColisCreated(ligne);
-                                }}
+                                        helper.AddLigneColisCreated(ligne);
+                                    }
+                                }
                                 FillListColisCreated fillListColisCreated = new FillListColisCreated();
                                 fillListColisCreated.execute("");
 
@@ -685,6 +702,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
 
         }
     }
+
     void searchColi() {
         try {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -716,7 +734,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                 Gson gson = new Gson();
                                 data = gson.fromJson(obj.getString("value"), SearchColis.class);
                                 final SearchColis finalData = data;
-                                Log.d("tag****Response", ""+finalData.getColis());
+                                Log.d("tag****Response", "" + finalData.getColis());
                                 txt_no_colis.setText(finalData.getColis());
                                 Cursor cr = helper.getListCommandPrelevementColisage();
 
@@ -729,11 +747,12 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                     NoColis = cr.getString(cr.getColumnIndex("NoColis"));
                                     TypeColis = cr.getString(cr.getColumnIndex("TypeColis"));
                                     PoidsMax = cr.getString(cr.getColumnIndex("PoidsMax"));
-                                    if(numDoc.equals(txt_no_doc.getText().toString()))
-                                    {  txt_no_colis.setText(finalData.getColis());
-                                     helper.UpdateBonCommandePrelevementColisage(new PreparationColisLigne(numDoc, TypeColis,finalData.getColis(), PoidsMax));
-                                     FillLigneColisToScan();}else{
-                                        Toast.makeText(getApplicationContext(),"SSCC ne correspond pas",Toast.LENGTH_SHORT).show();
+                                    if (numDoc.equals(txt_no_doc.getText().toString())) {
+                                        txt_no_colis.setText(finalData.getColis());
+                                        helper.UpdateBonCommandePrelevementColisage(new PreparationColisLigne(numDoc, TypeColis, finalData.getColis(), PoidsMax));
+                                        FillLigneColisToScan();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "SSCC ne correspond pas", Toast.LENGTH_SHORT).show();
 
                                     }
                                 }
@@ -782,6 +801,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
 
         }
     }
+
     void PreparationColis() {
         try {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -867,10 +887,12 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
         searchScan = scan;
 
         output.setText(scan);
-        if(txt_no_colis.getText().toString().equals(""))
-        {searchColi();}else{
-        FillListColisToScanSearch fillListColisToScanSearch = new FillListColisToScanSearch();
-        fillListColisToScanSearch.execute("");}
+        if (txt_no_colis.getText().toString().equals("")) {
+            searchColi();
+        } else {
+            FillListColisToScanSearch fillListColisToScanSearch = new FillListColisToScanSearch();
+            fillListColisToScanSearch.execute("");
+        }
 
 
     }
@@ -957,10 +979,10 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
 
 
                             if (cr.move(1)) {
-                                Log.d("***poidsmax",cr.toString());
+                                Log.d("***poidsmax", cr.toString());
                                 String numDoc = cr.getString(cr.getColumnIndex("NoDoc"));
                                 String TypeColis = cr.getString(cr.getColumnIndex("TypeColis"));
-                                String PoidsMax =  txt_poids_max_item.getText().toString();
+                                String PoidsMax = txt_poids_max_item.getText().toString();
 
 
                                 txt_no_doc.setText(numDoc);
@@ -1080,11 +1102,12 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                         public void onClick(View v) {
                             float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt--;
-                            if(qt<0)
-                            { qt=0;}
+                            if (qt < 0) {
+                                qt = 0;
+                            }
                             edt_qt_scan.setText("" + qt);
 
-                            helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
+                            helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), "" + qt));
 
 
                         }
@@ -1129,7 +1152,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                     float poids = pt + ptu - poldscan;
                                     if (poids <= Float.parseFloat(txt_poids_max.getText().toString())) {
                                         edt_qt_scan.setText("" + qt);
-                                        helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
+                                        helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), "" + qt));
 
                                     } else {
                                         Toast.makeText(getApplicationContext(), "POIDS MAX DÉPASSER", Toast.LENGTH_SHORT).show();
@@ -1182,7 +1205,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
             cr = helper.getLignePrelevementColisageArticle(searchScan);
-            if(cr.getCount()>0) {
+            if (cr.getCount() > 0) {
                 cr.move(1);
                 float pt = calculPoidsTotal();
                 float pu = Float.parseFloat(cr.getString(cr.getColumnIndex("poidsUnite")));
@@ -1237,8 +1260,6 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     //PRIMARY KEY,noDoc TEXT  ,Article TEXT,noColis TEXT ,Quantite INTEGER, QuantiteScan INTEGER,Piece TEXT,poidsUnite TEXT,EAN TEXT
 
 
-
-
                     cr = helper.getLignePrelevementColisageArticle(searchScan);
                     if (cr.move(pos + 1)) {
 
@@ -1259,10 +1280,11 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                         public void onClick(View v) {
                             float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt--;
-                            if(qt<0)
-                            { qt=0;}
+                            if (qt < 0) {
+                                qt = 0;
+                            }
                             edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
+                            helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), "" + qt));
 
 
                         }
@@ -1278,7 +1300,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             float pr = pt + pu;
                             if (pr <= Float.parseFloat(txt_poids_max.getText().toString())) {
                                 edt_qt_scan.setText("" + qt);
-                                helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
+                                helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), "" + qt));
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "POIDS MAX DÉPASSER", Toast.LENGTH_SHORT).show();
@@ -1305,7 +1327,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                     float poids = pt + ptu - poldscan;
                                     if (poids <= Float.parseFloat(txt_poids_max.getText().toString())) {
                                         edt_qt_scan.setText("" + qt);
-                                        helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), ""+qt));
+                                        helper.UpdateLigneBonCommandePrelevementColisage(new LigneColis(txt_noDoc.getText().toString(), txt_no_colis.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), txt_poids.getText().toString(), txt_ean.getText().toString(), "" + qt));
 
                                     } else {
                                         Toast.makeText(getApplicationContext(), "POIDS MAX DÉPASSER", Toast.LENGTH_SHORT).show();
@@ -1383,14 +1405,17 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             progressBar.setVisibility(View.GONE);
                             Log.d("tag****Response", response);
 
-                            helper.DeleteListBonCommandPrelevementColisage();
+                            //helper.DeleteListBonCommandPrelevementColisage();
                             helper.DeleteLigneBonCommandPrelevementColisage();
-                            helper.DeleteLigneColisCreated();
-                            helper.DeleteValideBonCommandPrelevementColisage();
+                           helper.DeleteLigneColisCreated();
+                           // helper.DeleteValideBonCommandPrelevementColisage();
+                            //
 
+                            txt_no_colis.setText("");
+                            FillColisCreated();
                             Toast.makeText(getApplicationContext(), "colis crée avec succés", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                            startActivity(intent);
+                           // Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                           // startActivity(intent);
 
                         }
                     },
@@ -1434,4 +1459,74 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
         }
     }
 
+    void ClotureColis(String noDoc) {
+        try {
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = baseUrlClotureColis;
+            progressBar.setVisibility(View.VISIBLE);
+            JSONObject jsonEAN = new JSONObject().put("Nodoc", noDoc);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("inputJson", jsonEAN.toString());
+            Log.e("***inputjsoncloture", jsonBody.toString());
+//{ "inputJson" : "{\"EAN\":\"3268840001008\"}"}
+            final String mRequestBody = jsonBody.toString();
+            StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // response
+                            progressBar.setVisibility(View.GONE);
+                            FillListBonPrelevement();
+                            Log.e("***return", response);
+                            JSONObject obj = null;
+
+                            try {
+                                obj = new JSONObject(response);
+                                Toast.makeText(getApplicationContext(),obj.getString("value") , Toast.LENGTH_SHORT).show();
+
+                                Log.d("tag****Response", obj.getString("value"));
+                            } catch (Exception e) {
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressBar.setVisibility(View.GONE);
+                            // TODO Auto-generated method stub
+                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            Log.d("ERROR", "error => " + error.getMessage());
+                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", getResources().getString(R.string.key_autorisation));
+                    params.put("Content-Type", "application/json");
+                    params.put("Company", getResources().getString(R.string.company_name));
+
+                    return params;
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                        Log.e("ERROR", "errorgetbody => " + uee.toString());
+                        return null;
+                    }
+                }
+            };
+            queue.add(getRequest);
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
+            Log.e("error", e.toString());
+
+        }
+    }
 }
