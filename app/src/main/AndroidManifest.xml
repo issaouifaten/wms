@@ -54,6 +54,7 @@
         <activity
             android:name=".TransfertActivity"
             android:label="Transfert"
+            android:windowSoftInputMode="stateHidden"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="com.transfert.action" />

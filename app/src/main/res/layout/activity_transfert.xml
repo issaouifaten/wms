@@ -116,6 +116,7 @@
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
+                        android:focusable="auto"
                         android:gravity="center"
                         android:inputType="number"
                         android:text="0" />

@@ -83,10 +83,10 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                // startActivity(intent);
-                output.setText("BORANG");
+           startActivity(intent);
+                //output.setText("BORANG");
 
-                searchScanDepot("BORANG");
+               // searchScanDepot("BORANG");
 
             }
         });
