@@ -62,6 +62,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
     String baseUrlLigneBC = "";
     String baseUrlCreatePrelevement ="";
     String baseUrlListBC = "";
+    LinearLayout layout_scan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
         grid_prelevement = (GridView) findViewById(R.id.grid_prelevement);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        layout_scan = (LinearLayout) findViewById(R.id.layout_scan);
         output = findViewById(R.id.txtOutput);
         helper = new Helper(getApplicationContext());
 
@@ -109,10 +111,11 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         if (c.getCount() > 0) {
             FillListLignePrelevement fillListLignePrelevement = new FillListLignePrelevement();
             fillListLignePrelevement.execute("");
-
+            layout_scan.setVisibility(View.VISIBLE);
 
         } else {
             FillListBonCommande();
+            layout_scan.setVisibility(View.GONE);
              }
         btnDelete = (Button) findViewById(R.id.bt_delete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -237,6 +240,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                             public void onClick(View view) {
                                                 helper.AddBonCommandePrelevementLot(val);
                                                 FillLigneBonCommande();
+                                                layout_scan.setVisibility(View.VISIBLE);
                                                 btdelete.setVisibility(View.VISIBLE);
                                                 btplus.setVisibility(View.GONE);
                                             }
@@ -251,7 +255,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                         });
 
                                         txt_code.setText(val.getNo_() + "");
-                                        txt_nom_client.setText(val.getClient() + "");
+                                        txt_nom_client.setText( "");
 
 
                                         return convertView;
