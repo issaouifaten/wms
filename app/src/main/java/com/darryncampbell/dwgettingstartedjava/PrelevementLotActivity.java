@@ -104,7 +104,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             }
         });
 
-        DWUtilities.CreateDWProfile(co, "com.prelevement.action");
+        DWUtilities.CreateDWProfile(co, "com.prelevementlot.action");
         Button btnScan = findViewById(R.id.btnScanprev);
         btnScan.setOnTouchListener(this);
         Cursor c = helper.getListLigneCommandPrelevementLot();
