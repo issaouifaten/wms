@@ -68,7 +68,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prelevement_lot);
         baseUrlLigneBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnPickingLine?$format=application/json;odata.metadata=none";
-        baseUrlCreatePrelevement = getResources().getString(R.string.base_url) + "WmsApp_RegisterPick?$format=application/json;odata.metadata=none";
+        baseUrlCreatePrelevement = getResources().getString(R.string.base_url) + "?$format=application/json;odata.metadata=none";
         baseUrlListBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnPickingLot?$format=application/json;odata.metadata=none";
 
         grid_prelevement = (GridView) findViewById(R.id.grid_prelevement);
@@ -105,7 +105,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         DWUtilities.CreateDWProfile(co, "com.prelevement.action");
         Button btnScan = findViewById(R.id.btnScanprev);
         btnScan.setOnTouchListener(this);
-        Cursor c = helper.getListLigneCommandPrelevement();
+        Cursor c = helper.getListLigneCommandPrelevementLot();
         if (c.getCount() > 0) {
             FillListLignePrelevement fillListLignePrelevement = new FillListLignePrelevement();
             fillListLignePrelevement.execute("");
@@ -128,9 +128,9 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             @Override
                             public void onClick(DialogInterface di, int i) {
 
-                                helper.DeleteListBonCommandPrelevement();
-                                helper.DeleteLigneBonCommandPrelevement();
-                                helper.DeleteValideBonCommandPrelevement();
+                                helper.DeleteListBonCommandPrelevementLot();
+                                helper.DeleteLigneBonCommandPrelevementLot();
+                                helper.DeleteValideBonCommandPrelevementLot();
                                  Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                                 startActivity(intent);
                             }
@@ -152,7 +152,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View view) {
 
-                Cursor c = helper.getListLigneCommandPrelevement();
+                Cursor c = helper.getListLigneCommandPrelevementLot();
                 if (c.getCount() > 0) {
 
                     CreatePrelevement();
@@ -224,7 +224,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                         final Button btdelete = (Button) convertView.findViewById(R.id.btdelete);
                                         Log.d("tag****", finalData.getValue().get(position).toString());
                                         final Value val = finalData.getValue().get(position);
-                                        if (helper.testExistBonCommandPrelevement(val.getNo_())) {
+                                        if (helper.testExistBonCommandPrelevementLot(val.getNo_())) {
                                             btdelete.setVisibility(View.VISIBLE);
                                             btplus.setVisibility(View.GONE);
                                         } else {
@@ -235,7 +235,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                         btplus.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
-                                                helper.AddBonCommandePrelevement(val);
+                                                helper.AddBonCommandePrelevementLot(val);
                                                 FillLigneBonCommande();
                                                 btdelete.setVisibility(View.VISIBLE);
                                                 btplus.setVisibility(View.GONE);
@@ -244,7 +244,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                         btdelete.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
-                                                helper.RemoveBonCommandPrelevement(val);
+                                                helper.RemoveBonCommandPrelevementLot(val);
                                                 btdelete.setVisibility(View.GONE);
                                                 btplus.setVisibility(View.VISIBLE);
                                             }
@@ -299,10 +299,10 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             String url = baseUrlLigneBC;
             progressBar.setVisibility(View.VISIBLE);
 
-            Cursor cr = helper.getListCommandPrelevement();
+            Cursor cr = helper.getListCommandPrelevementLot();
             cr.moveToFirst();
-            JSONObject obj = new JSONObject().put("NoDoc", cr.getString(cr.getColumnIndex("Code")));
-
+            final String noDoc= cr.getString(cr.getColumnIndex("Code"));
+            JSONObject obj = new JSONObject().put("NoDoc", noDoc);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", obj.toString());
             Log.d("***inputFillLigneBonCommande", jsonBody.toString());
@@ -334,7 +334,8 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                 for (int i = 0; i < finalData.value.size(); i++) {
                                     LigneBcPrelevement ligne = finalData.value.get(i);
                                     ligne.setQuantiteScan("0");
-                                    helper.AddLigneBonCommandePrelevement(ligne);
+                                    ligne.setNoDoc(noDoc);
+                                    helper.AddLigneBonCommandePrelevementLot(ligne);
                                 }
 
 
@@ -343,7 +344,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             }
 
 
-                            //helper.AddLigneBonCommandePrelevement(new LigneBcPrelevement("codedoc1", "3268840001008", "555", "8", "0"));
+                            //helper.AddLigneBonCommandePrelevementLot(new LigneBcPrelevement("codedoc1", "3268840001008", "555", "8", "0"));
                             FillListLignePrelevement fillListLignePrelevement = new FillListLignePrelevement();
                             fillListLignePrelevement.execute("");
 
@@ -394,7 +395,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             String url = baseUrlCreatePrelevement;
             progressBar.setVisibility(View.VISIBLE);
             JSONArray arrayJson = new JSONArray();
-            Cursor cr = helper.getListLigneCommandPrelevement();
+            Cursor cr = helper.getListLigneCommandPrelevementLot();
             if (cr.moveToFirst()) {
                 do {
                     //       cv.put("Article", c.getArticle());
@@ -425,9 +426,9 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             progressBar.setVisibility(View.GONE);
                             Log.d("tag****Response", response);
 
-                            helper.DeleteListBonCommandPrelevement();
-                            helper.DeleteLigneBonCommandPrelevement();
-                            helper.DeleteValideBonCommandPrelevement();
+                            helper.DeleteListBonCommandPrelevementLot();
+                            helper.DeleteLigneBonCommandPrelevementLot();
+                            helper.DeleteValideBonCommandPrelevementLot();
 
                             Toast.makeText(getApplicationContext(), "prélevement crée avec succés", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
@@ -564,7 +565,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     final Button btplus = (Button) convertView.findViewById(R.id.btplus);
                     btdelete.setVisibility(View.GONE);
                     btplus.setVisibility(View.GONE);
-                    cr = helper.getListCommandPrelevement();
+                    cr = helper.getListCommandPrelevementLot();
                     if (cr.move(pos + 1)) {
 
                         code.setText(cr.getString(cr.getColumnIndex("Code")));
@@ -588,7 +589,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         protected String doInBackground(String... params) {
 
             try {
-                cr = helper.getListCommandPrelevement();
+                cr = helper.getListCommandPrelevementLot();
                 Log.e("back", cr.getColumnIndex("EAN") + "");
 
                 if (cr.moveToFirst()) {
@@ -655,7 +656,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     final Button btmoin = (Button) convertView.findViewById(R.id.btmoin);
                     final Button btplus = (Button) convertView.findViewById(R.id.btplus);
                     //noDoc TEXT  ,Code TEXT, Quantite INTEGER, QuantiteScan INTEGER
-                    cr = helper.getListLigneCommandPrelevement();
+                    cr = helper.getListLigneCommandPrelevementLot();
                     if (cr.move(pos + 1)) {
 
                         txt_code_article.setText(cr.getString(cr.getColumnIndex("Article")));
@@ -677,7 +678,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             if(qt<0)
                             { qt=0;}
                             edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
 
                         }
@@ -690,7 +691,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
 
                             edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
                         }
                     });
@@ -703,7 +704,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
                                     float qt = Float.valueOf(edt_qt_scan.getText().toString());
-                                    helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                                    helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
                                 }
                             }
@@ -722,7 +723,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         protected String doInBackground(String... params) {
 
             try {
-                cr = helper.getListLigneCommandPrelevement();
+                cr = helper.getListLigneCommandPrelevementLot();
 
 
                 if (cr.moveToFirst()) {
@@ -787,7 +788,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     final TextView txt_ecart = (TextView) convertView.findViewById(R.id.txt_ecart);
                     final TextView edt_qt_scan = (TextView) convertView.findViewById(R.id.txt_qt_scan);
                     //noDoc TEXT  ,Code TEXT, Quantite INTEGER, QuantiteScan INTEGER
-                    cr = helper.getListLigneCommandPrelevement();
+                    cr = helper.getListLigneCommandPrelevementLot();
                     if (cr.move(pos + 1)) {
 
                         txt_article.setText(cr.getString(cr.getColumnIndex("Article")));
@@ -815,7 +816,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         protected String doInBackground(String... params) {
 
             try {
-                cr = helper.getListLigneCommandPrelevement();
+                cr = helper.getListLigneCommandPrelevementLot();
 
 
                 if (cr.moveToFirst()) {
@@ -844,7 +845,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
 
-            helper.UpdateLignePrelevementByScan(searchScan);
+            helper.UpdateLignePrelevementLotByScan(searchScan);
         }
 
         @Override
@@ -885,7 +886,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     final Button btplus = (Button) convertView.findViewById(R.id.btplus);
                     //noDoc TEXT  ,Code TEXT, Quantite INTEGER, QuantiteScan INTEGER
 
-                    cr = helper.getLignePrelevementArticle(searchScan);
+                    cr = helper.getLignePrelevementLotArticle(searchScan);
                     if (cr.move(pos + 1)) {
                         txt_code_article.setText(cr.getString(cr.getColumnIndex("Article")));
                         txt_noDoc.setText(cr.getString(cr.getColumnIndex("noDoc")));
@@ -903,7 +904,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
                                     float qt = Float.valueOf(edt_qt_scan.getText().toString());
-                                    helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                                    helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
                                 }
                             }
@@ -919,7 +920,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             if(qt<0)
                             { qt=0;}
                             edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
 
                         }
@@ -932,7 +933,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
 
                             edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevement(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
                         }
                     });
@@ -949,7 +950,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         protected String doInBackground(String... params) {
 
             try {
-                cr = helper.getLignePrelevementArticle(searchScan);
+                cr = helper.getLignePrelevementLotArticle(searchScan);
                 Log.e("back", cr.getColumnIndex("Code") + "");
 
                 if (cr.moveToFirst()) {
