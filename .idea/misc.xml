@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/activity_prelevement.xml" value="0.28888888888888886" />
+        <entry key="app/src/main/res/layout/activity_prelevement_lot.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_reception.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/activity_scan_etiquette.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/activity_transfert.xml" value="0.28888888888888886" />

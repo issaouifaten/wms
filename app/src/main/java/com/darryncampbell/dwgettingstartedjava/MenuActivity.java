@@ -31,6 +31,14 @@ public class MenuActivity extends Activity {
                 startActivity(intent);;
             }
         });
+        CardView btn_prelevement_lot = (CardView)   findViewById(R.id.btn_prelevement_lot) ;
+        btn_prelevement_lot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), PrelevementLotActivity.class);
+                startActivity(intent);;
+            }
+        });
         CardView btn_transfert = (CardView)   findViewById(R.id.btn_transfert) ;
         btn_transfert.setOnClickListener(new View.OnClickListener() {
             @Override
