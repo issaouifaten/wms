@@ -39,6 +39,7 @@ import com.darryncampbell.dwgettingstartedjava.Model.prelevement.LigneBcPrelevem
 import com.darryncampbell.dwgettingstartedjava.Model.prelevement.ListLigneBcPrelevement;
 import com.darryncampbell.dwgettingstartedjava.Model.prelevement.ListeBonCommande;
 import com.darryncampbell.dwgettingstartedjava.Model.prelevement.Value;
+import com.darryncampbell.dwgettingstartedjava.Model.prelevementLot.ListFacture;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -69,7 +70,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prelevement_lot);
         baseUrlLigneBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnPickingLine?$format=application/json;odata.metadata=none";
-        baseUrlCreatePrelevement = getResources().getString(R.string.base_url) + "?$format=application/json;odata.metadata=none";
+        baseUrlCreatePrelevement = getResources().getString(R.string.base_url) + "WmsApp_RegisterPickLot?$format=application/json;odata.metadata=none";
         baseUrlListBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnPickingLot?$format=application/json;odata.metadata=none";
 
         grid_prelevement = (GridView) findViewById(R.id.grid_prelevement);
@@ -157,8 +158,15 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
                 Cursor c = helper.getListLigneCommandPrelevementLot();
                 if (c.getCount() > 0) {
+                    if( testEcart())
+                    {
+                        Toast.makeText(getApplicationContext(), "il reste des articles non prélevés", Toast.LENGTH_SHORT).show();
 
-                    CreatePrelevement();
+                    }else{
+                        CreatePrelevement();
+                    }
+
+
 
                 } else {
                     Toast.makeText(getApplicationContext(), "scanner des article d'abord", Toast.LENGTH_SHORT).show();
@@ -398,28 +406,13 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlCreatePrelevement;
             progressBar.setVisibility(View.VISIBLE);
-            JSONArray arrayJson = new JSONArray();
-            Cursor cr = helper.getListLigneCommandPrelevementLot();
-            if (cr.moveToFirst()) {
-                do {
-                    //       cv.put("Article", c.getArticle());
-                    //        cv.put("Quantite", c.getQuantite());
-                    //        cv.put("QuantiteScan", c.getQuantiteScan());
-                    //        cv.put("noDoc", c.getNoDoc());
-                    //        cv.put("Piece", c.getPiece());
-                    //        cv.put("EAN", c.getEAN());
-                    // "inputJson" : "[{"NoDoc":"101021","Article":"1896-S","Quantite":"8"},{"NoDoc":"101023","Article":"1896-S","Quantite":"6"}]"
-                    JSONObject obj = new JSONObject().put("NoDoc", cr.getString(cr.getColumnIndex("noDoc")))
-                            .put("Quantite", cr.getString(cr.getColumnIndex("QuantiteScan")))
-                            .put("Article", cr.getString(cr.getColumnIndex("Article")));
-
-                    arrayJson.put(obj);
-
-                } while (cr.moveToNext());
-            }
+            Cursor cr = helper.getListCommandPrelevementLot();
+            cr.moveToFirst();
+            final String noDoc= cr.getString(cr.getColumnIndex("Code"));
+            JSONObject obj = new JSONObject().put("NoDoc", noDoc);
             JSONObject jsonBody = new JSONObject();
-            jsonBody.put("inputJson", arrayJson.toString());
-            Log.d("*** create  ", jsonBody.toString());
+            jsonBody.put("inputJson", obj.toString());
+            Log.d("***create", jsonBody.toString());
 
             final String mRequestBody = jsonBody.toString();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
@@ -435,8 +428,60 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             helper.DeleteValideBonCommandPrelevementLot();
 
                             Toast.makeText(getApplicationContext(), "prélevement crée avec succés", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                            startActivity(intent);
+                            Log.d("tag****Response", response);
+                            ListFacture data = new ListFacture();
+                            JSONObject obj = null;
+                            try {
+                                obj = new JSONObject(response);
+                                Log.d("tag****Response", obj.getString("value"));
+                                JSONArray array = new JSONArray(obj.getString("value"));
+
+                                JSONObject jsonList = new JSONObject().put("value", array);
+
+
+                                Gson gson = new Gson();
+                                data = gson.fromJson(jsonList.toString(), ListFacture.class);
+                                final ListFacture finalData = data;
+
+
+                                Log.d("tag****", finalData.toString());
+                                final BaseAdapter baseAdapter = new BaseAdapter() {
+                                    @Override
+                                    public int getCount() {
+                                        return finalData.getValue().size();
+                                    }
+
+                                    @Override
+                                    public Object getItem(int position) {
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public long getItemId(int position) {
+                                        return 0;
+                                    }
+
+
+                                    @Override
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        final LayoutInflater layoutInflater = LayoutInflater.from(co);
+                                        convertView = layoutInflater.inflate(R.layout.item_simple, null);
+                                        final TextView txt_title = (TextView) convertView.findViewById(R.id.txt_title);
+                                        final TextView txt_description = (TextView) convertView.findViewById(R.id.txt_description);
+                                         Log.d("tag****", finalData.getValue().get(position).toString());
+                                        final com.darryncampbell.dwgettingstartedjava.Model.prelevementLot.Value val = finalData.getValue().get(position);
+                                        txt_title.setText(val.getNoPrelevement() + "");
+                                        txt_description.setText( val.getNoFacture());
+
+
+                                        return convertView;
+                                    }
+                                };
+                                grid_prelevement.setAdapter(baseAdapter);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
 
                         }
                     },
@@ -743,6 +788,32 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             }
             return z;
         }
+    }
+
+
+    public boolean testEcart()
+    {
+        boolean test=false;
+        Cursor cr;
+        try {
+            cr = helper.getListLigneCommandPrelevementLot();
+
+
+            if (cr.moveToFirst()) {
+                do {
+                    float ecart= Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))-Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
+
+                if(ecart!=0)
+                    test=true;
+                } while (cr.moveToNext());
+            }
+
+
+        } catch (Exception ex) {
+
+
+        }
+        return test;
     }
     public class FillEcartPrelevement extends AsyncTask<String, String, String> {
         String z = "";
