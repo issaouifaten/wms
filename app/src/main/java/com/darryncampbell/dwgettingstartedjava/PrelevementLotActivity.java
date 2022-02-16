@@ -62,6 +62,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
     TextView output;
     String baseUrlLigneBC = "";
     String baseUrlCreatePrelevement ="";
+    String baseUrlCreatePrelevementFacture ="";
     String baseUrlListBC = "";
     LinearLayout layout_scan;
 
@@ -71,6 +72,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_prelevement_lot);
         baseUrlLigneBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnPickingLine?$format=application/json;odata.metadata=none";
         baseUrlCreatePrelevement = getResources().getString(R.string.base_url) + "WmsApp_RegisterPickLot?$format=application/json;odata.metadata=none";
+        baseUrlCreatePrelevementFacture = getResources().getString(R.string.base_url) + "WmsApp_InvoicePickingDocs?$format=application/json;odata.metadata=none";
         baseUrlListBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnPickingLot?$format=application/json;odata.metadata=none";
 
         grid_prelevement = (GridView) findViewById(R.id.grid_prelevement);
@@ -421,14 +423,86 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            Log.d("****Response", response);
+
+                            CreateFacturePrelevement();
+
+
+//
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressBar.setVisibility(View.GONE);
+                            // TODO Auto-generated method stub
+
+
+                            Log.e("**ERROR", "error => " + error.networkResponse.statusCode);
+                            Log.e("**ERROR", "error => " + error.networkResponse.data);
+                            Log.e("**ERROR", "error => " + error.networkResponse.toString());
+
+                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", getResources().getString(R.string.key_autorisation));
+                    params.put("Content-Type", "application/json");
+                    params.put("Company", getResources().getString(R.string.company_name));
+
+                    return params;
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                        Log.e("ERROR", "errorgetbody => " + uee.toString());
+                        return null;
+                    }
+                }
+            };
+            queue.add(getRequest);
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
+            Log.e("***error", e.toString());
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+    void CreateFacturePrelevement() {
+        try {
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = baseUrlCreatePrelevementFacture;
+            progressBar.setVisibility(View.VISIBLE);
+            Cursor cr = helper.getListCommandPrelevementLot();
+            cr.moveToFirst();
+            final String noDoc= cr.getString(cr.getColumnIndex("Code"));
+            JSONObject obj = new JSONObject().put("NoDoc", noDoc);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("inputJson", obj.toString());
+            Log.d("***create", jsonBody.toString());
+
+            final String mRequestBody = jsonBody.toString();
+            StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // response
+                            progressBar.setVisibility(View.GONE);
+                            Log.d("****Response", response);
 
                             helper.DeleteListBonCommandPrelevementLot();
                             helper.DeleteLigneBonCommandPrelevementLot();
                             helper.DeleteValideBonCommandPrelevementLot();
 
                             Toast.makeText(getApplicationContext(), "prélevement crée avec succés", Toast.LENGTH_SHORT).show();
-                            Log.d("tag****Response", response);
+
                             ListFacture data = new ListFacture();
                             JSONObject obj = null;
                             try {
@@ -490,8 +564,12 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
-                            Log.d("ERROR", "error => " + error.getMessage());
+
+
+                            Log.e("**ERROR", "error => " + error.networkResponse.statusCode);
+                            Log.e("**ERROR", "error => " + error.networkResponse.data);
+                            Log.e("**ERROR", "error => " + error.networkResponse.toString());
+
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -520,11 +598,10 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             queue.add(getRequest);
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
-            Log.e("error", e.toString());
+            Log.e("***error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
     }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
