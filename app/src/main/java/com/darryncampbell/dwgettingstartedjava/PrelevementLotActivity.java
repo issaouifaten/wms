@@ -781,7 +781,9 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     final EditText edt_qt_scan = (EditText) convertView.findViewById(R.id.edt_qt_scan);
                     final Button btmoin = (Button) convertView.findViewById(R.id.btmoin);
                     final Button btplus = (Button) convertView.findViewById(R.id.btplus);
+                    final Button btplusall = (Button) convertView.findViewById(R.id.btplusall);
                     //noDoc TEXT  ,Code TEXT, Quantite INTEGER, QuantiteScan INTEGER
+                    btplusall.setVisibility(View.VISIBLE);
                     cr = helper.getListLigneCommandPrelevementLot();
                     if (cr.move(pos + 1)) {
 
@@ -814,9 +816,17 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         public void onClick(View v) {
                             float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt++;
-
-
                             edt_qt_scan.setText("" + qt);
+                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+
+                        }
+                    });
+
+                    btplusall.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String qt = txt_qt.getText().toString();
+                            edt_qt_scan.setText(qt);
                             helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
                         }

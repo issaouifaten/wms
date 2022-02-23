@@ -157,6 +157,17 @@
                             android:textColor="@android:color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btplusall"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/ic_add_plus"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                 </LinearLayout>
