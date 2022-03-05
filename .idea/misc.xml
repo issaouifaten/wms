@@ -18,7 +18,7 @@
         <entry key="app/src/main/res/layout/item_ecart_prelevement.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/item_etiquette.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/item_ligne_bc.xml" value="0.28888888888888886" />
-        <entry key="app/src/main/res/layout/item_ligne_colis.xml" value="0.28888888888888886" />
+        <entry key="app/src/main/res/layout/item_ligne_colis.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_list_prelevement_colis.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/item_prelevement.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/item_reception.xml" value="0.33" />
