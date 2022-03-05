@@ -20,7 +20,7 @@ import java.util.List;
 public class Helper extends SQLiteOpenHelper {
 
     public Helper(Context context) {
-        super(context, "BaseV8", null, 1);
+        super(context, "BaseV11", null, 1);
     }
 
     //LigneBE_Class(String codeArticle, String designationArticle, String quantite)
@@ -50,15 +50,15 @@ public class Helper extends SQLiteOpenHelper {
                 "(_id INTEGER PRIMARY KEY,noDoc TEXT  ,Code TEXT)");
 
         sqLiteDatabase.execSQL("CREATE TABLE List_Command_Prelevement_Colisage" +
-                "(_id INTEGER PRIMARY KEY,NoDoc TEXT  ,TypeColis TEXT, NoColis TEXT,PoidsMax TEXT)");
+                "(_id INTEGER PRIMARY KEY,NoDoc TEXT  ,TypeColis TEXT, NoColis TEXT,PoidsMax TEXT,NoCommande TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE Valide_Command_Prelevement_Colisage" +
                 "(_id INTEGER PRIMARY KEY,noDoc TEXT  ,Code TEXT)");
         //(String noDoc, String noColis, String article, String quantite, String poidsUnite, String quantiteScan)
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Colisage_Prelevement" +
-                "(_id INTEGER PRIMARY KEY,noDoc TEXT  ,Article TEXT,noColis TEXT ,Quantite INTEGER, QuantiteScan INTEGER,Piece TEXT,poidsUnite TEXT,EAN TEXT)");
+                "(_id INTEGER PRIMARY KEY,noDoc TEXT  ,Article TEXT,noColis TEXT ,Quantite INTEGER, QuantiteScan INTEGER,Piece TEXT,poidsUnite TEXT,EAN TEXT,NoCommande TEXT)");
 
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Colis_Created " +
-                "(_id INTEGER PRIMARY KEY,NoDoc TEXT,NoCommande TEXT  ,NoColis TEXT ,PoidsMax TEXT)");
+                "(_id INTEGER PRIMARY KEY,NoDoc TEXT,NoCommande TEXT  ,NoColis TEXT ,PoidsMax TEXT,Statut TEXT)");
     }
 
     @Override
@@ -112,6 +112,7 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("NoCommande", c.getNoCommande());
         cv.put("NoColis", c.getNoColis());
         cv.put("PoidsMax", c.getPoidsMax());
+        cv.put("Statut", c.getStatut());
 
 
         db.insert("Ligne_Colis_Created", null, cv);
@@ -125,6 +126,7 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("TypeColis", c.getTypeColis());
         cv.put("NoColis", c.getNoDoc());
         cv.put("PoidsMax", c.getPoidsMax());
+        cv.put("NoCommande", c.getNoCommande());
 
         db.insert("List_Command_Prelevement_Colisage", null, cv);
 
@@ -216,6 +218,7 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("TypeColis", c.getTypeColis());
         cv.put("NoColis", c.getNoColis());
         cv.put("PoidsMax", c.getPoidsMax());
+        cv.put("NoCommande", c.getNoCommande());
         db.update("List_Command_Prelevement_Colisage", cv, "NoDoc='" + c.getNoDoc() + "'", null);
 
 
@@ -314,6 +317,7 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("poidsUnite", c.getPoidsUnite());
         cv.put("noColis", c.getNoColis());
         cv.put("EAN", c.getEAN());
+        cv.put("NoCommande", c.getNoCommande());
 
 
         db.insert("Ligne_Colisage_Prelevement", null, cv);
@@ -381,6 +385,7 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("poidsUnite", c.getPoidsUnite());
         cv.put("noColis", c.getNoColis());
         cv.put("EAN", c.getEAN());
+        cv.put("NoCommande", c.getNoCommande());
 
 
         db.update("Ligne_Colisage_Prelevement", cv, "Article='" + c.getArticle() + "' and noColis='" + c.getNoColis() + "' and  noDoc='" + c.getNoDoc() + "'", null);

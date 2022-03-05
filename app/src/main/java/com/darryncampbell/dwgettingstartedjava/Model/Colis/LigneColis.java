@@ -9,6 +9,26 @@ public class LigneColis {
     String PoidsUnite;
     String EAN;
     String QuantiteScan;
+    String NoCommande;
+
+    public LigneColis(String noDoc, String noColis, String article, String quantite, String poidsUnite, String EAN, String quantiteScan, String noCommande) {
+        NoDoc = noDoc;
+        NoColis = noColis;
+        Article = article;
+        Quantite = quantite;
+        PoidsUnite = poidsUnite;
+        this.EAN = EAN;
+        QuantiteScan = quantiteScan;
+        NoCommande = noCommande;
+    }
+
+    public String getNoCommande() {
+        return NoCommande;
+    }
+
+    public void setNoCommande(String noCommande) {
+        NoCommande = noCommande;
+    }
 
     public String getEAN() {
         return EAN;
@@ -18,15 +38,7 @@ public class LigneColis {
         this.EAN = EAN;
     }
 
-    public LigneColis(String noDoc, String noColis, String article, String quantite, String poidsUnite, String EAN, String quantiteScan) {
-        NoDoc = noDoc;
-        NoColis = noColis;
-        Article = article;
-        Quantite = quantite;
-        PoidsUnite = poidsUnite;
-        this.EAN = EAN;
-        QuantiteScan = quantiteScan;
-    }
+
 
     public String getNoDoc() {
         return NoDoc;

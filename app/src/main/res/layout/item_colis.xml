@@ -48,6 +48,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/txt_statut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+
                 <Button
                     android:id="@+id/bt_add"
                     android:layout_width="35dp"

@@ -5,13 +5,25 @@ public class PreparationColisLigne {
     String TypeColis;
     String NoColis;
     String PoidsMax;
+    String NoCommande;
 
-    public PreparationColisLigne(String noDoc, String typeColis, String noColis, String poidsMax) {
+    public PreparationColisLigne(String noDoc, String typeColis, String noColis, String poidsMax, String noCommande) {
         NoDoc = noDoc;
         TypeColis = typeColis;
         NoColis = noColis;
         PoidsMax = poidsMax;
+        NoCommande = noCommande;
     }
+
+    public String getNoCommande() {
+        return NoCommande;
+    }
+
+    public void setNoCommande(String noCommande) {
+        NoCommande = noCommande;
+    }
+
+
 
     public String getPoidsMax() {
         return PoidsMax;

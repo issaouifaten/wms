@@ -7,6 +7,15 @@ public class LigneColisCreated {
     String NoColis;
      String PoidsMax;
 
+    public String getStatut() {
+        return Statut;
+    }
+
+    public void setStatut(String statut) {
+        Statut = statut;
+    }
+
+    String Statut;
     public String getNoDoc() {
         return NoDoc;
     }
