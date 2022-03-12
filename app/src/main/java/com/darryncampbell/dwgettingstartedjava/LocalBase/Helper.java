@@ -211,7 +211,12 @@ public class Helper extends SQLiteOpenHelper {
         return c;
 
     }
+    public Cursor getLigneReturn(String code) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Ligne_Return  WHERE Article='"+code+"'",null);
+        return c;
 
+    }
 
     public Cursor getListCommandPrelevementColisage() {
         SQLiteDatabase db = this.getReadableDatabase();

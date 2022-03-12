@@ -85,8 +85,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         btClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(helper.getListLigneReturn().getCount()>0)
-                {
+                if (helper.getListLigneReturn().getCount() > 0) {
                     final AlertDialog.Builder alt = new AlertDialog.Builder(co);
                     alt.setIcon(R.drawable.icon_return);
                     alt.setTitle("Annuler");
@@ -114,7 +113,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
                     final AlertDialog d = alt.create();
                     d.show();
-                }else{
+                } else {
                     helper.DeleteClientReturn();
                     txtCodeClient.setText("");
                     txtNomClient.setText("");
@@ -132,8 +131,10 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                 CreateReturn();}else{
                     Toast.makeText(getApplicationContext(),"Entrer des articles d'abord", Toast.LENGTH_LONG).show();
                 }
-              // FillListConsultListClient("3025591324608");
-             //  FillListConsultArticle("9782129822910");
+                //  FillListConsultListClient("3025591324608");
+
+              //  FillListConsultArticle("9782129822910");
+
             }
         });
         btCancel.setOnClickListener(new View.OnClickListener() {
@@ -206,79 +207,97 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                 obj = new JSONObject(response);
 
                                 Log.d("tag****Response", obj.getString("value"));
+                                if (obj.getString("value").equals("Article Introuvable")) {
+                                    Toast.makeText(getApplicationContext(), "Article Introuvable", Toast.LENGTH_SHORT).show();
+                                } else {
 
-                                Article data = new Article();
-                                Gson gson = new Gson();
-                                data = gson.fromJson(obj.getString("value"), Article.class);
-                                final Article article = data;
-                                Log.d("tag****", article.toString());
-                                LayoutInflater li = LayoutInflater.from(co);
-                                View px = li.inflate(R.layout.item_article, null);
-                                final androidx.appcompat.app.AlertDialog.Builder alt = new androidx.appcompat.app.AlertDialog.Builder(co);
-                                alt.setIcon(R.drawable.icon_article);
-                                alt.setTitle("Article");
-                                alt.setView(px);
 
-                                // connectionClass = new ConnectionClass();
+                                    Article data = new Article();
+                                    Gson gson = new Gson();
+                                    data = gson.fromJson(obj.getString("value"), Article.class);
+                                    final Article article = data;
+                                    Log.d("tag****", article.toString());
 
-                                final EditText edtQt = (EditText) px.findViewById(R.id.edt_qt_scan);
-                                final TextView txtCode = (TextView) px.findViewById(R.id.txt_code_article);
-                                final TextView txtDesignation = (TextView) px.findViewById(R.id.txt_designation);
-                                txtCode.setText(article.getArticle());
-                                txtDesignation.setText(article.getDescription());
-                                Button btmoin = (Button) px.findViewById(R.id.btmoin);
-                                Button btplus = (Button) px.findViewById(R.id.btplus);
-                                btplus.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
+                                    if (helper.getLigneReturn(article.getArticle()).getCount() > 0) {
+                                        Toast.makeText(getApplicationContext(), "Cet article est déja taper", Toast.LENGTH_SHORT).show();
 
-                                        if (!edtQt.getText().toString().equals("")) {
-                                            float qt = Float.parseFloat(edtQt.getText().toString());
-                                            qt++;
-                                            edtQt.setText(qt + "");
-                                        }
+                                    } else {
 
-                                    }
-                                });
-                                btmoin.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        if (!edtQt.getText().toString().equals("")) {
-                                            float qt = Float.parseFloat(edtQt.getText().toString());
-                                            qt--;
-                                            if (qt < 0) {
-                                                qt = 0;
-                                            } else {
-                                                edtQt.setText(qt + "");
+
+                                        LayoutInflater li = LayoutInflater.from(co);
+                                        View px = li.inflate(R.layout.item_article, null);
+                                        final androidx.appcompat.app.AlertDialog.Builder alt = new androidx.appcompat.app.AlertDialog.Builder(co);
+                                        alt.setIcon(R.drawable.icon_article);
+                                        alt.setTitle("Article");
+                                        alt.setView(px);
+
+                                        // connectionClass = new ConnectionClass();
+
+                                        final EditText edtQt = (EditText) px.findViewById(R.id.edt_qt_scan);
+                                        final TextView txtCode = (TextView) px.findViewById(R.id.txt_code_article);
+                                        final TextView txtDesignation = (TextView) px.findViewById(R.id.txt_designation);
+                                        txtCode.setText(article.getArticle());
+                                        txtDesignation.setText(article.getDescription());
+                                        Button btmoin = (Button) px.findViewById(R.id.btmoin);
+                                        Button btplus = (Button) px.findViewById(R.id.btplus);
+                                        btplus.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+
+                                                if (!edtQt.getText().toString().equals("")) {
+                                                    float qt = Float.parseFloat(edtQt.getText().toString());
+                                                    qt++;
+                                                    edtQt.setText(qt + "");
+                                                }
+
                                             }
-                                        }
+                                        });
+                                        btmoin.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                if (!edtQt.getText().toString().equals("")) {
+                                                    float qt = Float.parseFloat(edtQt.getText().toString());
+                                                    qt--;
+                                                    if (qt < 0) {
+                                                        qt = 0;
+                                                    } else {
+                                                        edtQt.setText(qt + "");
+                                                    }
+                                                }
+
+                                            }
+                                        });
+
+                                        alt.setCancelable(false)
+                                                .setPositiveButton("Ajouter",
+                                                        new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface di, int i) {
+                                                                if (edtQt.getText().toString().equals("0")) {
+                                                                    Toast.makeText(getApplicationContext(), "La quantité doit etre différente de zéro", Toast.LENGTH_SHORT).show();
+                                                                } else {
+
+                                                                    helper.AddLigneReturn(new LigneReturn(txtCodeClient.getText().toString(), txtCode.getText().toString(), edtQt.getText().toString()));
+                                                                    FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
+                                                                    fillListLigneReturn.execute("");
+
+                                                                }
+                                                            }
+                                                        })
+                                                .setNegativeButton("Annuler",
+                                                        new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface di, int i) {
+                                                                di.cancel();
+                                                            }
+                                                        });
+                                        final androidx.appcompat.app.AlertDialog d = alt.create();
+
+
+                                        d.show();
 
                                     }
-                                });
-
-                                alt.setCancelable(false)
-                                        .setPositiveButton("Ajouter",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface di, int i) {
-
-                                                        helper.AddLigneReturn(new LigneReturn(txtCodeClient.getText().toString(), txtCode.getText().toString(), edtQt.getText().toString()));
-                                                        FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
-                                                        fillListLigneReturn.execute("");
-
-                                                    }
-                                                })
-                                        .setNegativeButton("Annuler",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface di, int i) {
-                                                        di.cancel();
-                                                    }
-                                                });
-                                final androidx.appcompat.app.AlertDialog d = alt.create();
-
-
-                                d.show();
+                                }
 
 
                             } catch (JSONException e) {
@@ -586,7 +605,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             Cursor cr = helper.getListLigneReturn();
             if (cr.moveToFirst()) {
                 do {
-                     JSONObject obj = new JSONObject().put("NoClient", cr.getString(cr.getColumnIndex("NoClient")))
+                    JSONObject obj = new JSONObject().put("NoClient", cr.getString(cr.getColumnIndex("NoClient")))
                             .put("Quantite", cr.getString(cr.getColumnIndex("Quantite")))
                             .put("Article", cr.getString(cr.getColumnIndex("Article")));
 
