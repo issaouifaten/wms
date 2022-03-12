@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ReturnActivity"
-            android:label="Bon return"
+            android:label="Bon de retour"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="com.return.action" />

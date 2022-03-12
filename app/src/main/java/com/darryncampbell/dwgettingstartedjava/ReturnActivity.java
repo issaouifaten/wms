@@ -88,7 +88,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                 if(helper.getListLigneReturn().getCount()>0)
                 {
                     final AlertDialog.Builder alt = new AlertDialog.Builder(co);
-                    alt.setIcon(R.drawable.ison_prelevement);
+                    alt.setIcon(R.drawable.icon_return);
                     alt.setTitle("Annuler");
                     alt.setMessage("Voulez vous vraiment annuler le bon de retour ");
                     alt.setPositiveButton("Ok",
@@ -140,7 +140,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             @Override
             public void onClick(View view) {
                 final AlertDialog.Builder alt = new AlertDialog.Builder(co);
-                alt.setIcon(R.drawable.ison_prelevement);
+                alt.setIcon(R.drawable.icon_return);
                 alt.setTitle("Annuler");
                 alt.setMessage("Voulez vous vraiment annuler le bon de retour ");
                 alt.setPositiveButton("Ok",
