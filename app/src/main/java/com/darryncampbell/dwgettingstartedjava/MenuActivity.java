@@ -79,6 +79,14 @@ public class MenuActivity extends Activity {
                 startActivity(intent);;
             }
         });
+        CardView btn_return = (CardView)   findViewById(R.id.btn_return) ;
+        btn_return.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), ReturnActivity.class);
+                startActivity(intent);;
+            }
+        });
 
     }
 }

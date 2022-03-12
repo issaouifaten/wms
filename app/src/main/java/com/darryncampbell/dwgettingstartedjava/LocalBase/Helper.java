@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.darryncampbell.dwgettingstartedjava.Model.Client.Client;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.LigneColis;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.LigneColisCreated;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.PreparationColisLigne;
+import com.darryncampbell.dwgettingstartedjava.Model.Transfert.LigneReturn;
 import com.darryncampbell.dwgettingstartedjava.Model.prelevement.LigneBcPrelevement;
 import com.darryncampbell.dwgettingstartedjava.Model.prelevement.Value;
 import com.darryncampbell.dwgettingstartedjava.Model.reception.LigneBcReception;
@@ -20,7 +22,7 @@ import java.util.List;
 public class Helper extends SQLiteOpenHelper {
 
     public Helper(Context context) {
-        super(context, "BaseV11", null, 1);
+        super(context, "BaseV14", null, 1);
     }
 
     //LigneBE_Class(String codeArticle, String designationArticle, String quantite)
@@ -59,6 +61,10 @@ public class Helper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Colis_Created " +
                 "(_id INTEGER PRIMARY KEY,NoDoc TEXT,NoCommande TEXT  ,NoColis TEXT ,PoidsMax TEXT,Statut TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE Ligne_Return " +
+                "(_id INTEGER PRIMARY KEY,NoClient TEXT,Article TEXT  ,Quantite INTEGER)");
+        sqLiteDatabase.execSQL("CREATE TABLE Client_Return " +
+                "(_id INTEGER PRIMARY KEY,NoClient TEXT,Designation TEXT  )");
     }
 
     @Override
@@ -75,6 +81,8 @@ public class Helper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Ligne_Command_Reception");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS List_Command_Reception");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Ligne_Colis_Created");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Ligne_Return");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Client_Return");
         onCreate(sqLiteDatabase);
     }
 
@@ -88,7 +96,37 @@ public class Helper extends SQLiteOpenHelper {
         db.insert("List_Command_Prelevement", null, cv);
 
     }
+    public void AddClient(Client c) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("NoClient", c.getClient());
+        cv.put("Designation", c.getDescription());
 
+        db.insert("Client_Return", null, cv);
+
+    }
+    public void AddLigneReturn(LigneReturn c) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("NoClient", c.getNoClient());
+        cv.put("Article", c.getArticle());
+        cv.put("Quantite", c.getQuantite());
+
+        db.insert("Ligne_Return", null, cv);
+
+    }
+
+    public void UpdateLigneReturn(LigneReturn c) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("NoClient", c.getNoClient());
+        cv.put("Article", c.getArticle());
+        cv.put("Quantite", c.getQuantite());
+
+
+        db.update("Ligne_Return", cv, "Article='" + c.getArticle() + "'", null);
+
+    }
 
     public void AddBonCommandePrelevementLot(Value c) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -100,8 +138,6 @@ public class Helper extends SQLiteOpenHelper {
         db.insert("List_Command_Prelevement_Lot", null, cv);
 
     }
-
-
 
 
     //   "(_id INTEGER PRIMARY KEY,NoDoc TEXT,NoCommande TEXT  ,NoColis TEXT ,PoidsMax TEXT)");
@@ -149,18 +185,33 @@ public class Helper extends SQLiteOpenHelper {
         return c;
 
     }
+
     public Cursor getListCommandPrelevementLot() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM List_Command_Prelevement_Lot  ", null);
         return c;
 
     }
+
     public Cursor getListColisCreated() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM Ligne_Colis_Created  ", null);
         return c;
 
     }
+    public Cursor getClientReturn() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Client_Return  ", null);
+        return c;
+
+    }
+    public Cursor getListLigneReturn() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Ligne_Return  ", null);
+        return c;
+
+    }
+
 
     public Cursor getListCommandPrelevementColisage() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -181,11 +232,13 @@ public class Helper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         db.delete("List_Command_Prelevement", "Code='" + c.getNo_() + "'", null);
     }
+
     public void RemoveBonCommandPrelevementLot(Value c) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         db.delete("List_Command_Prelevement_Lot", "Code='" + c.getNo_() + "'", null);
     }
+
     public void RemoveBonCommandPrelevementColisage(PreparationColisLigne c) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -237,6 +290,7 @@ public class Helper extends SQLiteOpenHelper {
         }
         return test;
     }
+
     public boolean testExistBonCommandPrelevementLot(String code) {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean test = false;
@@ -293,6 +347,7 @@ public class Helper extends SQLiteOpenHelper {
         db.insert("Ligne_Command_Prelevement", null, cv);
 
     }
+
     public void AddLigneBonCommandePrelevementLot(LigneBcPrelevement c) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -306,6 +361,7 @@ public class Helper extends SQLiteOpenHelper {
         db.insert("Ligne_Command_Prelevement_Lot", null, cv);
 
     }
+
     public void AddLigneBonCommandePrelevementColisage(LigneColis c) {
         // Y,noDoc TEXT  ,Article TEXT,noColis TEXT ,Quantite INTEGER, QuantiteScan INTEGER,Piece TEXT,poidsUnite TEXT
         SQLiteDatabase db = this.getWritableDatabase();
@@ -360,6 +416,7 @@ public class Helper extends SQLiteOpenHelper {
 
 
     }
+
     public void UpdateLigneBonCommandePrelevementLot(LigneBcPrelevement c) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -375,6 +432,7 @@ public class Helper extends SQLiteOpenHelper {
 
 
     }
+
     public void UpdateLigneBonCommandePrelevementColisage(LigneColis c) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -417,12 +475,14 @@ public class Helper extends SQLiteOpenHelper {
         return c;
 
     }
+
     public Cursor getListLigneCommandPrelevementLot() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM Ligne_Command_Prelevement_Lot  ", null);
         return c;
 
     }
+
     public Cursor getListLigneCommandPrelevementColisage() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM Ligne_Colisage_Prelevement  ", null);
@@ -438,7 +498,6 @@ public class Helper extends SQLiteOpenHelper {
     }
 
 
-
     public void UpdateLignePrelevementByScan(String ean) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -446,6 +505,7 @@ public class Helper extends SQLiteOpenHelper {
         db.execSQL("UPDATE Ligne_Command_Prelevement SET QuantiteScan=QuantiteScan+1 where EAN='" + ean + "' and QuantiteScan<Quantite");
 
     }
+
     public void UpdateLignePrelevementLotByScan(String ean) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -453,6 +513,7 @@ public class Helper extends SQLiteOpenHelper {
         db.execSQL("UPDATE Ligne_Command_Prelevement_Lot SET QuantiteScan=QuantiteScan+1 where EAN='" + ean + "' and QuantiteScan<Quantite");
 
     }
+
     public void UpdateLignePrelevementColisageByScan(String ean) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -478,7 +539,7 @@ public class Helper extends SQLiteOpenHelper {
 
 
         c.moveToFirst();
-        if(c.getCount()>0) {
+        if (c.getCount() > 0) {
             Log.d("***curso", c.getString(c.getColumnIndex("noDoc")));
             noDoc = c.getString(c.getColumnIndex("noDoc"));
         }
@@ -517,6 +578,7 @@ public class Helper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * from Ligne_Command_Prelevement_Lot where EAN='" + code + "'", null);
         return c;
     }
+
     public Cursor getLignePrelevementColisageArticle(String code) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * from Ligne_Colisage_Prelevement where EAN='" + code + "'", null);
@@ -539,6 +601,7 @@ public class Helper extends SQLiteOpenHelper {
         db.insert("Valide_Command_Prelevement", null, cv);
 
     }
+
     public void AddValideCommandePrelevementLot(String code) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -548,6 +611,7 @@ public class Helper extends SQLiteOpenHelper {
         db.insert("Valide_Command_Prelevement_Lot", null, cv);
 
     }
+
     public void AddValideCommandePrelevementColisage(String code) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -587,11 +651,19 @@ public class Helper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         db.delete("Valide_Command_Prelevement", "", null);
     }
+
+    public void DeleteLigneReturn() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        db.delete("Ligne_Return", "", null);
+    }
+
     public void DeleteValideBonCommandPrelevementLot() {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         db.delete("Valide_Command_Prelevement_Lot", "", null);
     }
+
     public void DeleteListType() {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -609,11 +681,13 @@ public class Helper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         db.delete("Ligne_Command_Prelevement", "", null);
     }
+
     public void DeleteLigneBonCommandPrelevementLot() {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         db.delete("Ligne_Command_Prelevement_Lot", "", null);
     }
+
     public void DeleteLigneBonCommandPrelevementColisage() {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -625,11 +699,13 @@ public class Helper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         db.delete("List_Command_Prelevement", "", null);
     }
+
     public void DeleteListBonCommandPrelevementLot() {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         db.delete("List_Command_Prelevement_Lot", "", null);
     }
+
     public void DeleteListBonCommandPrelevementColisage() {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -658,5 +734,11 @@ public class Helper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         db.delete("Ligne_Colis_Created", "", null);
+    }
+    //Client_Return
+    public void DeleteClientReturn() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        db.delete("Client_Return", "", null);
     }
 }
