@@ -13,6 +13,24 @@ public class LigneBcReception {
     public String NbrExemplairePaquet;
     public String NbrPaquetCouche;
     public String Epaisseur;
+    public String Poids;
+    public String QuantiteTotal;
+
+    public String getQuantiteTotal() {
+        return QuantiteTotal;
+    }
+
+    public void setQuantiteTotal(String quantiteTotal) {
+        QuantiteTotal = quantiteTotal;
+    }
+
+    public String getPoids() {
+        return Poids;
+    }
+
+    public void setPoids(String poids) {
+        Poids = poids;
+    }
 
     public String getNbrExemplairePaquet() {
         return NbrExemplairePaquet;
@@ -38,7 +56,7 @@ public class LigneBcReception {
         Epaisseur = epaisseur;
     }
 
-    public LigneBcReception(String noDoc, String EAN, String article, String piece, String quantite, String quantiteScan, String nbrExemplairePaquet, String nbrPaquetCouche, String epaisseur) {
+    public LigneBcReception(String noDoc, String EAN, String article, String piece, String quantite, String quantiteScan, String nbrExemplairePaquet, String nbrPaquetCouche, String epaisseur, String poids, String quantiteTotal) {
         NoDoc = noDoc;
         this.EAN = EAN;
         Article = article;
@@ -48,6 +66,8 @@ public class LigneBcReception {
         NbrExemplairePaquet = nbrExemplairePaquet;
         NbrPaquetCouche = nbrPaquetCouche;
         Epaisseur = epaisseur;
+        Poids = poids;
+        QuantiteTotal = quantiteTotal;
     }
 
     public String getNoDoc() {

@@ -100,6 +100,36 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:id="@+id/poids"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="Poids"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/txt_poids"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:inputType="number|numberDecimal"
+                            android:padding="3dp"
+                            android:text="0"
+                            android:textColor="@color/colorTextMenu"
+                            android:textStyle="bold|italic" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:orientation="horizontal">
 
                         <TextView
@@ -111,14 +141,16 @@
                             android:text="Epaisseur"
                             android:textSize="12sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/txt_epaisseur"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center|right"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:inputType="number|numberDecimal"
+
                             android:padding="3dp"
-                            android:text="TextView"
+                            android:text="0"
                             android:textColor="@color/colorTextMenu"
                             android:textStyle="bold|italic" />
                     </LinearLayout>
@@ -260,12 +292,15 @@
                             android:textSize="16sp"
                             android:textStyle="bold|italic" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/qt_total"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:text="0"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:inputType="number|numberDecimal"
                             android:textSize="16sp"
                             android:textStyle="bold|italic" />
                     </LinearLayout>

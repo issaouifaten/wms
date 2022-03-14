@@ -22,7 +22,7 @@ import java.util.List;
 public class Helper extends SQLiteOpenHelper {
 
     public Helper(Context context) {
-        super(context, "BaseV14", null, 1);
+        super(context, "BaseV15", null, 1);
     }
 
     //LigneBE_Class(String codeArticle, String designationArticle, String quantite)
@@ -47,7 +47,8 @@ public class Helper extends SQLiteOpenHelper {
                 "(_id INTEGER PRIMARY KEY,Code TEXT  ,ClientName TEXT, Aux TEXT)");
 
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Command_Reception" +
-                "(_id INTEGER PRIMARY KEY,noDoc TEXT  ,Article TEXT,EAN TEXT ,Quantite INTEGER, QuantiteScan INTEGER,Piece TEXT,NbrExemplairePaquet INTEGER,NbrPaquetCouche INTEGER,Epaisseur TEXT)");
+                "(_id INTEGER PRIMARY KEY,noDoc TEXT  ,Article TEXT,EAN TEXT ,Quantite INTEGER, QuantiteScan INTEGER,Piece TEXT," +
+                "NbrExemplairePaquet INTEGER,NbrPaquetCouche INTEGER,Epaisseur TEXT,Poids INTEGER, QuantiteTotal INTEGER)");
         sqLiteDatabase.execSQL("CREATE TABLE Valide_Command_Reception" +
                 "(_id INTEGER PRIMARY KEY,noDoc TEXT  ,Code TEXT)");
 
@@ -401,7 +402,8 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("NbrExemplairePaquet", c.getNbrExemplairePaquet());
         cv.put("NbrPaquetCouche", c.getNbrPaquetCouche());
         cv.put("Epaisseur", c.getEpaisseur());
-
+        cv.put("Poids", c.getPoids());
+        cv.put("QuantiteTotal", c.getQuantiteTotal());
         db.insert("Ligne_Command_Reception", null, cv);
 
     }
@@ -468,6 +470,9 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("NbrExemplairePaquet", c.getNbrExemplairePaquet());
         cv.put("NbrPaquetCouche", c.getNbrPaquetCouche());
         cv.put("Epaisseur", c.getEpaisseur());
+        cv.put("Poids", c.getPoids());
+        cv.put("QuantiteTotal", c.getQuantiteTotal());
+        Log.v("LigneBcReception",c.toString());
 
         db.update("Ligne_Command_Reception", cv, "Article='" + c.getArticle() + "' and noDoc='" + c.getNoDoc() + "' ", null);
 

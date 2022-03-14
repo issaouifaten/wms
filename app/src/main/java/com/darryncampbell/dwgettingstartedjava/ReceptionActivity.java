@@ -71,7 +71,8 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reception);
           baseUrlCreateReception = getResources().getString(R.string.base_url) + "WmsApp_ValiderReception?$format=application/json;odata.metadata=none";
-          baseUrlLigneBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnSelectedPurchaseLigne"; baseUrlListBc = getResources().getString(R.string.base_url) + "CommandesAchat?$format=application/json;odata.metadata=none";
+          baseUrlLigneBC = getResources().getString(R.string.base_url) + "WmsApp_ReturnSelectedPurchaseLigne";
+          baseUrlListBc = getResources().getString(R.string.base_url) + "CommandesAchat?$format=application/json;odata.metadata=none";
 
         grid_reception = (GridView) findViewById(R.id.grid_reception);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -523,7 +524,6 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                 @Override
                 public View getView(final int pos, View convertView, ViewGroup parent) {
                     final LayoutInflater layoutInflater = LayoutInflater.from(co);
-                    convertView = layoutInflater.inflate(R.layout.item_bc, null);
 
                     convertView = layoutInflater.inflate(R.layout.item_reception, null);
                     final TextView txt_noDoc = (TextView) convertView.findViewById(R.id.txt_noDoc);
@@ -533,8 +533,9 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                     final TextView txt_qt = (TextView) convertView.findViewById(R.id.txt_qt);
                     final TextView txt_nb_couche = (TextView) convertView.findViewById(R.id.txt_nb_couche);
                     final TextView txt_nb_paquet = (TextView) convertView.findViewById(R.id.txt_nb_paquet);
-                    final TextView txt_epaisseur = (TextView) convertView.findViewById(R.id.txt_epaisseur);
-                    final TextView txt_qt_total = (TextView) convertView.findViewById(R.id.qt_total);
+                    final EditText txt_epaisseur = (EditText) convertView.findViewById(R.id.txt_epaisseur);
+                    final EditText txt_qt_total = (EditText) convertView.findViewById(R.id.qt_total);
+                    final TextView edt_poids = (TextView) convertView.findViewById(R.id.txt_poids);
                     final EditText edt_qt_scan = (EditText) convertView.findViewById(R.id.edt_qt_scan);
                     final Button btmoin = (Button) convertView.findViewById(R.id.btmoin);
                     final Button btplus = (Button) convertView.findViewById(R.id.btplus);
@@ -553,13 +554,68 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                         txt_epaisseur.setText(cr.getString(cr.getColumnIndex("Epaisseur")));
                         txt_nb_paquet.setText(cr.getString(cr.getColumnIndex("NbrExemplairePaquet")));
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
-
-                        float qtScan=Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
-                        float qtNbrExemplairePaquet=Float.parseFloat(cr.getString(cr.getColumnIndex("NbrExemplairePaquet")));
-                        float qtNbrPaquetCouche=Float.parseFloat(cr.getString(cr.getColumnIndex("NbrPaquetCouche")));
-                        float qtTotal=qtScan*qtNbrExemplairePaquet*qtNbrPaquetCouche;
-                        txt_qt_total.setText(""+qtTotal);
+                        edt_poids.setText(cr.getString(cr.getColumnIndex("Poids")));
+                        txt_qt_total.setText( cr.getString(cr.getColumnIndex("QuantiteTotal")));
                     }
+
+                    txt_qt_total.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+
+                            String s = edt_poids.getText().toString();
+                            if (i != KEYCODE_DEL) {
+                                if (!s.equals("")) {
+
+                                    helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(),
+                                            txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(),
+                                            txt_qt.getText().toString()
+                                            ,  edt_qt_scan.getText().toString()+ s,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
+                                            +txt_epaisseur.getText().toString(), edt_poids.getText().toString(),s));
+                                    // helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+
+                                }
+                            }
+                            return false;
+                        }
+                    });
+
+                    txt_epaisseur.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+
+                            String s = txt_epaisseur.getText().toString();
+                            if (i != KEYCODE_DEL) {
+                                if (!s.equals("")) {
+
+                                    helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(),
+                                            txt_piece.getText().toString(), txt_qt.getText().toString()
+                                            , txt_qt_total.getText().toString(),txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
+                                            +s, edt_poids.getText().toString(),txt_qt_total.getText().toString()));
+                                    // helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+
+                                }
+                            }
+                            return false;
+                        }
+                    });
+                    edt_poids.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+
+                            String s = edt_poids.getText().toString();
+                            if (i != KEYCODE_DEL) {
+                                if (!s.equals("")) {
+
+                                    helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
+                                            , txt_qt_total.getText().toString(),txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
+                                            +txt_epaisseur.getText().toString(), s,txt_qt_total.getText().toString()));
+                                    // helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+
+                                }
+                            }
+                            return false;
+                        }
+                    });
 
                     edt_qt_scan.setOnKeyListener(new View.OnKeyListener() {
                         @Override
@@ -575,7 +631,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                                     txt_qt_total.setText(""+qtTotal);
                                     helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
                                             , "" + qt,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
-                                            +txt_epaisseur.getText().toString()));
+                                            +txt_epaisseur.getText().toString(), edt_poids.getText().toString(),txt_qt_total.getText().toString()));
                                 }
                             }
                             return false;
@@ -595,7 +651,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                             txt_qt_total.setText(""+qtTotal);
                             helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
                                     , "" + qt,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
-                                    +txt_epaisseur.getText().toString()));
+                                    +txt_epaisseur.getText().toString(), edt_poids.getText().toString(),txt_qt_total.getText().toString()));
 
 
                         }
@@ -615,7 +671,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                           //  helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
                             helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
                                     , "" + qt,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
-                                    +txt_epaisseur.getText().toString()));
+                                    +txt_epaisseur.getText().toString(), edt_poids.getText().toString(),txt_qt_total.getText().toString()));
                         }
                     });
 
@@ -784,9 +840,10 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                     final TextView txt_qt = (TextView) convertView.findViewById(R.id.txt_qt);
                     final TextView txt_nb_couche = (TextView) convertView.findViewById(R.id.txt_nb_couche);
                     final TextView txt_nb_paquet = (TextView) convertView.findViewById(R.id.txt_nb_paquet);
-                    final TextView txt_epaisseur = (TextView) convertView.findViewById(R.id.txt_epaisseur);
-                    final TextView txt_qt_total = (TextView) convertView.findViewById(R.id.qt_total);
+                    final EditText txt_epaisseur = (EditText) convertView.findViewById(R.id.txt_epaisseur);
+                    final EditText txt_qt_total = (EditText) convertView.findViewById(R.id.qt_total);
                     final EditText edt_qt_scan = (EditText) convertView.findViewById(R.id.edt_qt_scan);
+                    final EditText edt_poids = (EditText) convertView.findViewById(R.id.txt_poids);
                     final Button btmoin = (Button) convertView.findViewById(R.id.btmoin);
                     final Button btplus = (Button) convertView.findViewById(R.id.btplus);
                     //noDoc TEXT  ,Code TEXT, Quantite INTEGER, QuantiteScan INTEGER
@@ -803,16 +860,72 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                         txt_nb_paquet.setText(cr.getString(cr.getColumnIndex("NbrExemplairePaquet")));
                         txt_epaisseur.setText(cr.getString(cr.getColumnIndex("Epaisseur")));
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
-                        float qtScan=Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
-                        float qtNbrExemplairePaquet=Float.parseFloat(cr.getString(cr.getColumnIndex("NbrExemplairePaquet")));
-                        float qtNbrPaquetCouche=Float.parseFloat(cr.getString(cr.getColumnIndex("NbrPaquetCouche")));
-                        float qtTotal=qtScan*qtNbrExemplairePaquet*qtNbrPaquetCouche;
-                        txt_qt_total.setText(""+qtTotal);
+                        edt_poids.setText(cr.getString(cr.getColumnIndex("Poids")));
+                        txt_qt_total.setText( cr.getString(cr.getColumnIndex("QuantiteTotal")));
 
 
 
 
                     }
+
+
+                    txt_qt_total.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+
+                            String s = edt_poids.getText().toString();
+                            if (i != KEYCODE_DEL) {
+                                if (!s.equals("")) {
+
+                                    helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
+                                            ,  edt_qt_scan.getText().toString(),txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
+                                            +txt_epaisseur.getText().toString(), edt_poids.getText().toString(),s));
+                                    // helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+
+                                }
+                            }
+                            return false;
+                        }
+                    });
+
+                    txt_epaisseur.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+
+                            String s = txt_epaisseur.getText().toString();
+                            if (i != KEYCODE_DEL) {
+                                if (!s.equals("")) {
+
+                                    helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(),
+                                            txt_piece.getText().toString(), txt_qt.getText().toString()
+                                            , txt_qt_total.getText().toString(),txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
+                                            +s, edt_poids.getText().toString(),txt_qt_total.getText().toString()));
+                                    // helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+
+                                }
+                            }
+                            return false;
+                        }
+                    });
+                    edt_poids.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+
+                            String s = edt_poids.getText().toString();
+                            if (i != KEYCODE_DEL) {
+                                if (!s.equals("")) {
+
+                                    helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
+                                            , txt_qt_total.getText().toString(),txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
+                                            +txt_epaisseur.getText().toString(), s,txt_qt_total.getText().toString()));
+                                    // helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+
+                                }
+                            }
+                            return false;
+                        }
+                    });
+
                     edt_qt_scan.setOnKeyListener(new View.OnKeyListener() {
                         @Override
                         public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -827,7 +940,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                                     txt_qt_total.setText(""+qtTotal);
                                     helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
                                             , "" + qt,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
-                                            +txt_epaisseur.getText().toString()));
+                                            +txt_epaisseur.getText().toString(), edt_poids.getText().toString(),txt_qt_total.getText().toString()));
                                    // helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
                                 }
@@ -852,7 +965,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                             //helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
                             helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
                                     , "" + qt,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
-                                    +txt_epaisseur.getText().toString()));
+                                    +txt_epaisseur.getText().toString(), edt_poids.getText().toString(),txt_qt_total.getText().toString()));
 
 
                         }
@@ -871,7 +984,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                             //helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
                             helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
                                     , "" + qt,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
-                                    +txt_epaisseur.getText().toString()));
+                                    +txt_epaisseur.getText().toString(), edt_poids.getText().toString(),txt_qt_total.getText().toString()));
 
                         }
                     });
@@ -930,6 +1043,8 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
 
                     JSONObject obj = new JSONObject().put("NoDoc", cr.getString(cr.getColumnIndex("noDoc")))
                             .put("Quantite", qtTotal)
+                            .put("Epaisseur", cr.getString(cr.getColumnIndex("Epaisseur")))
+                            .put("Poids", cr.getString(cr.getColumnIndex("Poids")))
                             .put("Article", cr.getString(cr.getColumnIndex("Article")));
 
                     arrayJson.put(obj);
