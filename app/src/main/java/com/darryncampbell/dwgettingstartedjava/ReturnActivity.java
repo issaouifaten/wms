@@ -62,6 +62,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     String baseUrlCreateReturn = "";
     ProgressBar progressBar;
     Helper helper;
+    int scanView=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,10 +220,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                     final Article article = data;
                                     Log.d("tag****", article.toString());
 
-                                    if (helper.getLigneReturn(article.getArticle()).getCount() > 0) {
-                                        Toast.makeText(getApplicationContext(), "Cet article est déja taper", Toast.LENGTH_SHORT).show();
 
-                                    } else {
 
 
                                         LayoutInflater li = LayoutInflater.from(co);
@@ -241,6 +239,16 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                         txtDesignation.setText(article.getDescription());
                                         Button btmoin = (Button) px.findViewById(R.id.btmoin);
                                         Button btplus = (Button) px.findViewById(R.id.btplus);
+                                    if (helper.getLigneReturn(article.getArticle()).getCount() > 0) {
+
+                                      Cursor c=  helper.getLigneReturn(article.getArticle());
+                                      c.move(0);
+                                    edtQt.setText(  c.getString(c.getColumnIndex("Quantite")));
+
+                                    }
+
+
+
                                         btplus.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
@@ -277,11 +285,18 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                                                 if (edtQt.getText().toString().equals("0")) {
                                                                     Toast.makeText(getApplicationContext(), "La quantité doit etre différente de zéro", Toast.LENGTH_SHORT).show();
                                                                 } else {
-
-                                                                    helper.AddLigneReturn(new LigneReturn(txtCodeClient.getText().toString(), txtCode.getText().toString(), edtQt.getText().toString()));
+                                                                    if (helper.getLigneReturn(article.getArticle()).getCount() > 0) {
+                                                                        helper.UpdateLigneReturn(new LigneReturn(txtCodeClient.getText().toString(), txtCode.getText().toString(), edtQt.getText().toString()));
+                                                                        FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
+                                                                        fillListLigneReturn.execute("");
+                                                                        scanView=0;
+                                                                    }else{
+                                                                        helper.AddLigneReturn(new LigneReturn(txtCodeClient.getText().toString(), txtCode.getText().toString(), edtQt.getText().toString()));
                                                                     FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
                                                                     fillListLigneReturn.execute("");
+                                                                    scanView=0;
 
+                                                                }
                                                                 }
                                                             }
                                                         })
@@ -289,7 +304,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                                         new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface di, int i) {
-                                                                di.cancel();
+                                                                di.cancel();scanView=0;
                                                             }
                                                         });
                                         final androidx.appcompat.app.AlertDialog d = alt.create();
@@ -297,7 +312,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
                                         d.show();
 
-                                    }
+
                                 }
 
 
@@ -575,7 +590,9 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         if (txtCodeClient.getText().toString().equals("")) {
             FillListConsultListClient(scan);
         } else {
-            FillListConsultArticle(scan);
+            if(scanView<1)
+            {FillListConsultArticle(scan);
+            scanView++;}
         }
 
 
