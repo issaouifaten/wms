@@ -160,6 +160,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                     @Override
                                     public void onClick(DialogInterface di, int i) {
                                         di.cancel();
+
                                     }
                                 });
 
@@ -373,10 +374,14 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
                                 Client data = new Client();
                                 Gson gson = new Gson();
+                                if(obj.getString("value").equals("Client Introuvable"))
+                                {
+                                    Toast.makeText(getApplicationContext(),"Client Introuvable",Toast.LENGTH_SHORT).show();
+                                }else{
                                 data = gson.fromJson(obj.getString("value"), Client.class);
                                 helper.AddClient(data);
                                 txtCodeClient.setText(data.getClient());
-                                txtNomClient.setText(data.getDescription());
+                                txtNomClient.setText(data.getDescription());}
 
 
                             } catch (JSONException e) {
