@@ -9,8 +9,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -57,12 +60,12 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
     GridView grid_prelevement;
     ProgressBar progressBar;
     Helper helper;
-     Button   bt_scan, bt_view_ligne, btnDelete, bt_create,bt_ecart;
+    Button bt_scan, bt_view_ligne, btnDelete, bt_create, bt_ecart;
     String searchScan = "";
     TextView output;
     String baseUrlLigneBC = "";
-    String baseUrlCreatePrelevement ="";
-    String baseUrlCreatePrelevementFacture ="";
+    String baseUrlCreatePrelevement = "";
+    String baseUrlCreatePrelevementFacture = "";
     String baseUrlListBC = "";
     LinearLayout layout_scan;
 
@@ -119,7 +122,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         } else {
             FillListBonCommande();
             layout_scan.setVisibility(View.GONE);
-             }
+        }
         btnDelete = (Button) findViewById(R.id.bt_delete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +140,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                 helper.DeleteListBonCommandPrelevementLot();
                                 helper.DeleteLigneBonCommandPrelevementLot();
                                 helper.DeleteValideBonCommandPrelevementLot();
-                                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                                 startActivity(intent);
                             }
                         })
@@ -160,14 +163,12 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
                 Cursor c = helper.getListLigneCommandPrelevementLot();
                 if (c.getCount() > 0) {
-                    if( testEcart())
-                    {
+                    if (testEcart()) {
                         Toast.makeText(getApplicationContext(), "il reste des articles non prélevés", Toast.LENGTH_SHORT).show();
 
-                    }else{
+                    } else {
                         CreatePrelevement();
                     }
-
 
 
                 } else {
@@ -176,7 +177,6 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                 }
             }
         });
-
 
     }
 
@@ -265,7 +265,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                         });
 
                                         txt_code.setText(val.getNo_() + "");
-                                        txt_nom_client.setText( "");
+                                        txt_nom_client.setText("");
 
 
                                         return convertView;
@@ -315,7 +315,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
             Cursor cr = helper.getListCommandPrelevementLot();
             cr.moveToFirst();
-            final String noDoc= cr.getString(cr.getColumnIndex("Code"));
+            final String noDoc = cr.getString(cr.getColumnIndex("Code"));
             JSONObject obj = new JSONObject().put("NoDoc", noDoc);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", obj.toString());
@@ -410,7 +410,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             progressBar.setVisibility(View.VISIBLE);
             Cursor cr = helper.getListCommandPrelevementLot();
             cr.moveToFirst();
-            final String noDoc= cr.getString(cr.getColumnIndex("Code"));
+            final String noDoc = cr.getString(cr.getColumnIndex("Code"));
             JSONObject obj = new JSONObject().put("NoDoc", noDoc);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", obj.toString());
@@ -475,6 +475,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
     }
+
     void CreateFacturePrelevement() {
         try {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -482,7 +483,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             progressBar.setVisibility(View.VISIBLE);
             Cursor cr = helper.getListCommandPrelevementLot();
             cr.moveToFirst();
-            final String noDoc= cr.getString(cr.getColumnIndex("Code"));
+            final String noDoc = cr.getString(cr.getColumnIndex("Code"));
             JSONObject obj = new JSONObject().put("NoDoc", noDoc);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", obj.toString());
@@ -542,10 +543,10 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                         convertView = layoutInflater.inflate(R.layout.item_simple, null);
                                         final TextView txt_title = (TextView) convertView.findViewById(R.id.txt_title);
                                         final TextView txt_description = (TextView) convertView.findViewById(R.id.txt_description);
-                                         Log.d("tag****", finalData.getValue().get(position).toString());
+                                        Log.d("tag****", finalData.getValue().get(position).toString());
                                         final com.darryncampbell.dwgettingstartedjava.Model.prelevementLot.Value val = finalData.getValue().get(position);
                                         txt_title.setText(val.getNoPrelevement() + "");
-                                        txt_description.setText( val.getNoFacture());
+                                        txt_description.setText(val.getNoFacture());
 
 
                                         return convertView;
@@ -602,6 +603,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -794,7 +796,16 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         txt_ean.setText(cr.getString(cr.getColumnIndex("EAN")));
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
 
+                        if (Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan"))) >
+                                Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))) {
+                            mediaPlayerStart();
+                            Toast.makeText(getApplicationContext(), "depassement quantité", Toast.LENGTH_SHORT).show();
+                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), cr.getString(cr.getColumnIndex("Quantite"))));
 
+                        } else {
+                            //Toast.makeText(getApplicationContext(), "pas quantité", Toast.LENGTH_SHORT).show();
+
+                        }
                     }
 
 
@@ -803,11 +814,16 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         public void onClick(View v) {
                             float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt--;
-                            if(qt<0)
-                            { qt=0;}
-                            edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                            if (qt < 0) {
+                                qt = 0;
+                            }
 
+                            if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                                Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                            } else {
+                                edt_qt_scan.setText("" + qt);
+                                helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                            }
 
                         }
                     });
@@ -816,9 +832,13 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         public void onClick(View v) {
                             float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt++;
-                            edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
+                            if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                                Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                            } else {
+                                edt_qt_scan.setText("" + qt);
+                                helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                            }
                         }
                     });
 
@@ -840,8 +860,11 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
                                     float qt = Float.valueOf(edt_qt_scan.getText().toString());
-                                    helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
-
+                                    if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                                        Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                                    }
                                 }
                             }
                             return false;
@@ -878,9 +901,8 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
     }
 
 
-    public boolean testEcart()
-    {
-        boolean test=false;
+    public boolean testEcart() {
+        boolean test = false;
         Cursor cr;
         try {
             cr = helper.getListLigneCommandPrelevementLot();
@@ -888,10 +910,10 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
             if (cr.moveToFirst()) {
                 do {
-                    float ecart= Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))-Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
+                    float ecart = Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite"))) - Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
 
-                if(ecart!=0)
-                    test=true;
+                    if (ecart != 0)
+                        test = true;
                 } while (cr.moveToNext());
             }
 
@@ -902,6 +924,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         }
         return test;
     }
+
     public class FillEcartPrelevement extends AsyncTask<String, String, String> {
         String z = "";
 
@@ -959,9 +982,9 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         txt_piece.setText(cr.getString(cr.getColumnIndex("Piece")));
 
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
-                        float ecart= Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))-Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
+                        float ecart = Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite"))) - Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
 
-                        txt_ecart.setText(""+ecart);
+                        txt_ecart.setText("" + ecart);
 
                     }
 
@@ -996,6 +1019,25 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         }
     }
 
+    public void mediaPlayerStart() {
+        final MediaPlayer mMediaPlayer;
+
+        mMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.alerte_cancel);
+
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setLooping(true);
+        mMediaPlayer.start();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                mMediaPlayer.stop();
+            }
+        }, 1500);
+
+    }
+
     public class FillListLignePrelevementSearch extends AsyncTask<String, String, String> {
         String z = "";
 
@@ -1006,6 +1048,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         @Override
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
+
 
             helper.UpdateLignePrelevementLotByScan(searchScan);
         }
@@ -1035,7 +1078,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                 @Override
                 public View getView(final int pos, View convertView, ViewGroup parent) {
                     final LayoutInflater layoutInflater = LayoutInflater.from(co);
-                    convertView = layoutInflater.inflate(R.layout.item_bc, null);
+
 
                     convertView = layoutInflater.inflate(R.layout.item_prelevement, null);
                     final TextView txt_noDoc = (TextView) convertView.findViewById(R.id.txt_noDoc);
@@ -1056,6 +1099,16 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         txt_piece.setText(cr.getString(cr.getColumnIndex("Piece")));
                         txt_ean.setText(cr.getString(cr.getColumnIndex("EAN")));
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
+                        if (Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan"))) >
+                                Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))) {
+                            mediaPlayerStart();
+                            Toast.makeText(getApplicationContext(), "depassement quantité", Toast.LENGTH_SHORT).show();
+                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), cr.getString(cr.getColumnIndex("Quantite"))));
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), "pas quantité", Toast.LENGTH_SHORT).show();
+
+                        }
 
                     }
                     edt_qt_scan.setOnKeyListener(new View.OnKeyListener() {
@@ -1066,6 +1119,12 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
                                     float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                                    if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                                        Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                                    } else {
+
+                                        helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                                    }
                                     helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
                                 }
@@ -1079,11 +1138,15 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         public void onClick(View v) {
                             float qt = Float.valueOf(edt_qt_scan.getText().toString());
                             qt--;
-                            if(qt<0)
-                            { qt=0;}
-                            edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
-
+                            if (qt < 0) {
+                                qt = 0;
+                            }
+                            if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                                Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                            } else {
+                                edt_qt_scan.setText("" + qt);
+                                helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                            }
 
                         }
                     });
@@ -1094,9 +1157,12 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             qt++;
 
 
-                            edt_qt_scan.setText("" + qt);
-                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
-
+                            if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                                Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                            } else {
+                                edt_qt_scan.setText("" + qt);
+                                helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
+                            }
                         }
                     });
 

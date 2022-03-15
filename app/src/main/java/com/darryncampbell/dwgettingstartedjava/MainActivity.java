@@ -3,7 +3,10 @@ package com.darryncampbell.dwgettingstartedjava;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +38,21 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         String scan = decodedData + " [" + decodedLabelType + "]\n\n";
         final TextView output = findViewById(R.id.txtOutput);
         output.setText(scan + output.getText());
+        final MediaPlayer mMediaPlayer;
+
+        mMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.alerte_cancel);
+
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setLooping(true);
+        mMediaPlayer.start();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                mMediaPlayer.stop();
+            }
+        }, 1500);
     }
 
     @Override
