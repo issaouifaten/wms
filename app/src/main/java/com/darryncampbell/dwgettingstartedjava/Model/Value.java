@@ -28,16 +28,16 @@ public class Value{
         Titre = titre;
     }
 
-    public String getCapacité() {
-        return Capacité;
+    public String getCapacite() {
+        return Capacite;
     }
 
-    public void setCapacité(String capacité) {
-        Capacité = capacité;
+    public void setCapacite(String capacite) {
+        Capacite = capacite;
     }
 
     public String Titre;
-    public String Capacité;
+    public String Capacite;
 
     public String getEAN() {
         return EAN;

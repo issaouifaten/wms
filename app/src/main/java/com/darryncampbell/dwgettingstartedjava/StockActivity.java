@@ -431,7 +431,7 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
 
 
 
-                            Toast.makeText(getApplicationContext(), "Ajustement avec succés", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Ajustement est affectué avec succés", Toast.LENGTH_SHORT).show();
                            FillListConsult(scan);
 
                         }

@@ -59,8 +59,8 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
         Button btnScan = findViewById(R.id.btnScan);
         output = findViewById(R.id.txtOutput);
         btnScan.setOnTouchListener(this);
-      // output.setText("3274080005003")         ;
-      // FillListConsult("3274080005003");
+//      output.setText("3274080005003")         ;
+//       FillListConsult("3274080005003");
 
 
     }
@@ -136,15 +136,15 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
                                         txt_location_code.setText(val.getPiece());
                                         txt_sum_qty_base.setText(val.getQuantite() + "");
                                         txt_bin_code.setText(val.getEntrepot());
-                                        txt_capacite.setText(val.getCapacité());
+                                        txt_capacite.setText(val.getCapacite());
                                         txt_title_100.setText(val.getTitre());
                                         txt_poids.setText(val.getPoids());
-                                        if(val.getCapacité().equals("")||val.getCapacité().equals("0"))
+                                        if(val.getCapacite().equals("")||val.getCapacite().equals("0"))
                                         {    bt_transfert.setVisibility(View.INVISIBLE);
 
 
                                         }else {
-                                            if(Float.parseFloat(val.getPoids())/Float.parseFloat(val.getQuantite())<Float.parseFloat(val.getCapacité()))
+                                            if(Float.parseFloat(val.getPoids())/Float.parseFloat(val.getQuantite())<Float.parseFloat(val.getCapacite()))
                                             {
                                                 bt_transfert.setVisibility(View.VISIBLE);
                                             }else{
