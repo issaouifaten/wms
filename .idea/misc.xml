@@ -14,6 +14,7 @@
         <entry key="app/src/main/res/layout/activity_reception.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/activity_return.xml" value="0.31296296296296294" />
         <entry key="app/src/main/res/layout/activity_scan_etiquette.xml" value="0.28888888888888886" />
+        <entry key="app/src/main/res/layout/activity_stock.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_transfert.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/item_article.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/item_bc.xml" value="0.28888888888888886" />
@@ -27,6 +28,7 @@
         <entry key="app/src/main/res/layout/item_prelevement.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/item_reception.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_simple.xml" value="0.35572916666666665" />
+        <entry key="app/src/main/res/layout/item_stock.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/item_transfert.xml" value="0.35572916666666665" />
       </map>
     </option>

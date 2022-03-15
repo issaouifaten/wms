@@ -117,4 +117,21 @@ public class LigneBcReception {
     public void setQuantiteScan(String quantiteScan) {
         QuantiteScan = quantiteScan;
     }
+
+    @Override
+    public String toString() {
+        return "LigneBcReception{" +
+                "NoDoc='" + NoDoc + '\'' +
+                ", EAN='" + EAN + '\'' +
+                ", Article='" + Article + '\'' +
+                ", Piece='" + Piece + '\'' +
+                ", Quantite='" + Quantite + '\'' +
+                ", QuantiteScan='" + QuantiteScan + '\'' +
+                ", NbrExemplairePaquet='" + NbrExemplairePaquet + '\'' +
+                ", NbrPaquetCouche='" + NbrPaquetCouche + '\'' +
+                ", Epaisseur='" + Epaisseur + '\'' +
+                ", Poids='" + Poids + '\'' +
+                ", QuantiteTotal='" + QuantiteTotal + '\'' +
+                '}';
+    }
 }

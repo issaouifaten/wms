@@ -15,6 +15,7 @@ import com.darryncampbell.dwgettingstartedjava.Model.Transfert.LigneReturn;
 import com.darryncampbell.dwgettingstartedjava.Model.prelevement.LigneBcPrelevement;
 import com.darryncampbell.dwgettingstartedjava.Model.prelevement.Value;
 import com.darryncampbell.dwgettingstartedjava.Model.reception.LigneBcReception;
+import com.darryncampbell.dwgettingstartedjava.Model.stock.LigneStock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 public class Helper extends SQLiteOpenHelper {
 
     public Helper(Context context) {
-        super(context, "BaseV15", null, 1);
+        super(context, "BaseV16", null, 1);
     }
 
     //LigneBE_Class(String codeArticle, String designationArticle, String quantite)
@@ -66,6 +67,8 @@ public class Helper extends SQLiteOpenHelper {
                 "(_id INTEGER PRIMARY KEY,NoClient TEXT,Article TEXT  ,Quantite INTEGER)");
         sqLiteDatabase.execSQL("CREATE TABLE Client_Return " +
                 "(_id INTEGER PRIMARY KEY,NoClient TEXT,Designation TEXT  )");
+        sqLiteDatabase.execSQL("CREATE TABLE Ligne_Stock " +
+                "(_id INTEGER PRIMARY KEY,FromBin TEXT,Article TEXT  ,Quantite INTEGER  )");
     }
 
     @Override
@@ -84,6 +87,7 @@ public class Helper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Ligne_Colis_Created");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Ligne_Return");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Client_Return");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Ligne_Stock");
         onCreate(sqLiteDatabase);
     }
 
@@ -97,6 +101,7 @@ public class Helper extends SQLiteOpenHelper {
         db.insert("List_Command_Prelevement", null, cv);
 
     }
+    //
     public void AddClient(Client c) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -114,6 +119,27 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("Quantite", c.getQuantite());
 
         db.insert("Ligne_Return", null, cv);
+
+    }
+    public void AddLigneStock(LigneStock c) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("FromBin", c.getFromBin());
+        cv.put("Article", c.getArticle());
+        cv.put("Quantite", c.getQuantite());
+
+        db.insert("Ligne_Stock", null, cv);
+
+    }
+    public void UpdateLigneStock(LigneStock c) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("FromBin", c.getFromBin());
+        cv.put("Article", c.getArticle());
+        cv.put("Quantite", c.getQuantite());
+
+
+        db.update("Ligne_Stock", cv, "Article='" + c.getArticle() + "' and FromBin='"+c.getFromBin()+"'", null);
 
     }
 
@@ -212,13 +238,24 @@ public class Helper extends SQLiteOpenHelper {
         return c;
 
     }
-    public Cursor getLigneReturn(String code) {
+    public Cursor getListLigneStock() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM Ligne_Return  WHERE Article='"+code+"'",null);
+        Cursor c = db.rawQuery("SELECT * FROM Ligne_Stock ", null);
         return c;
 
     }
+    public Cursor getLigneStock(String code, String bin) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM  Ligne_Stock WHERE Article='"+code+"' and FromBin='"+bin+"'",null);
+        return c;
 
+    }
+    public Cursor getLigneReturn(String code) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM  Ligne_Return WHERE Article='"+code+"'",null);
+        return c;
+
+    }
     public Cursor getListCommandPrelevementColisage() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM List_Command_Prelevement_Colisage  ", null);
@@ -668,6 +705,11 @@ public class Helper extends SQLiteOpenHelper {
         db.delete("Ligne_Return", "", null);
     }
 
+    public void DeleteLigneStock() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        db.delete("Ligne_Stock", "", null);
+    }
     public void DeleteValideBonCommandPrelevementLot() {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();

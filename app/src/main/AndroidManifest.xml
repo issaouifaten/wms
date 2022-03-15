@@ -12,6 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".StockActivity"
+            android:label="Ajustement stock"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="com.stock.action" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ReturnActivity"
             android:label="Bon de retour"
             android:launchMode="singleTop">
