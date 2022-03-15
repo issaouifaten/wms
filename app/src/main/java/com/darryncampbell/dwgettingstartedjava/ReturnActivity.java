@@ -63,7 +63,10 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     ProgressBar progressBar;
     Helper helper;
     int scanView=0;
-
+    androidx.appcompat.app.AlertDialog.Builder altGlobal;
+    View px;
+    EditText edtQt;
+    androidx.appcompat.app.AlertDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,9 +135,10 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                 CreateReturn();}else{
                     Toast.makeText(getApplicationContext(),"Entrer des articles d'abord", Toast.LENGTH_LONG).show();
                 }
-                //  FillListConsultListClient("3025591324608");
+               //   FillListConsultListClient("3025591324608");
 
-              //  FillListConsultArticle("9782129822910");
+              // FillListConsultArticle("9782129822910");
+
 
             }
         });
@@ -182,6 +186,19 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
         FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
         fillListLigneReturn.execute("");
+         altGlobal = new androidx.appcompat.app.AlertDialog.Builder(co);
+        LayoutInflater li = LayoutInflater.from(co);
+         px = li.inflate(R.layout.item_article, null);
+
+        altGlobal.setIcon(R.drawable.icon_article);
+        altGlobal.setTitle("Article");
+        altGlobal.setView(px);
+
+        // connectionClass = new ConnectionClass();
+
+        edtQt = (EditText) px.findViewById(R.id.edt_qt_scan);
+
+
 
     }
 
@@ -210,6 +227,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
                                 Log.d("tag****Response", obj.getString("value"));
                                 if (obj.getString("value").equals("Article Introuvable")) {
+                                    scanView=0;
                                     Toast.makeText(getApplicationContext(), "Article Introuvable", Toast.LENGTH_SHORT).show();
                                 } else {
 
@@ -222,28 +240,20 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
 
 
+                                    final TextView txtCode = (TextView) px.findViewById(R.id.txt_code_article);
+                                    final TextView txtDesignation = (TextView) px.findViewById(R.id.txt_designation);
+                                    txtCode.setText(article.getArticle());
+                                    txtDesignation.setText(article.getDescription());
+                                    Button btmoin = (Button) px.findViewById(R.id.btmoin);
+                                    Button btplus = (Button) px.findViewById(R.id.btplus);
 
-                                        LayoutInflater li = LayoutInflater.from(co);
-                                        View px = li.inflate(R.layout.item_article, null);
-                                        final androidx.appcompat.app.AlertDialog.Builder alt = new androidx.appcompat.app.AlertDialog.Builder(co);
-                                        alt.setIcon(R.drawable.icon_article);
-                                        alt.setTitle("Article");
-                                        alt.setView(px);
-
-                                        // connectionClass = new ConnectionClass();
-
-                                        final EditText edtQt = (EditText) px.findViewById(R.id.edt_qt_scan);
-                                        final TextView txtCode = (TextView) px.findViewById(R.id.txt_code_article);
-                                        final TextView txtDesignation = (TextView) px.findViewById(R.id.txt_designation);
-                                        txtCode.setText(article.getArticle());
-                                        txtDesignation.setText(article.getDescription());
-                                        Button btmoin = (Button) px.findViewById(R.id.btmoin);
-                                        Button btplus = (Button) px.findViewById(R.id.btplus);
                                     if (helper.getLigneReturn(article.getArticle()).getCount() > 0) {
 
-                                      Cursor c=  helper.getLigneReturn(article.getArticle());
-                                      c.move(0);
-                                    edtQt.setText(  c.getString(c.getColumnIndex("Quantite")));
+                                         Cursor c=  helper.getLigneReturn(article.getArticle());
+                                         c.move(1);
+                                         float qt=Float.parseFloat(c.getString(c.getColumnIndex("Quantite")));
+                                         qt++;
+                                         edtQt.setText(  ""+qt);
 
                                     }
 
@@ -277,7 +287,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                             }
                                         });
 
-                                        alt.setCancelable(false)
+                                        altGlobal.setCancelable(false)
                                                 .setPositiveButton("Ajouter",
                                                         new DialogInterface.OnClickListener() {
                                                             @Override
@@ -287,14 +297,21 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                                                 } else {
                                                                     if (helper.getLigneReturn(article.getArticle()).getCount() > 0) {
                                                                         helper.UpdateLigneReturn(new LigneReturn(txtCodeClient.getText().toString(), txtCode.getText().toString(), edtQt.getText().toString()));
-                                                                        FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
-                                                                        fillListLigneReturn.execute("");
+                                                                        //FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
+                                                                       // fillListLigneReturn.execute("");
                                                                         scanView=0;
+                                                                        finish();
+                                                                        startActivity(getIntent());
+
+
+
                                                                     }else{
                                                                         helper.AddLigneReturn(new LigneReturn(txtCodeClient.getText().toString(), txtCode.getText().toString(), edtQt.getText().toString()));
-                                                                    FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
-                                                                    fillListLigneReturn.execute("");
+                                                                    //FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
+                                                                    //fillListLigneReturn.execute("");
                                                                     scanView=0;
+                                                                        finish();
+                                                                        startActivity(getIntent());
 
                                                                 }
                                                                 }
@@ -307,10 +324,9 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                                                 di.cancel();scanView=0;
                                                             }
                                                         });
-                                        final androidx.appcompat.app.AlertDialog d = alt.create();
 
-
-                                        d.show();
+                                        dialog = altGlobal.create();
+                                        dialog.show();
 
 
                                 }
@@ -318,6 +334,11 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                scanView=0;
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                                scanView=0;
                             }
                         }
                     },
@@ -326,9 +347,10 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
+                            scanView=0;
                             Log.d("ERROR", "error => " + error.getLocalizedMessage());
                             Log.d("ERROR", "error => " + error.getMessage());
-                            Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), " error api article : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
             ) {
@@ -357,6 +379,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
+            scanView=0;
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
 
@@ -583,18 +606,25 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     }
 
     private void displayScanResult(Intent scanIntent) {
+
         String decodedSource = scanIntent.getStringExtra(getResources().getString(R.string.datawedge_intent_key_source));
         String decodedData = scanIntent.getStringExtra(getResources().getString(R.string.datawedge_intent_key_data));
         String decodedLabelType = scanIntent.getStringExtra(getResources().getString(R.string.datawedge_intent_key_label_type));
         String scan = decodedData;
-        if (txtCodeClient.getText().toString().equals("")) {
-            FillListConsultListClient(scan);
-        } else {
-            if(scanView<1)
-            {FillListConsultArticle(scan);
-            scanView++;}
+        if(scan!=null) {
+            if (txtCodeClient.getText().toString().equals("")) {
+                FillListConsultListClient(scan);
+            } else {
+                if (scanView < 1) {
+                    FillListConsultArticle(scan);
+                    scanView++;
+                } else {
+                    float qt = Float.parseFloat(edtQt.getText().toString());
+                    qt++;
+                    edtQt.setText("" + qt);
+                }
+            }
         }
-
 
     }
 

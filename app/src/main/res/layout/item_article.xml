@@ -109,7 +109,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:inputType="number|numberDecimal"
-                            android:text="0" />
+                            android:text="1" />
 
                         <Button
                             android:id="@+id/btplus"
