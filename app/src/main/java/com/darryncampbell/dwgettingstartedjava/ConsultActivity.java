@@ -59,8 +59,8 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
         Button btnScan = findViewById(R.id.btnScan);
         output = findViewById(R.id.txtOutput);
         btnScan.setOnTouchListener(this);
-//      output.setText("3274080005003")         ;
-//       FillListConsult("3274080005003");
+     output.setText("3274080005003")         ;
+      FillListConsult("3274080005003");
 
 
     }

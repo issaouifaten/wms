@@ -54,7 +54,8 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     Button btScan;
     Button btValid;
     Button btCancel;
-    TextView txtCodeClient, txtNomClient;
+    Button btSearch;
+    TextView txtCodeClient, txtNomClient, txtCodePostalClient,txtCityClient,txtAdressClient;
     GridView gridReturn;
     final Context co = this;
     String baseUrlListClient = "";
@@ -66,6 +67,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     androidx.appcompat.app.AlertDialog.Builder altGlobal;
     View px;
     EditText edtQt;
+    EditText edtGln;
     androidx.appcompat.app.AlertDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +79,14 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         btScan = (Button) findViewById(R.id.bt_scan);
         btValid = (Button) findViewById(R.id.bt_valid);
         btCancel = (Button) findViewById(R.id.bt_cancel);
+        btSearch = (Button) findViewById(R.id.bt_search);
+        txtAdressClient = (TextView) findViewById(R.id.txt_address);
+        txtCodePostalClient = (TextView) findViewById(R.id.txt_code_postal);
+        txtCityClient = (TextView) findViewById(R.id.txt_city);
         txtCodeClient = (TextView) findViewById(R.id.txt_code_client);
         txtNomClient = (TextView) findViewById(R.id.txt_nom_client);
         gridReturn = (GridView) findViewById(R.id.grid_return);
+        edtGln = (EditText) findViewById(R.id.edt_gln);
         baseUrlListClient = getResources().getString(R.string.base_url) + "WmsApp_GetCustomerFromGLN?$format=application/json;odata.metadata=none";
         baseUrlConsultArticle = getResources().getString(R.string.base_url) + "WmsApp_GetItemFromBarcode?$format=application/json;odata.metadata=none";
         baseUrlCreateReturn = getResources().getString(R.string.base_url) + "WmsApp_CreateReturn?$format=application/json;odata.metadata=none";
@@ -102,7 +109,12 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                     helper.DeleteClientReturn();
                                     helper.DeleteLigneReturn();
                                     txtCodeClient.setText("");
+                                    txtCityClient.setText("");
+                                    txtCodePostalClient.setText("");
+                                    txtAdressClient.setText("");
                                     txtNomClient.setText("");
+                                    edtGln.setText("");
+
                                     FillListLigneReturn fillListLigneReturn = new FillListLigneReturn();
                                     fillListLigneReturn.execute("");
                                 }
@@ -120,7 +132,11 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                 } else {
                     helper.DeleteClientReturn();
                     txtCodeClient.setText("");
+                    txtCityClient.setText("");
+                    txtCodePostalClient.setText("");
+                    txtAdressClient.setText("");
                     txtNomClient.setText("");
+                    edtGln.setText("");
 
                 }
 
@@ -197,7 +213,12 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         // connectionClass = new ConnectionClass();
 
         edtQt = (EditText) px.findViewById(R.id.edt_qt_scan);
-
+        btSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FillListConsultListClient(edtGln.getText().toString());
+            }
+        });
 
 
     }
@@ -418,6 +439,9 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                 }else{
                                 data = gson.fromJson(obj.getString("value"), Client.class);
                                 helper.AddClient(data);
+                                txtAdressClient.setText(data.getAddress());
+                                txtCityClient.setText(data.getCity());
+                                txtCodePostalClient.setText(data.getPostCode());
                                 txtCodeClient.setText(data.getClient());
                                 txtNomClient.setText(data.getDescription());}
 

@@ -3,6 +3,33 @@ package com.darryncampbell.dwgettingstartedjava.Model.Client;
 public class Client {
     String Client;
     String Description;
+    String Address;
+    String PostCode;
+    String City;
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    public String getPostCode() {
+        return PostCode;
+    }
+
+    public void setPostCode(String postCode) {
+        PostCode = postCode;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
 
     public String getClient() {
         return Client;

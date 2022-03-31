@@ -228,7 +228,7 @@ public class Helper extends SQLiteOpenHelper {
     }
     public Cursor getClientReturn() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM Client_Return  ", null);
+        Cursor c = db.rawQuery("SELECT * FROM Client_Return  order by _id desc", null);
         return c;
 
     }

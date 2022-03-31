@@ -85,7 +85,7 @@
                             android:id="@+id/edt_qt_scan"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-
+                            android:inputType="number|numberDecimal"
                             android:gravity="center"
                             android:text="100"
                             android:textColor="@color/colorPrimaryDark"

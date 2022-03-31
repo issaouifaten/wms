@@ -64,46 +64,101 @@
             tools:ignore="MissingConstraints">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FBF5F5"
-            android:orientation="horizontal">
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/imageView12"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:src="@drawable/icon_user" />
-
-                <TextView
-                    android:id="@+id/txt_code_client"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:textColor="@color/colorTextMenu"
-                    android:textStyle="bold|italic" />
+                    android:background="#FBF5F5"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txt_nom_client"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="2dp"
-                    android:textColor="@color/colorAccent" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/bt_client"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/ic_remove_circle" />
+                        <ImageView
+                            android:id="@+id/imageView12"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icon_user" />
+
+                        <TextView
+                            android:id="@+id/txt_code_client"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:textColor="@color/colorTextMenu"
+                            android:textStyle="bold|italic" />
+
+                        <TextView
+                            android:id="@+id/txt_nom_client"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="2dp"
+                            android:textColor="@color/colorAccent" />
+
+                        <Button
+                            android:id="@+id/bt_client"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/ic_remove_circle" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edt_gln"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="chercher par GLN"
+                        android:inputType="textPersonName" />
+
+                    <Button
+                        android:id="@+id/bt_search"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:background="@android:drawable/ic_search_category_default" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/txt_code_postal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/txt_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+                </LinearLayout>
+
             </LinearLayout>
-        </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
