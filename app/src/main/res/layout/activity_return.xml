@@ -82,7 +82,7 @@
 
                         <ImageView
                             android:id="@+id/imageView12"
-                            android:layout_width="45dp"
+                            android:layout_width="40dp"
                             android:layout_height="45dp"
                             android:src="@drawable/icon_user" />
 
@@ -115,20 +115,36 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/edt_gln"
+                    <TextView
+                        android:id="@+id/txt_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="chercher par GLN"
-                        android:inputType="textPersonName" />
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="10sp" />
 
-                    <Button
-                        android:id="@+id/bt_search"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:background="@android:drawable/ic_search_category_default" />
+                    <TextView
+                        android:id="@+id/txt_code_postal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="1dp"
+                        android:paddingRight="1dp"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="10sp"
+                        android:textStyle="bold|italic" />
+
+                    <TextView
+                        android:id="@+id/txt_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="10sp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -136,25 +152,21 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txt_address"
+                    <EditText
+                        android:id="@+id/edt_gln"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="" />
+                        android:ems="10"
+                        android:hint="chercher par GLN"
+                        android:inputType="textPersonName"
+                        android:textSize="12sp" />
 
-                    <TextView
-                        android:id="@+id/txt_code_postal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="" />
-
-                    <TextView
-                        android:id="@+id/txt_city"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="" />
+                    <Button
+                        android:id="@+id/bt_search"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:background="@android:drawable/ic_search_category_default" />
                 </LinearLayout>
 
             </LinearLayout>
