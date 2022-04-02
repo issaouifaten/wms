@@ -21,6 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,13 @@ import com.android.volley.toolbox.Volley;
 import com.darryncampbell.dwgettingstartedjava.LocalBase.Helper;
 import com.darryncampbell.dwgettingstartedjava.Model.Article.Article;
 import com.darryncampbell.dwgettingstartedjava.Model.Client.Client;
+import com.darryncampbell.dwgettingstartedjava.Model.Return.LigneSelectReturn;
+import com.darryncampbell.dwgettingstartedjava.Model.Return.ListLigneSelectReturn;
+import com.darryncampbell.dwgettingstartedjava.Model.Return.ListSelectReturn;
+import com.darryncampbell.dwgettingstartedjava.Model.Return.SelectReturn;
 import com.darryncampbell.dwgettingstartedjava.Model.Transfert.LigneReturn;
+import com.darryncampbell.dwgettingstartedjava.Model.prelevement.ListeBonCommande;
+import com.darryncampbell.dwgettingstartedjava.Model.prelevement.Value;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -61,6 +68,8 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     String baseUrlListClient = "";
     String baseUrlConsultArticle = "";
     String baseUrlCreateReturn = "";
+    String baseUrlSelectReturn = "";
+    String baseUrlLigneSelectReturn = "";
     ProgressBar progressBar;
     Helper helper;
     int scanView=0;
@@ -92,6 +101,8 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         baseUrlListClient = getResources().getString(R.string.base_url) + "WmsApp_GetCustomerFromGLN?$format=application/json;odata.metadata=none";
         baseUrlConsultArticle = getResources().getString(R.string.base_url) + "WmsApp_GetItemFromBarcode?$format=application/json;odata.metadata=none";
         baseUrlCreateReturn = getResources().getString(R.string.base_url) + "WmsApp_CreateReturn?$format=application/json;odata.metadata=none";
+        baseUrlSelectReturn = getResources().getString(R.string.base_url) + "WmsApp_SalesReturnOrderList?$format=application/json;odata.metadata=none";
+        baseUrlLigneSelectReturn = getResources().getString(R.string.base_url) + "WmsApp_SelectedSalesReturnLigne?$format=application/json;odata.metadata=none";
         DWUtilities.CreateDWProfile(co, "com.return.action");
         btScan.setOnTouchListener(this);
         helper = new Helper(getApplicationContext());
@@ -754,5 +765,207 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
     }
+    void FillListSelectReturn() {
+        try {
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = baseUrlSelectReturn;
+            progressBar.setVisibility(View.VISIBLE);
 
+            StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // response
+                            progressBar.setVisibility(View.GONE);
+                            Log.d("tag****Response", response);
+                            ListSelectReturn data = new ListSelectReturn();
+                            JSONObject obj = null;
+                            try {
+                                obj = new JSONObject(response);
+                                Log.d("tag****Response", obj.getString("value"));
+                                JSONArray array = new JSONArray(obj.getString("value"));
+
+                                JSONObject jsonList = new JSONObject().put("value", array);
+
+
+                                Gson gson = new Gson();
+                                data = gson.fromJson(jsonList.toString(), ListSelectReturn.class);
+                                final ListSelectReturn finalData = data;
+
+
+                                Log.d("tag****", finalData.toString());
+                                final BaseAdapter baseAdapter = new BaseAdapter() {
+                                    @Override
+                                    public int getCount() {
+                                        return finalData.getValue().size();
+                                    }
+
+                                    @Override
+                                    public Object getItem(int position) {
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public long getItemId(int position) {
+                                        return 0;
+                                    }
+
+
+                                    @Override
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        final LayoutInflater layoutInflater = LayoutInflater.from(co);
+                                        convertView = layoutInflater.inflate(R.layout.item_simple, null);
+                                        final TextView txt_doc = (TextView) convertView.findViewById(R.id.txt_title);
+                                        final TextView txt_client = (TextView) convertView.findViewById(R.id.txt_description);
+                                        final LinearLayout layout = (LinearLayout) convertView.findViewById(R.id.layout);
+
+                                        final SelectReturn val = finalData.getValue().get(position);
+                                        txt_doc.setText(val.getNoDoc());
+                                        txt_client.setText(val.getNoClient());
+                                        layout.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                FillLigneSelectReturn();
+                                            }
+                                        });
+
+
+                                        return convertView;
+                                    }
+                                };
+                                gridReturn.setAdapter(baseAdapter);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressBar.setVisibility(View.GONE);
+                            // TODO Auto-generated method stub
+                            Log.d("ERROR", "error => " + error.toString());
+                            Toast.makeText(getApplicationContext(), "eror vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", getResources().getString(R.string.key_autorisation));
+                    params.put("Content-Type", "application/json");
+                    params.put("Company", getResources().getString(R.string.company_name));
+
+                    return params;
+                }
+
+            };
+            queue.add(getRequest);
+        } catch (Exception e) {
+            //  Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
+            Log.e("error", e.toString());
+
+        }
+    }
+    void FillLigneSelectReturn() {
+        try {
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = baseUrlLigneSelectReturn;
+            progressBar.setVisibility(View.VISIBLE);
+
+            StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // response
+                            progressBar.setVisibility(View.GONE);
+                            Log.d("tag****Response", response);
+                            ListLigneSelectReturn data = new ListLigneSelectReturn();
+                            JSONObject obj = null;
+                            try {
+                                obj = new JSONObject(response);
+                                Log.d("tag****Response", obj.getString("value"));
+                                JSONArray array = new JSONArray(obj.getString("value"));
+
+                                JSONObject jsonList = new JSONObject().put("value", array);
+
+
+                                Gson gson = new Gson();
+                                data = gson.fromJson(jsonList.toString(), ListLigneSelectReturn.class);
+                                final ListLigneSelectReturn finalData = data;
+
+
+                                Log.d("tag****", finalData.toString());
+                                final BaseAdapter baseAdapter = new BaseAdapter() {
+                                    @Override
+                                    public int getCount() {
+                                        return finalData.getValue().size();
+                                    }
+
+                                    @Override
+                                    public Object getItem(int position) {
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public long getItemId(int position) {
+                                        return 0;
+                                    }
+
+
+                                    @Override
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        final LayoutInflater layoutInflater = LayoutInflater.from(co);
+                                        convertView = layoutInflater.inflate(R.layout.item_ligne_return, null);
+                                        final TextView txt_doc = (TextView) convertView.findViewById(R.id.txt_no_doc);
+                                        final TextView txt_ean = (TextView) convertView.findViewById(R.id.txt_ean);
+                                        final TextView txt_code_article = (TextView) convertView.findViewById(R.id.txt_code_article);
+                                        final TextView txt_qt = (TextView) convertView.findViewById(R.id.txt_qt);
+
+                                        final LigneSelectReturn val = finalData.getValue().get(position);
+                                        txt_doc.setText(val.getNoDoc());
+                                        txt_code_article.setText(val.getArticle());
+                                        txt_ean.setText(val.getEAN());
+                                        txt_qt.setText(val.getQuantite());
+
+
+                                        return convertView;
+                                    }
+                                };
+                                gridReturn.setAdapter(baseAdapter);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressBar.setVisibility(View.GONE);
+                            // TODO Auto-generated method stub
+                            Log.d("ERROR", "error => " + error.toString());
+                            Toast.makeText(getApplicationContext(), "eror vollety" + error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", getResources().getString(R.string.key_autorisation));
+                    params.put("Content-Type", "application/json");
+                    params.put("Company", getResources().getString(R.string.company_name));
+
+                    return params;
+                }
+
+            };
+            queue.add(getRequest);
+        } catch (Exception e) {
+            //  Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
+            Log.e("error", e.toString());
+
+        }
+    }
 }
