@@ -68,6 +68,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     View px;
     EditText edtQt;
     EditText edtGln;
+    EditText edtReference;
     androidx.appcompat.app.AlertDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         txtNomClient = (TextView) findViewById(R.id.txt_nom_client);
         gridReturn = (GridView) findViewById(R.id.grid_return);
         edtGln = (EditText) findViewById(R.id.edt_gln);
+        edtReference = (EditText) findViewById(R.id.edt_reference);
         baseUrlListClient = getResources().getString(R.string.base_url) + "WmsApp_GetCustomerFromGLN?$format=application/json;odata.metadata=none";
         baseUrlConsultArticle = getResources().getString(R.string.base_url) + "WmsApp_GetItemFromBarcode?$format=application/json;odata.metadata=none";
         baseUrlCreateReturn = getResources().getString(R.string.base_url) + "WmsApp_CreateReturn?$format=application/json;odata.metadata=none";
@@ -683,7 +685,8 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                 do {
                     JSONObject obj = new JSONObject().put("NoClient", cr.getString(cr.getColumnIndex("NoClient")))
                             .put("Quantite", cr.getString(cr.getColumnIndex("Quantite")))
-                            .put("Article", cr.getString(cr.getColumnIndex("Article")));
+                            .put("Article", cr.getString(cr.getColumnIndex("Article")))
+                            .put("Reference",  edtReference.getText().toString());
 
                     arrayJson.put(obj);
 

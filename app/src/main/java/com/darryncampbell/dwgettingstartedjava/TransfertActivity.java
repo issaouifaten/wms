@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -83,10 +86,10 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-           startActivity(intent);
+                startActivity(intent);
                 //output.setText("BORANG");
 
-               // searchScanDepot("BORANG");
+                // searchScanDepot("BORANG");
 
             }
         });
@@ -120,9 +123,10 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                         else {
                             float qt = Float.parseFloat(edt_transfert.getText().toString());
                             float qt_max = Float.parseFloat(txt_qt_max.getText().toString());
-                            if (qt > qt_max)
+                            if (qt > qt_max) {
                                 Toast.makeText(getApplicationContext(), "Quantité à transferer est supérieur", Toast.LENGTH_SHORT).show();
-                            else
+                                mediaPlayerStart();
+                            } else
                                 CreateTransfert();
 
 
@@ -137,6 +141,25 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                 }
             }
         });
+
+    }
+
+    public void mediaPlayerStart() {
+        final MediaPlayer mMediaPlayer;
+
+        mMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.alerte_cancel);
+
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setLooping(true);
+        mMediaPlayer.start();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                mMediaPlayer.stop();
+            }
+        }, 1500);
 
     }
 

@@ -9,8 +9,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -90,6 +93,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
 
         output = findViewById(R.id.txtOutput);
         txt_poids_max = (TextView) findViewById(R.id.txt_poids_max);
+
         txt_no_colis = (TextView) findViewById(R.id.txt_no_colis);
         txt_no_doc = (TextView) findViewById(R.id.txt_no_doc);
         helper = new Helper(getApplicationContext());
@@ -751,6 +755,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                         FillLigneColisToScan();
                                     } else {
                                         Toast.makeText(getApplicationContext(), "SSCC ne correspond pas", Toast.LENGTH_SHORT).show();
+                                        mediaPlayerStart();
 
                                     }
                                 }
@@ -799,7 +804,24 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
 
         }
     }
+    public void mediaPlayerStart() {
+        final MediaPlayer mMediaPlayer;
 
+        mMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.alerte_cancel);
+
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setLooping(true);
+        mMediaPlayer.start();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                mMediaPlayer.stop();
+            }
+        }, 1500);
+
+    }
     void CreationColis() {
         try {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -1082,6 +1104,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     final TextView txt_noDoc = (TextView) convertView.findViewById(R.id.txt_noDoc);
                     final TextView txt_poids = (TextView) convertView.findViewById(R.id.txt_poids);
                     final TextView txt_no_colis = (TextView) convertView.findViewById(R.id.txt_no_colis);
+                    final TextView txt_ecart = (TextView) convertView.findViewById(R.id.txt_ecart);
                     final TextView txt_ean = (TextView) convertView.findViewById(R.id.txt_ean);
                     final TextView txt_qt = (TextView) convertView.findViewById(R.id.txt_qt);
                     final TextView txt_code_article = (TextView) convertView.findViewById(R.id.txt_code_article);
@@ -1101,6 +1124,11 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                         txt_ean.setText(cr.getString(cr.getColumnIndex("EAN")));
                         txt_no_command.setText(cr.getString(cr.getColumnIndex("NoCommande")));
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
+                        float qt=0;
+                        if(cr.getString(cr.getColumnIndex("QuantiteScan"))!="")
+                            qt= Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
+                        float ecart=Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))-qt;
+                        txt_ecart.setText(ecart+"");
 
 
                     }
@@ -1255,6 +1283,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                     convertView = layoutInflater.inflate(R.layout.item_ligne_colis, null);
                     final TextView txt_noDoc = (TextView) convertView.findViewById(R.id.txt_noDoc);
                     final TextView txt_poids = (TextView) convertView.findViewById(R.id.txt_poids);
+                    final TextView txt_ecart = (TextView) convertView.findViewById(R.id.txt_ecart);
                     final TextView txt_no_colis = (TextView) convertView.findViewById(R.id.txt_no_colis);
                     final TextView txt_ean = (TextView) convertView.findViewById(R.id.txt_ean);
                     final TextView txt_qt = (TextView) convertView.findViewById(R.id.txt_qt);
@@ -1278,7 +1307,11 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                         txt_no_command.setText(cr.getString(cr.getColumnIndex("NoCommande")));
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
 
-
+                        float qt=0;
+                        if(cr.getString(cr.getColumnIndex("QuantiteScan"))!="")
+                            qt= Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
+                        float ecart=Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))-qt;
+                        txt_ecart.setText(ecart+"");
                     }
 
 
