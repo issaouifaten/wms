@@ -83,6 +83,13 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
+                        <RadioButton
+                            android:id="@+id/radio_rejected"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="rejecté" />
+
                         <EditText
                             android:id="@+id/edt_qt_scan"
                             android:layout_width="100dp"

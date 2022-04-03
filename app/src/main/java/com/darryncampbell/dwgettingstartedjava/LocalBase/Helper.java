@@ -11,6 +11,7 @@ import com.darryncampbell.dwgettingstartedjava.Model.Client.Client;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.LigneColis;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.LigneColisCreated;
 import com.darryncampbell.dwgettingstartedjava.Model.Colis.PreparationColisLigne;
+import com.darryncampbell.dwgettingstartedjava.Model.Return.LigneSelectReturn;
 import com.darryncampbell.dwgettingstartedjava.Model.Transfert.LigneReturn;
 import com.darryncampbell.dwgettingstartedjava.Model.prelevement.LigneBcPrelevement;
 import com.darryncampbell.dwgettingstartedjava.Model.prelevement.Value;
@@ -23,7 +24,7 @@ import java.util.List;
 public class Helper extends SQLiteOpenHelper {
 
     public Helper(Context context) {
-        super(context, "BaseV16", null, 1);
+        super(context, "BaseV18", null, 1);
     }
 
     //LigneBE_Class(String codeArticle, String designationArticle, String quantite)
@@ -64,9 +65,9 @@ public class Helper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Colis_Created " +
                 "(_id INTEGER PRIMARY KEY,NoDoc TEXT,NoCommande TEXT  ,NoColis TEXT ,PoidsMax TEXT,Statut TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Return " +
-                "(_id INTEGER PRIMARY KEY,NoClient TEXT,Article TEXT  ,Quantite INTEGER)");
+                "(_id INTEGER PRIMARY KEY,NoClient TEXT,Article TEXT  ,Quantite INTEGER, NoDoc TEXT , QuantiteScan INTEGER, EAN TEXT,Rejection BOOLEAN)");
         sqLiteDatabase.execSQL("CREATE TABLE Client_Return " +
-                "(_id INTEGER PRIMARY KEY,NoClient TEXT,Designation TEXT  )");
+                "(_id INTEGER PRIMARY KEY,NoClient TEXT,Designation TEXT,NoDoc TEXT, City TEXT,Address TEXT, PostCode TEXT )");
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Stock " +
                 "(_id INTEGER PRIMARY KEY,FromBin TEXT,Article TEXT  ,Quantite INTEGER  )");
     }
@@ -107,16 +108,24 @@ public class Helper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("NoClient", c.getClient());
         cv.put("Designation", c.getDescription());
+        cv.put("NoDoc", c. getNoDoc());
+        cv.put("Address", c. getAddress());
+        cv.put("PostCode", c. getPostCode());
+        cv.put("City", c. getCity());
 
         db.insert("Client_Return", null, cv);
 
     }
-    public void AddLigneReturn(LigneReturn c) {
+    public void AddLigneReturn(LigneSelectReturn c) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("NoClient", c.getNoClient());
+        cv.put("NoDoc", c.getNoDoc());
         cv.put("Article", c.getArticle());
         cv.put("Quantite", c.getQuantite());
+        cv.put("QuantiteScan", c.getQuantiteScan());
+        cv.put("QuantiteScan", c.getQuantiteScan());
+        cv.put("EAN", c.getEAN());
+        cv.put("Rejection", c.getRejection());
 
         db.insert("Ligne_Return", null, cv);
 
@@ -143,13 +152,16 @@ public class Helper extends SQLiteOpenHelper {
 
     }
 
-    public void UpdateLigneReturn(LigneReturn c) {
+    public void UpdateLigneReturn(LigneSelectReturn c) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("NoClient", c.getNoClient());
+        cv.put("NoDoc", c.getNoDoc());
         cv.put("Article", c.getArticle());
         cv.put("Quantite", c.getQuantite());
+        cv.put("QuantiteScan", c.getQuantiteScan());
 
+        cv.put("EAN", c.getEAN());
+        cv.put("Rejection", c.getRejection());
 
         db.update("Ligne_Return", cv, "Article='" + c.getArticle() + "'", null);
 
@@ -253,6 +265,12 @@ public class Helper extends SQLiteOpenHelper {
     public Cursor getLigneReturn(String code) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM  Ligne_Return WHERE Article='"+code+"'",null);
+        return c;
+
+    }
+    public Cursor getLigneReturnByEAN(String code) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM  Ligne_Return WHERE EAN='"+code+"'",null);
         return c;
 
     }
@@ -789,6 +807,7 @@ public class Helper extends SQLiteOpenHelper {
     }
     //Client_Return
     public void DeleteClientReturn() {
+        Log.d("delete client","deleteclient");
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         db.delete("Client_Return", "", null);

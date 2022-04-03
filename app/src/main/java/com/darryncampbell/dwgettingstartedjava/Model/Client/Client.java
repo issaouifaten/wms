@@ -6,6 +6,7 @@ public class Client {
     String Address;
     String PostCode;
     String City;
+    String NoDoc;
 
     public String getAddress() {
         return Address;
@@ -45,6 +46,14 @@ public class Client {
 
     public void setDescription(String description) {
         Description = description;
+    }
+
+    public String getNoDoc() {
+        return NoDoc;
+    }
+
+    public void setNoDoc(String noDoc) {
+        NoDoc = noDoc;
     }
 
 

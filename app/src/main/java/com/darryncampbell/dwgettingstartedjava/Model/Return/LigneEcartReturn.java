@@ -1,21 +1,22 @@
 package com.darryncampbell.dwgettingstartedjava.Model.Return;
 
-public class LigneSelectReturn {
+public class LigneEcartReturn {
     public String NoDoc;
 
     public String EAN;
     public String Article;
-    public String Quantite;
+    public String QuantiteRejected;
     public String QuantiteScan;
-    public Boolean Rejection;
+    public String QuantitePrevue;
 
-    public LigneSelectReturn(String noDoc, String EAN, String article, String quantite, String quantiteScan, Boolean rejection) {
+
+    public LigneEcartReturn(String noDoc, String EAN, String article, String quantite, String quantiteScan, String quantitePrevue) {
         NoDoc = noDoc;
         this.EAN = EAN;
         Article = article;
-        Quantite = quantite;
+        QuantiteRejected = quantite;
         QuantiteScan = quantiteScan;
-        Rejection = rejection;
+        QuantitePrevue =quantitePrevue;
     }
 
     public String getNoDoc() {
@@ -42,12 +43,12 @@ public class LigneSelectReturn {
         Article = article;
     }
 
-    public String getQuantite() {
-        return Quantite;
+    public String getQuantiteRejected() {
+        return QuantiteRejected;
     }
 
-    public void setQuantite(String quantite) {
-        Quantite = quantite;
+    public void setQuantiteRejected(String quantiteRejected) {
+        QuantiteRejected = quantiteRejected;
     }
 
     public String getQuantiteScan() {
@@ -58,11 +59,11 @@ public class LigneSelectReturn {
         QuantiteScan = quantiteScan;
     }
 
-    public Boolean getRejection() {
-        return Rejection;
+    public String getQuantitePrevue() {
+        return QuantitePrevue;
     }
 
-    public void setRejection(Boolean rejection) {
-        Rejection = rejection;
+    public void setQuantitePrevue(String quantitePrevue) {
+        QuantitePrevue = quantitePrevue;
     }
 }
