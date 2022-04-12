@@ -36,20 +36,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Ignorer les écarts et réceptionner" />
+                    android:background="@color/colorAccent"
+                    android:text="Ignorer les écarts et réceptionner"
+                    android:textColor="@color/colortext" />
+
                 <Button
                     android:id="@+id/bt_option2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Ignorer les écarts et facturer" />
+                    android:background="@color/colorTextMenu"
+                    android:text="Ignorer les écarts et facturer"
+                    android:textColor="@color/colortext" />
+
                 <Button
                     android:id="@+id/bt_option3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Valider et receptionner" />
-
+                    android:background="@color/colorPrimary"
+                    android:text="Valider et receptionner"
+                    android:textColor="@color/colortext" />
 
 
                 <Button
@@ -57,7 +64,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Valider et facturer" />
+                    android:background="@color/colorPrimaryDark"
+                    android:text="Valider et facturer"
+                    android:textColor="@color/colortext" />
             </LinearLayout>
 
 

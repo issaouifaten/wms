@@ -229,6 +229,14 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                             }
                         });
                         alt.setCancelable(false);
+                      alt.setNegativeButton("Annuler",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface di, int i) {
+                                        di.cancel();
+                                    }
+                                });
+
                         final androidx.appcompat.app.AlertDialog d = alt.create();
 
 
