@@ -33,14 +33,15 @@
         </activity>
         <activity
             android:name=".ReturnActivity"
-            android:label="Bon de retour"
+            android:label="Bon retour"
             android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="com.return.action" />
+                <action android:name="com.retour.action" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ColisageActivity"
             android:label="Colisage"

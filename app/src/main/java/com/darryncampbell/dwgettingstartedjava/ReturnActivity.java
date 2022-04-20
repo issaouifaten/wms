@@ -101,7 +101,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         btClient = (Button) findViewById(R.id.bt_client);
-        btScan = (Button) findViewById(R.id.bt_scan);
+        btScan = (Button) findViewById(R.id.btnScan);
         btValid = (Button) findViewById(R.id.bt_valid);
         btCancel = (Button) findViewById(R.id.bt_cancel);
         btSearch = (Button) findViewById(R.id.bt_search);
@@ -123,7 +123,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         baseUrlSelectReturn = getResources().getString(R.string.base_url) + "WmsApp_SalesReturnOrderList?$format=application/json;odata.metadata=none";
         baseUrlLigneSelectReturn = getResources().getString(R.string.base_url) + "WmsApp_SelectedSalesReturnLigne?$format=application/json;odata.metadata=none";
         baseUrlEcartReturn = getResources().getString(R.string.base_url) + "WmsApp_EcartRetour?$format=application/json;odata.metadata=none";
-        DWUtilities.CreateDWProfile(co, "com.return.action");
+        DWUtilities.CreateDWProfile(co, "com.retour.action");
         btScan.setOnTouchListener(this);
         helper = new Helper(getApplicationContext());
         btClient.setOnClickListener(new View.OnClickListener() {
@@ -695,7 +695,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
     public void actionScan(String scan) {
         if (scan != null) {
-            Toast.makeText(getApplicationContext(),scan,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),scan,Toast.LENGTH_SHORT).show();
             if (txtCodeClient.getText().toString().equals("")) {
                 FillListConsultListClient(scan);
             } else {
