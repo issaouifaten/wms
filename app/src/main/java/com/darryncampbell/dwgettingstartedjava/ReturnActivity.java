@@ -313,7 +313,18 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         isNewReturn = true
         ;
     }
-
+    void visibleListScan()
+    {
+        btCancel.setVisibility(View.VISIBLE);
+        btValid.setVisibility(View.VISIBLE);
+        edtReference.setVisibility(View.VISIBLE);
+    }
+    void hideListScan()
+    {
+        btCancel.setVisibility(View.GONE);
+        btValid.setVisibility(View.GONE);
+        edtReference.setVisibility(View.GONE);
+    }
     void initInfo() {
 
         Cursor cr = helper.getClientReturn();
@@ -334,17 +345,19 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 //                }
                 FillListLigneReturn fillListLigneReturn = new FillListLigneReturn("");
                 fillListLigneReturn.execute("");
-
+                visibleListScan();
 
             }
         } else {
             FillListSelectReturn();
+            hideListScan();
         }
 
     }
 
     void FillListConsultArticle(final String scan) {
         try {
+            visibleListScan();
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlConsultArticle;
             progressBar.setVisibility(View.VISIBLE);
@@ -682,6 +695,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
     public void actionScan(String scan) {
         if (scan != null) {
+            Toast.makeText(getApplicationContext(),scan,Toast.LENGTH_SHORT).show();
             if (txtCodeClient.getText().toString().equals("")) {
                 FillListConsultListClient(scan);
             } else {
@@ -927,7 +941,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlSelectReturn;
             progressBar.setVisibility(View.VISIBLE);
-
+            visibleListScan();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -978,14 +992,14 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                             convertView = layoutInflater.inflate(R.layout.item_select_client, null);
                                             final TextView txt_doc = (TextView) convertView.findViewById(R.id.txt_title);
                                             final TextView txt_client = (TextView) convertView.findViewById(R.id.txt_description);
-                                            final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
+                                                   final Button bt_select = (Button) convertView.findViewById(R.id.bt_select);
                                             final LinearLayout layout = (LinearLayout) convertView.findViewById(R.id.layout);
 
                                             final SelectReturn val = finalData.getValue().get(position);
                                             txt_doc.setText(val.getNoDoc());
                                             txt_client.setText(val.getNoClient());
 
-                                            checkBox.setOnClickListener(new View.OnClickListener() {
+                                            bt_select.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
                                                     Client client = new Client();
@@ -1048,7 +1062,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlLigneSelectReturn;
             progressBar.setVisibility(View.VISIBLE);
-
+visibleListScan();
             JSONObject jsonEAN = new JSONObject().put("NoDoc", codeDoc);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", jsonEAN.toString());
@@ -1134,6 +1148,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
     void FillLigneEcartReturn(String codeDoc) {
         try {
+            visibleListScan();
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlEcartReturn;
             progressBar.setVisibility(View.VISIBLE);
