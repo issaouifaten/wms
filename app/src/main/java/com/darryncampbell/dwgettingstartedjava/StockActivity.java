@@ -97,18 +97,18 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
                 alt.setIcon(R.drawable.icon_return);
                 alt.setTitle("Annuler");
                 alt.setMessage("Voulez-vous vraiment annuler l'ajustement?");
-                alt.setPositiveButton("Ok",
+                alt.setNegativeButton("oui",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface di, int i) {
 
                                 helper.DeleteLigneStock();
 
-                                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                                startActivity(intent);
+                                finish();
+                                startActivity(getIntent());
                             }
                         })
-                        .setNegativeButton("Annuler",
+                        . setPositiveButton("non",
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface di, int i) {

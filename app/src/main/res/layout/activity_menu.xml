@@ -209,12 +209,58 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/btn_stock"
+
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        app:cardBackgroundColor="#66FCF9F9"
+                        app:cardCornerRadius="2dp"
+                        app:cardElevation="2dp"
+                        app:cardMaxElevation="6dp"
+                        app:contentPadding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+
+                                android:src="@drawable/icon_stock" />
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"
+                                android:src="@drawable/line_h" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Ajustement stock"
+                                android:textColor="@color/colorTextMenu"
+                                android:textSize="15dp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/btn_prelevement"
 
                         android:layout_width="140dp"
                         android:layout_height="140dp"
                         android:layout_margin="10dp"
                         android:clickable="true"
+                        android:visibility="gone"
                         app:cardBackgroundColor="#66FCF9F9"
                         app:cardCornerRadius="2dp"
                         app:cardElevation="2dp"
@@ -478,50 +524,6 @@
                                 android:gravity="center"
                                 android:text="test"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-
-
-                        </LinearLayout>
-
-
-                    </androidx.cardview.widget.CardView>
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/btn_stock"
-
-                        android:layout_width="140dp"
-                        android:layout_height="140dp"
-                        android:layout_margin="10dp"
-                        android:clickable="true"
-                        app:cardBackgroundColor="#66FCF9F9"
-                        app:cardCornerRadius="2dp"
-                        app:cardElevation="2dp"
-                        app:cardMaxElevation="6dp"
-                        app:contentPadding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-
-                                android:src="@drawable/icon_stock" />
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp"
-                                android:src="@drawable/line_h" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Ajustement stock"
-                                android:textColor="@color/colorTextMenu"
                                 android:textSize="15dp"
                                 android:textStyle="bold" />
 

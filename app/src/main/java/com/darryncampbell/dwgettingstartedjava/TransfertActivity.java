@@ -85,8 +85,8 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                startActivity(intent);
+                finish();
+                startActivity(getIntent());
                 //output.setText("BORANG");
 
                 // searchScanDepot("BORANG");

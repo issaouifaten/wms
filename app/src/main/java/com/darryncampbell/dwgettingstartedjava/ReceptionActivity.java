@@ -176,8 +176,8 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                                 helper.DeleteValideBonCommandReception();
                                 layout_valider.setVisibility(View.GONE);
                                 bt_view.setVisibility(View.VISIBLE);
-                                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                                startActivity(intent);
+                                finish();
+                                startActivity(getIntent());
                             }
                         })
                         .setNegativeButton("Annuler",

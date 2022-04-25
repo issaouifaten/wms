@@ -141,8 +141,8 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                 final AlertDialog.Builder alt = new AlertDialog.Builder(co);
                 alt.setIcon(R.drawable.ison_prelevement);
                 alt.setTitle("Preparation colis");
-                alt.setMessage("Voulez-vous vraiment annuler ce colis");
-                alt.setPositiveButton("Ok",
+                alt.setMessage("Voulez-vous vraiment annuler ce colis ?");
+                alt.setNegativeButton("oui",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface di, int i) {
@@ -151,11 +151,11 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                 helper.DeleteLigneBonCommandPrelevementColisage();
                                 helper.DeleteValideBonCommandPrelevementColisage();
                                 helper.DeleteLigneColisCreated();
-                                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                                startActivity(intent);
+                                finish();
+                                startActivity(getIntent());
                             }
                         })
-                        .setNegativeButton("Annuler",
+                        . setPositiveButton( "non",
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface di, int i) {
