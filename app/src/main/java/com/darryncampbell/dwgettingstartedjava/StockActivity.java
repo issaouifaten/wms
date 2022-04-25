@@ -76,7 +76,7 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
         progressBar.setVisibility(View.GONE);
         baseUrlConsult = getResources().getString(R.string.base_url) + "WmsApp_ConsultItem?$format=application/json;odata.metadata=none";
         baseUrlCreateReturn = getResources().getString(R.string.base_url) + "WmsApp_AdjustItemQty?$format=application/json;odata.metadata=none";
-        btScan = (Button) findViewById(R.id.bt_scan);
+        btScan = (Button) findViewById(R.id.btnScan);
         btCancel = (Button) findViewById(R.id.bt_cancel);
         txtCodeClient = (TextView) findViewById(R.id.txt_code_client);
         txtNomClient = (TextView) findViewById(R.id.txt_nom_client);
@@ -96,7 +96,7 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
                 final AlertDialog.Builder alt = new AlertDialog.Builder(co);
                 alt.setIcon(R.drawable.icon_return);
                 alt.setTitle("Annuler");
-                alt.setMessage("Voulez vous vraiment annuler l'ajustement' ");
+                alt.setMessage("Voulez-vous vraiment annuler l'ajustement?");
                 alt.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
                             @Override

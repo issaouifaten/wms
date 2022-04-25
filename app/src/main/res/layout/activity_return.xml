@@ -69,7 +69,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:ems="10"
-            android:hint="tapez votre référence"
+            android:hint="Tapez la  référence du bon"
             android:inputType="textPersonName" />
 
         <LinearLayout
@@ -127,7 +127,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:padding="2dp"
-                                android:text="-----"
                                 android:textColor="@color/colorTextMenu"
                                 android:textStyle="bold|italic" />
 
@@ -160,18 +159,17 @@
 
                             <TextView
                                 android:id="@+id/txt_nom_client"
-                                android:layout_width="wrap_content"
+                                android:layout_width="258dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:padding="2dp"
-                                android:text="nom"
                                 android:textColor="@color/colorAccent" />
 
                             <TextView
                                 android:id="@+id/txt_no_doc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="doc" />
+                                android:paddingRight="30dp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -230,7 +228,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
-                                android:hint="chercher par GLN"
+                                android:hint="Chercher par GLN ou code"
                                 android:inputType="textPersonName"
                                 android:textSize="12sp" />
 

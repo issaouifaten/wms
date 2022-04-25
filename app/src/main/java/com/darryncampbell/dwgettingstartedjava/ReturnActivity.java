@@ -135,8 +135,8 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     final AlertDialog.Builder alt = new AlertDialog.Builder(co);
                     alt.setIcon(R.drawable.icon_return);
                     alt.setTitle("Annuler");
-                    alt.setMessage("Voulez vous vraiment annuler le bon de retour ");
-                    alt.setPositiveButton("Ok",
+                    alt.setMessage("Voulez-vous vraiment annuler le bon de retour ? ");
+                    alt. setNegativeButton("oui",
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface di, int i) {
@@ -154,7 +154,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                     fillListLigneReturn.execute("");
                                 }
                             })
-                            .setNegativeButton("Annuler",
+                            .setPositiveButton("non",
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface di, int i) {
@@ -185,7 +185,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     if (isEcart) {
                         if(edtReference.getText().toString().equals(""))
                         {
-                           Toast.makeText(getApplicationContext(),"vous devez saisir la référence",Toast.LENGTH_SHORT).show();
+                           Toast.makeText(getApplicationContext(),"vous devez saisir la référence du bon ",Toast.LENGTH_SHORT).show();
                         }else{
                             FillLigneEcartReturn(txtNoDoc.getText().toString());
                         }
@@ -260,7 +260,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                 final AlertDialog.Builder alt = new AlertDialog.Builder(co);
                 alt.setIcon(R.drawable.icon_return);
                 alt.setTitle("Annuler");
-                alt.setMessage("Voulez vous vraiment annuler le bon de retour ");
+                alt.setMessage("Voulez-vous vraiment annuler le bon de retour? ");
                 alt. setNegativeButton("oui",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -831,7 +831,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                             helper.DeleteLigneReturn();
 
 
-                            Toast.makeText(getApplicationContext(), "retour crée avec succés", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Retour créé avec succès", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                             startActivity(intent);
 
@@ -912,7 +912,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                             helper.DeleteLigneReturn();
 
 
-                            Toast.makeText(getApplicationContext(), "retour crée avec succés", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Retour créé avec succès", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                             startActivity(intent);
 

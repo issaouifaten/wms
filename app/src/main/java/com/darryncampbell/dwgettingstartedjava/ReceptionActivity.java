@@ -165,7 +165,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                 final AlertDialog.Builder alt = new AlertDialog.Builder(co);
                 alt.setIcon(R.drawable.icon_reception);
                 alt.setTitle("Reception");
-                alt.setMessage("Voulez vous vraiment annuler ce reception");
+                alt.setMessage("Voulez-vous vraiment annuler ce reception?");
                 alt.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
                             @Override

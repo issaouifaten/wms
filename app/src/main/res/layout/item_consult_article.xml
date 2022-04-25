@@ -25,20 +25,40 @@
                 android:layout_margin="2dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txt_title_100"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="2dp"
-                    android:text="title"
-                    android:textColor="@color/colorTextMenu" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Titre"
+                        android:textStyle="bold|italic" />
+
+                    <TextView
+                        android:id="@+id/txt_title_100"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="2dp"
+                        android:text="title"
+                        android:textColor="@color/colorTextMenu" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Code "
+                        android:textStyle="bold|italic" />
 
                     <TextView
                         android:id="@+id/txt_item_num"
@@ -86,37 +106,62 @@
                         android:layout_weight="1"
                         android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center"
-
-                            android:src="@drawable/icon_depot" />
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/txt_location_code"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center_vertical"
-                                android:paddingLeft="12dp"
-                                android:text="Article"
-                                android:textColor="@android:color/background_dark" />
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
 
-                            <TextView
-                                android:id="@+id/txt_bin_code"
+                                <TextView
+                                    android:id="@+id/textView18"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Code pièce"
+                                    android:textStyle="bold|italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_bin_code"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="left"
+                                    android:paddingLeft="12dp"
+                                    android:text="Article"
+                                    android:textColor="@android:color/background_dark" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="left"
-                                android:paddingLeft="12dp"
-                                android:text="Article"
-                                android:textColor="@android:color/background_dark" />
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView17"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Entrepot"
+                                    android:textStyle="bold|italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_location_code"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="12dp"
+                                    android:text="Article"
+                                    android:textColor="@android:color/background_dark" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
@@ -134,16 +179,29 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/txt_poids"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:elevation="15dp"
-                            android:gravity="center"
-                            android:text="100"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="16dp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textView20"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Disponible"
+                                android:textStyle="bold|italic" />
+
+                            <TextView
+                                android:id="@+id/txt_poids"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:elevation="15dp"
+                                android:gravity="center"
+                                android:text="100"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <ImageView
                             android:layout_width="45dp"
@@ -151,6 +209,14 @@
                             android:layout_gravity="center"
 
                             android:src="@drawable/line_h" />
+
+                        <TextView
+                            android:id="@+id/textView19"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Capacité"
+                            android:textStyle="bold|italic" />
 
                         <TextView
                             android:id="@+id/txt_capacite"

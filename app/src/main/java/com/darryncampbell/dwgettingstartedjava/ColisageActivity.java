@@ -141,7 +141,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                 final AlertDialog.Builder alt = new AlertDialog.Builder(co);
                 alt.setIcon(R.drawable.ison_prelevement);
                 alt.setTitle("Preparation colis");
-                alt.setMessage("Voulez vous vraiment annuler ce colis");
+                alt.setMessage("Voulez-vous vraiment annuler ce colis");
                 alt.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
                             @Override

@@ -180,7 +180,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                 final AlertDialog.Builder alt = new AlertDialog.Builder(co);
                 alt.setIcon(R.drawable.ison_prelevement);
                 alt.setTitle("Prélèvement");
-                alt.setMessage("Voulez vous vraiment annuler ce prélèvement");
+                alt.setMessage("Voulez-vous vraiment annuler ce prélèvement ?");
                 alt.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
                             @Override

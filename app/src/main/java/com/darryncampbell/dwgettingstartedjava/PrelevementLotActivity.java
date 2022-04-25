@@ -131,8 +131,8 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                 final AlertDialog.Builder alt = new AlertDialog.Builder(co);
                 alt.setIcon(R.drawable.ison_prelevement);
                 alt.setTitle("Prélèvement");
-                alt.setMessage("Voulez vous vraiment annuler ce prélèvement");
-                alt.setPositiveButton("Ok",
+                alt.setMessage("Voulez-vous vraiment annuler ce prélèvement ?");
+                alt. setNegativeButton("oui",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface di, int i) {
@@ -140,11 +140,11 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                 helper.DeleteListBonCommandPrelevementLot();
                                 helper.DeleteLigneBonCommandPrelevementLot();
                                 helper.DeleteValideBonCommandPrelevementLot();
-                                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                                startActivity(intent);
+                                finish();
+                                startActivity(getIntent());
                             }
                         })
-                        .setNegativeButton("Annuler",
+                        .setPositiveButton("non",
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface di, int i) {
@@ -820,7 +820,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
                             if (qt > Float.parseFloat(txt_qt.getText().toString())) {
                                 mediaPlayerStart();
-                                Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                             } else {
                                 edt_qt_scan.setText("" + qt);
                                 helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
@@ -835,7 +835,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             qt++;
 
                             if (qt > Float.parseFloat(txt_qt.getText().toString())) {
-                                Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                 mediaPlayerStart();
                             } else {
                                 edt_qt_scan.setText("" + qt);
@@ -863,7 +863,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                 if (!s.equals("")) {
                                     float qt = Float.valueOf(edt_qt_scan.getText().toString());
                                     if (qt > Float.parseFloat(txt_qt.getText().toString())) {
-                                        Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                         mediaPlayerStart();
                                     } else {
                                         helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
@@ -1105,11 +1105,11 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         if (Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan"))) >
                                 Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))) {
                             mediaPlayerStart();
-                            Toast.makeText(getApplicationContext(), "depassement quantité", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                             helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), cr.getString(cr.getColumnIndex("Quantite"))));
 
                         } else {
-                            Toast.makeText(getApplicationContext(), "pas quantité", Toast.LENGTH_SHORT).show();
+
 
                         }
 
@@ -1123,7 +1123,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                 if (!s.equals("")) {
                                     float qt = Float.valueOf(edt_qt_scan.getText().toString());
                                     if (qt > Float.parseFloat(txt_qt.getText().toString())) {
-                                        Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                         mediaPlayerStart();
                                     } else {
 
@@ -1146,7 +1146,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                 qt = 0;
                             }
                             if (qt > Float.parseFloat(txt_qt.getText().toString())) {
-                                Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                 mediaPlayerStart();
                             } else {
                                 edt_qt_scan.setText("" + qt);
@@ -1163,7 +1163,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
 
                             if (qt > Float.parseFloat(txt_qt.getText().toString())) {
-                                Toast.makeText(getApplicationContext(), "dépassement quantité", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                 mediaPlayerStart();
                             } else {
                                 edt_qt_scan.setText("" + qt);
