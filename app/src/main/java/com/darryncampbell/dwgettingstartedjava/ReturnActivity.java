@@ -641,9 +641,16 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
                                     float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                                    float qtPrevu = Float.valueOf(txt_qt.getText().toString());
+                                    if(qt > qtPrevu)
+                                    {mediaPlayerStart(true);
+                                        edt_qt_scan.setText(qtPrevu+"");
+                                        Toast.makeText(getApplicationContext(), "Quantite dépassé"  , Toast.LENGTH_SHORT).show();
 
+                                    }else{
                                     helper.UpdateLigneReturn(new LigneSelectReturn(txt_doc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), "" + qt, radio_rejected.isChecked()));
 
+                                }
                                 }
                             }
                             return false;
@@ -717,20 +724,27 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     if (cr.getCount() > 0) {
                         cr.move(1);
                         float qt = Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan"))) + 1;
-                        helper.UpdateLigneReturn(new LigneSelectReturn(cr.getString(cr.getColumnIndex("NoDoc")),
-                                cr.getString(cr.getColumnIndex("EAN")),
-                                cr.getString(cr.getColumnIndex("Article")),
-                                cr.getString(cr.getColumnIndex("Quantite")), "" + qt,
-                                cr.getInt(cr.getColumnIndex("Rejection")) > 0
-                        ));
-                        if (cr.getInt(cr.getColumnIndex("Rejection")) > 0) {
-                            mediaPlayerStart(false);
+                        float qtPrevu = Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")));
+
+                        if(qt > qtPrevu)
+                        {mediaPlayerStart(true);
+                            Toast.makeText(getApplicationContext(), "Quantite dépassé"  , Toast.LENGTH_SHORT).show();
+
+                        }else {
+                            helper.UpdateLigneReturn(new LigneSelectReturn(cr.getString(cr.getColumnIndex("NoDoc")),
+                                    cr.getString(cr.getColumnIndex("EAN")),
+                                    cr.getString(cr.getColumnIndex("Article")),
+                                    cr.getString(cr.getColumnIndex("Quantite")), "" + qt,
+                                    cr.getInt(cr.getColumnIndex("Rejection")) > 0
+                            ));
+                            if (cr.getInt(cr.getColumnIndex("Rejection")) > 0) {
+                                mediaPlayerStart(false);
+
+                            }
 
                         }
                         FillListLigneReturn fillListLigneReturn = new FillListLigneReturn(scan);
                         fillListLigneReturn.execute("");
-
-
                     } else {
                         mediaPlayerStart(true);
                         Toast.makeText(getApplicationContext(), "Cet article n'existe pas dans le bon de retour Num:" + txtNoDoc.getText().toString(), Toast.LENGTH_SHORT).show();
