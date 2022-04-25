@@ -84,13 +84,14 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     ProgressBar progressBar;
     Helper helper;
 
+
     androidx.appcompat.app.AlertDialog.Builder altGlobal;
     View px;
     EditText edtQt;
     EditText edtGln;
     EditText edtReference;
     androidx.appcompat.app.AlertDialog dialog;
-    LinearLayout layoutClient;
+    LinearLayout layoutClient, layoutInfo;
     Boolean isNewReturn = false;
     Boolean isEcart = true;
 
@@ -116,6 +117,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         edtGln = (EditText) findViewById(R.id.edt_gln);
         edtReference = (EditText) findViewById(R.id.edt_reference);
         layoutClient = (LinearLayout) findViewById(R.id.layout_client);
+        layoutInfo = (LinearLayout) findViewById(R.id.layout);
         baseUrlListClient = getResources().getString(R.string.base_url) + "WmsApp_GetCustomerFromGLN?$format=application/json;odata.metadata=none";
         baseUrlConsultArticle = getResources().getString(R.string.base_url) + "WmsApp_GetReturnItem?$format=application/json;odata.metadata=none";
         baseUrlCreateReturn = getResources().getString(R.string.base_url) + "WmsApp_CreateReturn?$format=application/json;odata.metadata=none";
@@ -266,8 +268,8 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
                                 helper.DeleteLigneReturn();
                                 helper.DeleteClientReturn();
-                                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                                startActivity(intent);
+                                finish();
+                                startActivity(getIntent());
                             }
                         })
                         .setNegativeButton("Annuler",
@@ -308,19 +310,25 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     }
 
     void initNewReturn() {
+        Log.d("VI","initNewReturn");
         layoutClient.setVisibility(View.VISIBLE);
+        layoutInfo.setVisibility(View.VISIBLE);
         btClient.setVisibility(View.VISIBLE);
-        isNewReturn = true
-        ;
+        isNewReturn = true        ;
     }
     void visibleListScan()
     {
+        Log.d("VI","visibleListScan");
+
+        layoutInfo.setVisibility(View.VISIBLE);
         btCancel.setVisibility(View.VISIBLE);
         btValid.setVisibility(View.VISIBLE);
         edtReference.setVisibility(View.VISIBLE);
     }
     void hideListScan()
     {
+        Log.d("VI","hideListScan");
+        layoutInfo.setVisibility(View.GONE);
         btCancel.setVisibility(View.GONE);
         btValid.setVisibility(View.GONE);
         edtReference.setVisibility(View.GONE);
@@ -940,6 +948,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         try {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlSelectReturn;
+            Log.d("****url",url);
             progressBar.setVisibility(View.VISIBLE);
             visibleListScan();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
@@ -992,12 +1001,14 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                             convertView = layoutInflater.inflate(R.layout.item_select_client, null);
                                             final TextView txt_doc = (TextView) convertView.findViewById(R.id.txt_title);
                                             final TextView txt_client = (TextView) convertView.findViewById(R.id.txt_description);
+                                            final TextView txt_rs = (TextView) convertView.findViewById(R.id.txt_rs);
                                                    final Button bt_select = (Button) convertView.findViewById(R.id.bt_select);
                                             final LinearLayout layout = (LinearLayout) convertView.findViewById(R.id.layout);
 
                                             final SelectReturn val = finalData.getValue().get(position);
                                             txt_doc.setText(val.getNoDoc());
                                             txt_client.setText(val.getNoClient());
+                                            txt_rs.setText(val.getNomClient());
 
                                             bt_select.setOnClickListener(new View.OnClickListener() {
                                                 @Override
@@ -1005,8 +1016,10 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                                     Client client = new Client();
                                                     client.setNoDoc(txt_doc.getText().toString());
                                                     client.setClient(txt_client.getText().toString());
+                                                    client.setDescription(txt_rs.getText().toString());
                                                     txtCodeClient.setText(txt_client.getText().toString());
                                                     txtNoDoc.setText(txt_doc.getText().toString());
+                                                    txtNomClient.setText(txt_rs.getText().toString());
 
                                                     helper.AddClient(client);
 

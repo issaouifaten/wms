@@ -8,6 +8,8 @@ public class Client {
     String City;
     String NoDoc;
 
+
+
     public String getAddress() {
         return Address;
     }

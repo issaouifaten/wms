@@ -53,16 +53,35 @@
                             android:gravity="fill_vertical"
                             android:text="TextView"
                             android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:text="EAN"
+                            android:textStyle="bold|italic" />
 
                         <TextView
                             android:id="@+id/txt_ean"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_weight="1"
                             android:paddingLeft="2dp"
                             android:text="TextView"
                             android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginRight="2dp"
+                            android:text="Article"
+                            android:textStyle="bold|italic" />
 
                         <TextView
                             android:id="@+id/txt_code_article"
@@ -89,7 +108,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="rejeté" />
+                            android:text="rejeté"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginRight="2dp"
+                            android:text="Scanné"
+                            android:textStyle="bold|italic" />
 
                         <EditText
                             android:id="@+id/edt_qt_scan"
@@ -102,6 +131,16 @@
                             android:gravity="center"
                             android:inputType="number|numberDecimal"
                             android:text="0" />
+
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginRight="2dp"
+                            android:text="/"
+                            android:textSize="24sp"
+                            android:textStyle="bold|italic" />
 
                         <LinearLayout
                             android:layout_width="40dp"
