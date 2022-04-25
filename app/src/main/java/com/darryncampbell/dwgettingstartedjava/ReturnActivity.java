@@ -261,7 +261,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                 alt.setIcon(R.drawable.icon_return);
                 alt.setTitle("Annuler");
                 alt.setMessage("Voulez vous vraiment annuler le bon de retour ");
-                alt.setPositiveButton("Ok",
+                alt. setNegativeButton("oui",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface di, int i) {
@@ -272,7 +272,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                 startActivity(getIntent());
                             }
                         })
-                        .setNegativeButton("Annuler",
+                        .setPositiveButton("non",
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface di, int i) {
