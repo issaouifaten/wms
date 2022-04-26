@@ -8,14 +8,24 @@ public class LigneSelectReturn {
     public String Quantite;
     public String QuantiteScan;
     public Boolean Rejection;
+    public Boolean Damaged;
 
-    public LigneSelectReturn(String noDoc, String EAN, String article, String quantite, String quantiteScan, Boolean rejection) {
+    public Boolean getDamaged() {
+        return Damaged;
+    }
+
+    public void setDamaged(Boolean damaged) {
+        Damaged = damaged;
+    }
+
+    public LigneSelectReturn(String noDoc, String EAN, String article, String quantite, String quantiteScan, Boolean rejection, Boolean damaged) {
         NoDoc = noDoc;
         this.EAN = EAN;
         Article = article;
         Quantite = quantite;
         QuantiteScan = quantiteScan;
         Rejection = rejection;
+        Damaged = damaged;
     }
 
     public String getNoDoc() {

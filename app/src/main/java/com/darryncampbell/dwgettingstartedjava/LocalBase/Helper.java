@@ -24,7 +24,7 @@ import java.util.List;
 public class Helper extends SQLiteOpenHelper {
 
     public Helper(Context context) {
-        super(context, "BaseV18", null, 1);
+        super(context, "BaseV19", null, 1);
     }
 
     //LigneBE_Class(String codeArticle, String designationArticle, String quantite)
@@ -65,7 +65,8 @@ public class Helper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Colis_Created " +
                 "(_id INTEGER PRIMARY KEY,NoDoc TEXT,NoCommande TEXT  ,NoColis TEXT ,PoidsMax TEXT,Statut TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Return " +
-                "(_id INTEGER PRIMARY KEY,NoClient TEXT,Article TEXT  ,Quantite INTEGER, NoDoc TEXT , QuantiteScan INTEGER, EAN TEXT,Rejection BOOLEAN)");
+                "(_id INTEGER PRIMARY KEY,NoClient TEXT,Article TEXT  ,Quantite INTEGER, NoDoc TEXT , QuantiteScan INTEGER, EAN TEXT,Rejection BOOLEAN" +
+                ",Damaged BOOLEAN )");
         sqLiteDatabase.execSQL("CREATE TABLE Client_Return " +
                 "(_id INTEGER PRIMARY KEY,NoClient TEXT,Designation TEXT,NoDoc TEXT, City TEXT,Address TEXT, PostCode TEXT )");
         sqLiteDatabase.execSQL("CREATE TABLE Ligne_Stock " +
@@ -126,6 +127,7 @@ public class Helper extends SQLiteOpenHelper {
         cv.put("QuantiteScan", c.getQuantiteScan());
         cv.put("EAN", c.getEAN());
         cv.put("Rejection", c.getRejection());
+        cv.put("Damaged", c.getDamaged());
 
         db.insert("Ligne_Return", null, cv);
 
@@ -162,6 +164,7 @@ public class Helper extends SQLiteOpenHelper {
 
         cv.put("EAN", c.getEAN());
         cv.put("Rejection", c.getRejection());
+        cv.put("Damaged", c.getDamaged());
 
         db.update("Ligne_Return", cv, "Article='" + c.getArticle() + "'", null);
 

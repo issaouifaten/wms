@@ -104,6 +104,13 @@
                         android:orientation="horizontal">
 
                         <RadioButton
+                            android:id="@+id/rd_damaged"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Endommagé" />
+
+                        <RadioButton
                             android:id="@+id/radio_rejected"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

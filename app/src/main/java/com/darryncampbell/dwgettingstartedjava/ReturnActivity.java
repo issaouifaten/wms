@@ -70,6 +70,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     Button btValid;
     Button btCancel;
     Button btSearch;
+    Button bt_ecart;
     Button btList;
     TextView txtCodeClient, txtNomClient, txtCodePostalClient, txtCityClient, txtAdressClient, txtNoDoc;
     GridView gridReturn;
@@ -91,7 +92,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     EditText edtGln;
     EditText edtReference;
     androidx.appcompat.app.AlertDialog dialog;
-    LinearLayout layoutClient, layoutInfo;
+    LinearLayout layoutClient, layoutInfo, layout_search;
     Boolean isNewReturn = false;
     Boolean isEcart = true;
 
@@ -106,6 +107,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         btValid = (Button) findViewById(R.id.bt_valid);
         btCancel = (Button) findViewById(R.id.bt_cancel);
         btSearch = (Button) findViewById(R.id.bt_search);
+        bt_ecart = (Button) findViewById(R.id.bt_ecart);
         btList = (Button) findViewById(R.id.bt_list);
         txtAdressClient = (TextView) findViewById(R.id.txt_address);
         txtCodePostalClient = (TextView) findViewById(R.id.txt_code_postal);
@@ -118,6 +120,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         edtReference = (EditText) findViewById(R.id.edt_reference);
         layoutClient = (LinearLayout) findViewById(R.id.layout_client);
         layoutInfo = (LinearLayout) findViewById(R.id.layout);
+        layout_search = (LinearLayout) findViewById(R.id.layout_search);
         baseUrlListClient = getResources().getString(R.string.base_url) + "WmsApp_GetCustomerFromGLN?$format=application/json;odata.metadata=none";
         baseUrlConsultArticle = getResources().getString(R.string.base_url) + "WmsApp_GetReturnItem?$format=application/json;odata.metadata=none";
         baseUrlCreateReturn = getResources().getString(R.string.base_url) + "WmsApp_CreateReturn?$format=application/json;odata.metadata=none";
@@ -136,7 +139,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     alt.setIcon(R.drawable.icon_return);
                     alt.setTitle("Annuler");
                     alt.setMessage("Voulez-vous vraiment annuler le bon de retour ? ");
-                    alt. setNegativeButton("oui",
+                    alt.setNegativeButton("oui",
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface di, int i) {
@@ -182,68 +185,80 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             @Override
             public void onClick(View view) {
                 if (helper.getListLigneReturn().getCount() > 0) {
-                    if (isEcart) {
-                        if(edtReference.getText().toString().equals(""))
-                        {
-                           Toast.makeText(getApplicationContext(),"vous devez saisir la référence du bon ",Toast.LENGTH_SHORT).show();
-                        }else{
-                            FillLigneEcartReturn(txtNoDoc.getText().toString());
+                    //choices
+                    LayoutInflater li = LayoutInflater.from(co);
+                    View px = li.inflate(R.layout.item_action_return, null);
+                    final androidx.appcompat.app.AlertDialog.Builder alt = new androidx.appcompat.app.AlertDialog.Builder(co);
+                    alt.setIcon(R.drawable.icon_article);
+                    alt.setTitle("Valider ");
+                    alt.setView(px);
+
+                    // connectionClass = new ConnectionClass();
+
+                    final Button option1 = (Button) px.findViewById(R.id.bt_option1);
+                    final Button option2 = (Button) px.findViewById(R.id.bt_option2);
+                    final Button option3 = (Button) px.findViewById(R.id.bt_option3);
+                    final Button option4 = (Button) px.findViewById(R.id.bt_option4);
+                    option1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ValidReturn("1");
                         }
+                    });
 
+                    option2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ValidReturn("2");
+                        }
+                    });
+                    option3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ValidReturn("3");
+                        }
+                    });
+                    option4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ValidReturn("4");
+                        }
+                    });
+                    alt.setCancelable(false);
+                    alt.setNegativeButton("Annuler",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface di, int i) {
+                                    di.cancel();
+                                }
+                            });
+
+                    final androidx.appcompat.app.AlertDialog d = alt.create();
+
+
+                    d.show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Entrer des articles d'abord", Toast.LENGTH_LONG).show();
+                }
+                //   FillListConsultListClient("3025591324608");
+
+                // FillListConsultArticle("9782129822910");
+
+
+            }
+        });
+        bt_ecart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (helper.getListLigneReturn().getCount() > 0) {
+
+                    if (edtReference.getText().toString().equals("")) {
+                        Toast.makeText(getApplicationContext(), "vous devez saisir la référence du bon ", Toast.LENGTH_SHORT).show();
                     } else {
-                        //choices
-                        LayoutInflater li = LayoutInflater.from(co);
-                        View px = li.inflate(R.layout.item_action_return, null);
-                        final androidx.appcompat.app.AlertDialog.Builder alt = new androidx.appcompat.app.AlertDialog.Builder(co);
-                        alt.setIcon(R.drawable.icon_article);
-                        alt.setTitle("Valider ");
-                        alt.setView(px);
-
-                        // connectionClass = new ConnectionClass();
-
-                        final Button option1 = (Button) px.findViewById(R.id.bt_option1);
-                        final Button option2 = (Button) px.findViewById(R.id.bt_option2);
-                        final Button option3 = (Button) px.findViewById(R.id.bt_option3);
-                        final Button option4 = (Button) px.findViewById(R.id.bt_option4);
-                        option1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ValidReturn("1");
-                            }
-                        });
-
-                        option2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ValidReturn("2");
-                            }
-                        });
-                        option3.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ValidReturn("3");
-                            }
-                        });
-                        option4.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ValidReturn("4");
-                            }
-                        });
-                        alt.setCancelable(false);
-                      alt.setNegativeButton("Annuler",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface di, int i) {
-                                        di.cancel();
-                                    }
-                                });
-
-                        final androidx.appcompat.app.AlertDialog d = alt.create();
-
-
-                        d.show();
+                        FillLigneEcartReturn(txtNoDoc.getText().toString());
                     }
+
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Entrer des articles d'abord", Toast.LENGTH_LONG).show();
                 }
@@ -261,7 +276,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                 alt.setIcon(R.drawable.icon_return);
                 alt.setTitle("Annuler");
                 alt.setMessage("Voulez-vous vraiment annuler le bon de retour? ");
-                alt. setNegativeButton("oui",
+                alt.setNegativeButton("oui",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface di, int i) {
@@ -310,34 +325,39 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
     }
 
     void initNewReturn() {
-        Log.d("VI","initNewReturn");
+        Log.d("VI", "initNewReturn");
         layoutClient.setVisibility(View.VISIBLE);
         layoutInfo.setVisibility(View.VISIBLE);
         btClient.setVisibility(View.VISIBLE);
-        isNewReturn = true        ;
+        isNewReturn = true;
     }
-    void visibleListScan()
-    {
-        Log.d("VI","visibleListScan");
+
+    void visibleListScan() {
+        Log.d("VI", "visibleListScan");
 
         layoutInfo.setVisibility(View.VISIBLE);
         btCancel.setVisibility(View.VISIBLE);
         btValid.setVisibility(View.VISIBLE);
+        bt_ecart.setVisibility(View.VISIBLE);
         edtReference.setVisibility(View.VISIBLE);
+        layout_search.setVisibility(View.GONE);
     }
-    void hideListScan()
-    {
-        Log.d("VI","hideListScan");
+
+    void hideListScan() {
+        Log.d("VI", "hideListScan");
         layoutInfo.setVisibility(View.GONE);
         btCancel.setVisibility(View.GONE);
         btValid.setVisibility(View.GONE);
+        bt_ecart.setVisibility(View.GONE);
         edtReference.setVisibility(View.GONE);
+        layout_search.setVisibility(View.VISIBLE);
     }
+
     void initInfo() {
 
         Cursor cr = helper.getClientReturn();
         Log.d("getClient", cr.getCount() + "");
-        if (cr.getCount() >0) {
+        if (cr.getCount() > 0) {
             if (cr.move(1)) {
                 txtCodeClient.setText(cr.getString(cr.getColumnIndex("NoClient")));
                 txtNomClient.setText(cr.getString(cr.getColumnIndex("Designation")));
@@ -351,6 +371,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 //                {
 //                    initNewReturn();
 //                }
+
                 FillListLigneReturn fillListLigneReturn = new FillListLigneReturn("");
                 fillListLigneReturn.execute("");
                 visibleListScan();
@@ -408,7 +429,8 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                                 cr.getString(cr.getColumnIndex("EAN")),
                                                 cr.getString(cr.getColumnIndex("Article")),
                                                 cr.getString(cr.getColumnIndex("Quantite")), "" + qt,
-                                                cr.getInt(cr.getColumnIndex("Rejection")) > 0
+                                                cr.getInt(cr.getColumnIndex("Rejection")) > 0,
+                                                cr.getInt(cr.getColumnIndex("Damaged")) > 0
                                         ));
                                         if (cr.getInt(cr.getColumnIndex("Rejection")) > 0) {
                                             mediaPlayerStart(false);
@@ -419,7 +441,8 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
 
 
                                     } else {
-                                        helper.AddLigneReturn(new LigneSelectReturn("", scan, article.getArticle(), "0", "1", article.getRejection()));
+                                        helper.AddLigneReturn(new LigneSelectReturn("", scan, article.getArticle(), "0",
+                                                "1", article.getRejection(), false));
                                         FillListLigneReturn fillListLigneReturn = new FillListLigneReturn(scan);
                                         fillListLigneReturn.execute("");
 
@@ -619,7 +642,18 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     final TextView txt_qt = (TextView) convertView.findViewById(R.id.txt_qt);
                     final EditText edt_qt_scan = (EditText) convertView.findViewById(R.id.edt_qt_scan);
                     final RadioButton radio_rejected = (RadioButton) convertView.findViewById(R.id.radio_rejected);
-
+                    final RadioButton rd_damaged = (RadioButton) convertView.findViewById(R.id.rd_damaged);
+                    if (isNewReturn) {
+                        txt_qt.setVisibility(View.GONE);
+                    }
+                    rd_damaged.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            helper.UpdateLigneReturn(new LigneSelectReturn(txt_doc.getText().toString(), txt_ean.getText().toString(),
+                                    txt_code_article.getText().toString(), txt_qt.getText().toString(), edt_qt_scan.getText().toString(),
+                                    radio_rejected.isChecked(), rd_damaged.isChecked()));
+                        }
+                    });
                     cr = helper.getListLigneReturn();
                     if (cr.move(pos + 1)) {
 
@@ -629,6 +663,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         txt_doc.setText(cr.getString(cr.getColumnIndex("NoDoc")));
                         txt_code_article.setText(cr.getString(cr.getColumnIndex("Article")));
                         radio_rejected.setChecked(cr.getInt(cr.getColumnIndex("Rejection")) > 0);
+                        rd_damaged.setChecked(cr.getInt(cr.getColumnIndex("Damaged")) > 0);
 
                     }
 
@@ -642,15 +677,17 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                 if (!s.equals("")) {
                                     float qt = Float.valueOf(edt_qt_scan.getText().toString());
                                     float qtPrevu = Float.valueOf(txt_qt.getText().toString());
-                                    if(qt > qtPrevu)
-                                    {mediaPlayerStart(true);
-                                        edt_qt_scan.setText(qtPrevu+"");
-                                        Toast.makeText(getApplicationContext(), "Quantite dépassé"  , Toast.LENGTH_SHORT).show();
+                                    if (qt > qtPrevu) {
+                                        mediaPlayerStart(true);
+                                        edt_qt_scan.setText(qtPrevu + "");
+                                        Toast.makeText(getApplicationContext(), "Quantite dépassé", Toast.LENGTH_SHORT).show();
 
-                                    }else{
-                                    helper.UpdateLigneReturn(new LigneSelectReturn(txt_doc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_qt.getText().toString(), "" + qt, radio_rejected.isChecked()));
+                                    } else {
+                                        helper.UpdateLigneReturn(new LigneSelectReturn(txt_doc.getText().toString(), txt_ean.getText().toString(),
+                                                txt_code_article.getText().toString(), txt_qt.getText().toString(), "" + qt,
+                                                radio_rejected.isChecked(), rd_damaged.isChecked()));
 
-                                }
+                                    }
                                 }
                             }
                             return false;
@@ -716,7 +753,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             } else {
                 if (isNewReturn) {
 
-                        FillListConsultArticle(scan);
+                    FillListConsultArticle(scan);
 
 
                 } else {
@@ -726,16 +763,17 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         float qt = Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan"))) + 1;
                         float qtPrevu = Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")));
 
-                        if(qt > qtPrevu)
-                        {mediaPlayerStart(true);
-                            Toast.makeText(getApplicationContext(), "Quantite dépassé"  , Toast.LENGTH_SHORT).show();
+                        if (qt > qtPrevu) {
+                            mediaPlayerStart(true);
+                            Toast.makeText(getApplicationContext(), "Quantite dépassé", Toast.LENGTH_SHORT).show();
 
-                        }else {
+                        } else {
                             helper.UpdateLigneReturn(new LigneSelectReturn(cr.getString(cr.getColumnIndex("NoDoc")),
                                     cr.getString(cr.getColumnIndex("EAN")),
                                     cr.getString(cr.getColumnIndex("Article")),
                                     cr.getString(cr.getColumnIndex("Quantite")), "" + qt,
-                                    cr.getInt(cr.getColumnIndex("Rejection")) > 0
+                                    cr.getInt(cr.getColumnIndex("Rejection")) > 0,
+                                    cr.getInt(cr.getColumnIndex("Damaged")) > 0
                             ));
                             if (cr.getInt(cr.getColumnIndex("Rejection")) > 0) {
                                 mediaPlayerStart(false);
@@ -889,6 +927,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     JSONObject obj = new JSONObject().put("NoDoc", txtNoDoc.getText().toString())
                             .put("Quantite", cr.getString(cr.getColumnIndex("QuantiteScan")))
                             .put("Article", cr.getString(cr.getColumnIndex("Article")))
+                            .put("Damaged", cr.getString(cr.getColumnIndex("Damaged")))
                             .put("Option", option);
 
                     arrayJson.put(obj);
@@ -962,7 +1001,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
         try {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlSelectReturn;
-            Log.d("****url",url);
+            Log.d("****url", url);
             progressBar.setVisibility(View.VISIBLE);
             visibleListScan();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
@@ -1016,7 +1055,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                             final TextView txt_doc = (TextView) convertView.findViewById(R.id.txt_title);
                                             final TextView txt_client = (TextView) convertView.findViewById(R.id.txt_description);
                                             final TextView txt_rs = (TextView) convertView.findViewById(R.id.txt_rs);
-                                                   final Button bt_select = (Button) convertView.findViewById(R.id.bt_select);
+                                            final Button bt_select = (Button) convertView.findViewById(R.id.bt_select);
                                             final LinearLayout layout = (LinearLayout) convertView.findViewById(R.id.layout);
 
                                             final SelectReturn val = finalData.getValue().get(position);
@@ -1089,7 +1128,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlLigneSelectReturn;
             progressBar.setVisibility(View.VISIBLE);
-visibleListScan();
+            visibleListScan();
             JSONObject jsonEAN = new JSONObject().put("NoDoc", codeDoc);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", jsonEAN.toString());
@@ -1217,7 +1256,7 @@ visibleListScan();
                                 JSONObject jsonList = new JSONObject().put("value", array);
 
                                 isEcart = false;
-                                btValid.setText("valider");
+
                                 Gson gson = new Gson();
                                 data = gson.fromJson(jsonList.toString(), ListEcartReturn.class);
                                 final ListEcartReturn finalData = data;
