@@ -67,7 +67,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
     String baseUrlCreatePrelevement = "";
     String baseUrlCreatePrelevementFacture = "";
     String baseUrlListBC = "";
-    LinearLayout layout_scan;
+    LinearLayout layout_scan,layout_action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +81,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
         grid_prelevement = (GridView) findViewById(R.id.grid_prelevement);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         layout_scan = (LinearLayout) findViewById(R.id.layout_scan);
+        layout_action = (LinearLayout) findViewById(R.id.layout_action);
         output = findViewById(R.id.txtOutput);
         helper = new Helper(getApplicationContext());
 
@@ -118,10 +119,12 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             FillListLignePrelevement fillListLignePrelevement = new FillListLignePrelevement();
             fillListLignePrelevement.execute("");
             layout_scan.setVisibility(View.VISIBLE);
+            layout_action.setVisibility(View.VISIBLE);
 
         } else {
             FillListBonCommande();
             layout_scan.setVisibility(View.GONE);
+            layout_action.setVisibility(View.GONE);
         }
         btnDelete = (Button) findViewById(R.id.bt_delete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -251,6 +254,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                                 helper.AddBonCommandePrelevementLot(val);
                                                 FillLigneBonCommande();
                                                 layout_scan.setVisibility(View.VISIBLE);
+                                                layout_action.setVisibility(View.VISIBLE);
                                                 btdelete.setVisibility(View.VISIBLE);
                                                 btplus.setVisibility(View.GONE);
                                             }
@@ -795,9 +799,9 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         txt_piece.setText(cr.getString(cr.getColumnIndex("Piece")));
                         txt_ean.setText(cr.getString(cr.getColumnIndex("EAN")));
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
-
-                        if (Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan"))) >
-                                Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))) {
+ 
+                        if (Integer.parseInt(cr.getString(cr.getColumnIndex("QuantiteScan"))) >
+                                Integer.parseInt(cr.getString(cr.getColumnIndex("Quantite")))) {
                             mediaPlayerStart();
                             Toast.makeText(getApplicationContext(), "depassement quantité", Toast.LENGTH_SHORT).show();
                             helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), cr.getString(cr.getColumnIndex("Quantite"))));
@@ -812,13 +816,13 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     btmoin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            int qt = Integer.parseInt(edt_qt_scan.getText().toString());
                             qt--;
                             if (qt < 0) {
                                 qt = 0;
                             }
 
-                            if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                            if (qt > Integer.parseInt(txt_qt.getText().toString())) {
                                 mediaPlayerStart();
                                 Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                             } else {
@@ -831,10 +835,10 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     btplus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            int qt = Integer.parseInt(edt_qt_scan.getText().toString());
                             qt++;
 
-                            if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                            if (qt > Integer.parseInt(txt_qt.getText().toString())) {
                                 Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                 mediaPlayerStart();
                             } else {
@@ -861,8 +865,8 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             String s = edt_qt_scan.getText().toString();
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
-                                    float qt = Float.valueOf(edt_qt_scan.getText().toString());
-                                    if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                                    int qt = Integer.parseInt(edt_qt_scan.getText().toString());
+                                    if (qt > Integer.parseInt(txt_qt.getText().toString())) {
                                         Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                         mediaPlayerStart();
                                     } else {
@@ -913,7 +917,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
 
             if (cr.moveToFirst()) {
                 do {
-                    float ecart = Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite"))) - Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
+                    float ecart = Integer.parseInt(cr.getString(cr.getColumnIndex("Quantite"))) - Integer.parseInt(cr.getString(cr.getColumnIndex("QuantiteScan")));
 
                     if (ecart != 0)
                         test = true;
@@ -985,7 +989,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         txt_piece.setText(cr.getString(cr.getColumnIndex("Piece")));
 
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
-                        float ecart = Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite"))) - Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan")));
+                        float ecart = Integer.parseInt(cr.getString(cr.getColumnIndex("Quantite"))) - Integer.parseInt(cr.getString(cr.getColumnIndex("QuantiteScan")));
 
                         txt_ecart.setText("" + ecart);
 
@@ -1093,7 +1097,18 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     final Button btmoin = (Button) convertView.findViewById(R.id.btmoin);
                     final Button btplus = (Button) convertView.findViewById(R.id.btplus);
                     //noDoc TEXT  ,Code TEXT, Quantite INTEGER, QuantiteScan INTEGER
+                    final Button btplusall = (Button) convertView.findViewById(R.id.btplusall);
+                    //noDoc TEXT  ,Code TEXT, Quantite INTEGER, QuantiteScan INTEGER
+                    btplusall.setVisibility(View.VISIBLE);
+                    btplusall.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String qt = txt_qt.getText().toString();
+                            edt_qt_scan.setText(qt);
+                            helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
 
+                        }
+                    });
                     cr = helper.getLignePrelevementLotArticle(searchScan);
                     if (cr.move(pos + 1)) {
                         txt_code_article.setText(cr.getString(cr.getColumnIndex("Article")));
@@ -1102,8 +1117,8 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         txt_piece.setText(cr.getString(cr.getColumnIndex("Piece")));
                         txt_ean.setText(cr.getString(cr.getColumnIndex("EAN")));
                         edt_qt_scan.setText(cr.getString(cr.getColumnIndex("QuantiteScan")));
-                        if (Float.parseFloat(cr.getString(cr.getColumnIndex("QuantiteScan"))) >
-                                Float.parseFloat(cr.getString(cr.getColumnIndex("Quantite")))) {
+                        if (Integer.parseInt(cr.getString(cr.getColumnIndex("QuantiteScan"))) >
+                                Integer.parseInt(cr.getString(cr.getColumnIndex("Quantite")))) {
                             mediaPlayerStart();
                             Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                             helper.UpdateLigneBonCommandePrelevementLot(new LigneBcPrelevement(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), cr.getString(cr.getColumnIndex("Quantite"))));
@@ -1121,8 +1136,8 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             String s = edt_qt_scan.getText().toString();
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
-                                    float qt = Float.valueOf(edt_qt_scan.getText().toString());
-                                    if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                                    int qt = Integer.parseInt(edt_qt_scan.getText().toString());
+                                    if (qt > Integer.parseInt(txt_qt.getText().toString())) {
                                         Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                         mediaPlayerStart();
                                     } else {
@@ -1140,12 +1155,12 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     btmoin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            int qt = Integer.parseInt(edt_qt_scan.getText().toString());
                             qt--;
                             if (qt < 0) {
                                 qt = 0;
                             }
-                            if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                            if (qt > Integer.parseInt(txt_qt.getText().toString())) {
                                 Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                 mediaPlayerStart();
                             } else {
@@ -1158,11 +1173,11 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                     btplus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            int qt = Integer.parseInt(edt_qt_scan.getText().toString());
                             qt++;
 
 
-                            if (qt > Float.parseFloat(txt_qt.getText().toString())) {
+                            if (qt > Integer.parseInt(txt_qt.getText().toString())) {
                                 Toast.makeText(getApplicationContext(), "Dépassement quantité", Toast.LENGTH_SHORT).show();
                                 mediaPlayerStart();
                             } else {

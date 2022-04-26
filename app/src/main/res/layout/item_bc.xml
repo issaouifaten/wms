@@ -61,11 +61,12 @@
 
                         android:text="TextView"
                         android:textStyle="bold|italic" />
+
                     <Button
                         android:id="@+id/btplus"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/ic_unchecked"
+                        android:background="@drawable/ic_arrow_circle"
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
