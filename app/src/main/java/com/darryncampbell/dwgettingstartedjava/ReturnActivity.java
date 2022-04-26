@@ -152,7 +152,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                     txtAdressClient.setText("");
                                     txtNomClient.setText("");
                                     edtGln.setText("");
-
+                                    layout_search.setVisibility(View.VISIBLE);
                                     FillListLigneReturn fillListLigneReturn = new FillListLigneReturn("");
                                     fillListLigneReturn.execute("");
                                 }
@@ -175,6 +175,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     txtAdressClient.setText("");
                     txtNomClient.setText("");
                     edtGln.setText("");
+                    layout_search.setVisibility(View.VISIBLE);
 
                 }
 
