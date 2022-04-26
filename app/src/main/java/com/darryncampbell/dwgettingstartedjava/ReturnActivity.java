@@ -642,7 +642,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     final TextView txt_qt = (TextView) convertView.findViewById(R.id.txt_qt);
                     final EditText edt_qt_scan = (EditText) convertView.findViewById(R.id.edt_qt_scan);
                     final RadioButton radio_rejected = (RadioButton) convertView.findViewById(R.id.radio_rejected);
-                    final RadioButton rd_damaged = (RadioButton) convertView.findViewById(R.id.rd_damaged);
+                    final CheckBox rd_damaged = (CheckBox) convertView.findViewById(R.id.rd_damaged);
                     if (isNewReturn) {
                         txt_qt.setVisibility(View.GONE);
                     }
