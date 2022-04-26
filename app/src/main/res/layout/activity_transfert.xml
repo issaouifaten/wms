@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="du BIN"
+                    android:text="Source"
                     android:textColor="@color/colorTextMenu"
                     android:textSize="20sp"
                     android:textStyle="bold|italic" />
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="au BIN"
+                    android:text="Destination"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20sp"
                     android:textStyle="bold|italic" />

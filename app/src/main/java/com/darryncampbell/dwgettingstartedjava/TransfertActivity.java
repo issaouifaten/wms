@@ -115,7 +115,7 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
             public void onClick(View view) {
                 if (typeTransfert.equals("0")) {
                     if (txt_from.getText().toString().equals(txt_to.getText().toString())) {
-                        Toast.makeText(getApplicationContext(), "depot de départ et le meme que de sortie", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), " Dépôt identique au dépôt de sortie ", Toast.LENGTH_SHORT).show();
                     } else {
 
                         if (edt_transfert.getText().toString().equals("") || txt_from.getText().toString().equals("") || txt_from.getText().toString().equals("") || txt_to.getText().toString().equals(""))
@@ -233,7 +233,7 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                                             public void onClick(View view) {
 
                                                 if (txt_code.getText().toString().equals(txt_from.getText().toString())) {
-                                                    Toast.makeText(getApplicationContext(), "depot de départ et le meme que de sortie", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), " Dépôt identique au dépôt de sortie ", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     txt_to.setText(txt_code.getText().toString());
                                                 }
@@ -368,7 +368,7 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
                                             @Override
                                             public void onClick(View view) {
                                                 if (txt_code.getText().toString().equals(txt_to.getText().toString())) {
-                                                    Toast.makeText(getApplicationContext(), "depot de départ et le meme que de sortie", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), " Dépôt identique au dépôt de sortie ", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     txt_from.setText(txt_code.getText().toString());
                                                     txt_qt_max.setText(txt_qt.getText().toString());
