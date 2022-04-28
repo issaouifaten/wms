@@ -43,14 +43,14 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
     GridView grid_consult;
     ProgressBar progressBar;
     TextView output;
-  //  String baseUrlConsult = getResources().getString(R.string.key_autorisation)+"WmsApp_ConsultItem?$format=application/json;odata.metadata=none";
-   String baseUrlConsult ="";
+    //  String baseUrlConsult = getResources().getString(R.string.key_autorisation)+"WmsApp_ConsultItem?$format=application/json;odata.metadata=none";
+    String baseUrlConsult = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consult);
-        baseUrlConsult = getResources().getString(R.string.base_url)+"WmsApp_ConsultItem?$format=application/json;odata.metadata=none";
+        baseUrlConsult = getResources().getString(R.string.base_url) + "WmsApp_ConsultItem?$format=application/json;odata.metadata=none";
 
         grid_consult = (GridView) findViewById(R.id.grid_consult);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -59,7 +59,12 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
         Button btnScan = findViewById(R.id.btnScan);
         output = findViewById(R.id.txtOutput);
         btnScan.setOnTouchListener(this);
+        Intent intent = getIntent();
+        if (intent.getStringExtra("EAN") != null) {
 
+            output.setText(intent.getStringExtra("EAN"));
+            FillListConsult(intent.getStringExtra("EAN"));
+        }
 
 
     }
@@ -138,15 +143,14 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
                                         txt_capacite.setText(val.getCapacite());
                                         txt_title_100.setText(val.getTitre());
                                         txt_poids.setText(val.getPoids());
-                                        if(val.getCapacite().equals("")||val.getCapacite().equals("0"))
-                                        {    bt_transfert.setVisibility(View.INVISIBLE);
+                                        if (val.getCapacite().equals("") || val.getCapacite().equals("0")) {
+                                            bt_transfert.setVisibility(View.INVISIBLE);
 
 
-                                        }else {
-                                            if(Float.parseFloat(val.getPoids())/Float.parseFloat(val.getQuantite())<Float.parseFloat(val.getCapacite()))
-                                            {
+                                        } else {
+                                            if (Float.parseFloat(val.getPoids()) / Float.parseFloat(val.getQuantite()) < Float.parseFloat(val.getCapacite())) {
                                                 bt_transfert.setVisibility(View.VISIBLE);
-                                            }else{
+                                            } else {
                                                 bt_transfert.setVisibility(View.INVISIBLE);
                                             }
 
@@ -154,13 +158,12 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
                                         bt_transfert.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                Intent intent=new Intent(getApplicationContext(),TransfertActivity.class);
-                                                intent.putExtra("EAN",output.getText().toString());
-                                                intent.putExtra("toBin",val.getPiece());
+                                                Intent intent = new Intent(getApplicationContext(), TransfertActivity.class);
+                                                intent.putExtra("EAN", output.getText().toString());
+                                                intent.putExtra("toBin", val.getPiece());
                                                 startActivity(intent);
                                             }
                                         });
-
 
 
                                         return convertView;

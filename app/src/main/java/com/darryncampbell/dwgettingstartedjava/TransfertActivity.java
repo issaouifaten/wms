@@ -33,6 +33,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.darryncampbell.dwgettingstartedjava.LocalBase.Helper;
 
+import com.darryncampbell.dwgettingstartedjava.Model.ConsultArticle;
 import com.darryncampbell.dwgettingstartedjava.Model.Transfert.LigneDepot;
 import com.darryncampbell.dwgettingstartedjava.Model.Transfert.ListDepot;
 import com.darryncampbell.dwgettingstartedjava.Model.Value;
@@ -85,8 +86,14 @@ public class TransfertActivity extends AppCompatActivity implements View.OnTouch
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                startActivity(getIntent());
+                if (typeTransfert.equals("0")) {
+                    finish();
+                    startActivity(getIntent());
+                } else {
+                    Intent intent=new Intent(getApplicationContext(), ConsultActivity.class);
+                    intent.putExtra("EAN",output.getText().toString());
+                    startActivity(intent);
+                }
                 //output.setText("BORANG");
 
                 // searchScanDepot("BORANG");
