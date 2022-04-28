@@ -292,7 +292,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface di, int i) {
-
+actionScan("3294680002776");
                                         di.cancel();
 
 
@@ -925,7 +925,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     JSONObject obj = new JSONObject().put("NoDoc", txtNoDoc.getText().toString())
                             .put("Quantite", cr.getString(cr.getColumnIndex("QuantiteScan")))
                             .put("Article", cr.getString(cr.getColumnIndex("Article")))
-                            .put("Damaged", cr.getString(cr.getColumnIndex("Damaged")))
+                            .put("Damaged", cr.getInt(cr.getColumnIndex("Damaged")) > 0)
                             .put("Option", option);
 
                     arrayJson.put(obj);
@@ -1215,7 +1215,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlEcartReturn;
             progressBar.setVisibility(View.VISIBLE);
-//  "inputJson" : "[{\"NoClient\":\"000004\",\"Article\":\"032644\",\"NoDoc\":\"1040\",\"Quantite\":20}]"
+
             JSONArray arrayJson = new JSONArray();
             Cursor cr = helper.getListLigneReturn();
             if (cr.moveToFirst()) {
@@ -1223,8 +1223,10 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                     JSONObject obj = new JSONObject().put("NoClient", txtCodeClient.getText().toString())
                             .put("Quantite", cr.getString(cr.getColumnIndex("QuantiteScan")))
                             .put("Article", cr.getString(cr.getColumnIndex("Article")))
+                            .put("Damaged", cr.getInt(cr.getColumnIndex("Damaged")) > 0)
                             .put("NoDoc", cr.getString(cr.getColumnIndex("NoDoc")))
                             .put("Reference", edtReference.getText().toString());
+
 
                     arrayJson.put(obj);
 

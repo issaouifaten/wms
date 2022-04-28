@@ -18,17 +18,35 @@
             android:orientation="horizontal"
             android:padding="4dp">
 
-            <TextView
-                android:id="@+id/txt_article"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="fill_vertical"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:text="article"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_article2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="fill_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Article"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_article"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="fill_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="article"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageView10"
@@ -37,17 +55,37 @@
                 android:layout_weight="1"
                 android:src="@drawable/line_v" />
 
-            <TextView
-                android:id="@+id/txt_ean"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="fill_vertical"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:text="ean"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_ean2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="fill_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="EAN"
+                    android:textColor="@color/colorTextMenu"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_ean"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="fill_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="ean"
+                    android:textColor="@color/colorTextMenu"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageView9"
@@ -56,54 +94,128 @@
                 android:layout_weight="1"
                 android:src="@drawable/line_v" />
 
-            <TextView
-                android:id="@+id/txt_qt_rejected"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="fill_vertical"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:text="rejete"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="5dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/line_v" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txt_qt_scan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="fill_vertical"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:text="scan"
-                android:textStyle="bold" />
-            <ImageView
-                android:id="@+id/imageView911"
-                android:layout_width="5dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/line_v" />
+                <TextView
+                    android:id="@+id/txt_qt_rejected2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center|fill_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Quantité"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/txt_preview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="fill_vertical"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:text="prevu"
-                android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txt_qt_rejected3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="fill_vertical"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="5dp"
+                            android:text="Rejeté"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txt_qt_rejected"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="fill_vertical"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="5dp"
+                            android:text="rejete"
+                            android:textColor="@color/colorTextMenu"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/line_v" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txt_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="fill_vertical"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="5dp"
+                            android:text="Scanné"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txt_qt_scan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="fill_vertical"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="5dp"
+                            android:text="scan"
+                            android:textColor="@color/colorTextMenu"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imageView911"
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/line_v" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txt_label3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="fill_vertical"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="5dp"
+                            android:text="Rejeté"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txt_preview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="fill_vertical"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="5dp"
+                            android:text="prevu"
+                            android:textColor="@color/colorTextMenu"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
