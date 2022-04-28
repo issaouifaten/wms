@@ -196,12 +196,12 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             ListeBonCommande data = new ListeBonCommande();
                             JSONObject obj = null;
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -238,7 +238,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                         final TextView txt_nom_client = (TextView) convertView.findViewById(R.id.tx_nom_client);
                                         final Button btplus = (Button) convertView.findViewById(R.id.btplus);
                                         final Button btdelete = (Button) convertView.findViewById(R.id.btdelete);
-                                        Log.d("tag****", finalData.getValue().get(position).toString());
+                                       
                                         final Value val = finalData.getValue().get(position);
                                         if (helper.testExistBonCommandPrelevementLot(val.getNo_())) {
                                             btdelete.setVisibility(View.VISIBLE);
@@ -340,7 +340,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             ListLigneBcPrelevement data = new ListLigneBcPrelevement();
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -474,7 +474,6 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("***error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -512,7 +511,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                             JSONObject obj = null;
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -547,7 +546,7 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
                                         convertView = layoutInflater.inflate(R.layout.item_simple, null);
                                         final TextView txt_title = (TextView) convertView.findViewById(R.id.txt_title);
                                         final TextView txt_description = (TextView) convertView.findViewById(R.id.txt_description);
-                                        Log.d("tag****", finalData.getValue().get(position).toString());
+                                       
                                         final com.darryncampbell.dwgettingstartedjava.Model.prelevementLot.Value val = finalData.getValue().get(position);
                                         txt_title.setText(val.getNoPrelevement() + "");
                                         txt_description.setText(val.getNoFacture());
@@ -602,7 +601,6 @@ public class PrelevementLotActivity extends AppCompatActivity implements View.On
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("***error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }

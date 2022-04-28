@@ -276,12 +276,12 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             ListBonCommandAchat data = new ListBonCommandAchat();
                             JSONObject obj = null;
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -318,7 +318,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                                         final TextView txt_nom_client = (TextView) convertView.findViewById(R.id.tx_nom_client);
                                         final Button btplus = (Button) convertView.findViewById(R.id.btplus);
                                         final Button btdelete = (Button) convertView.findViewById(R.id.btdelete);
-                                        Log.d("tag****", finalData.getValue().get(position).toString());
+                                       
                                         final Value val = finalData.getValue().get(position);
                                         if (helper.testExistBonCommandReception(val.getNoDoc())) {
                                             btdelete.setVisibility(View.VISIBLE);
@@ -421,7 +421,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                             ListLigneBcReception data = new ListLigneBcReception();
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -1071,7 +1071,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
 
                             helper.DeleteListBonCommandReception();
                             helper.DeleteLigneBonCommandReception();
@@ -1089,7 +1089,7 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.e("****ERROR", "error => " + error.toString());
                             Toast.makeText(getApplicationContext(), "error api" + error.toString(), Toast.LENGTH_LONG).show();
                         }
@@ -1118,7 +1118,6 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }

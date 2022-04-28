@@ -191,7 +191,7 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
                             String s = edt_qt_scan.getText().toString();
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
-                                    float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                                    int qt = Integer.parseInt(edt_qt_scan.getText().toString());
                                     helper.UpdateLigneStock(new LigneStock(txt_from.getText().toString(), txtCode.getText().toString(), "" + qt));
 
                                 }
@@ -203,7 +203,7 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
                     btmoin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            int qt = Integer.parseInt(edt_qt_scan.getText().toString());
                             qt--;
                             if (qt < 0) {
                                 qt = 0;
@@ -217,7 +217,7 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
                     btplus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            float qt = Float.valueOf(edt_qt_scan.getText().toString());
+                            int qt = Integer.parseInt(edt_qt_scan.getText().toString());
                             qt++;
 
 
@@ -266,8 +266,8 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
             JSONObject jsonEAN = new JSONObject().put("EAN", scan);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", jsonEAN.toString());
-            Log.e("***input", jsonBody.toString());
-//{ "inputJson" : "{\"EAN\":\"3268840001008\"}"}
+            
+
             final String mRequestBody = jsonBody.toString();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
@@ -275,13 +275,13 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             JSONObject obj = null;
 
                             try {
                                 obj = new JSONObject(response);
 
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -323,9 +323,9 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
                                         final TextView txt_bin_code = (TextView) convertView.findViewById(R.id.txt_bin_code);
                                         final Button bt_valide_ligne = (Button) convertView.findViewById(R.id.bt_valide_ligne);
 
-                                        Log.d("tag****", finalData.getValue().get(position).toString());
+                                       
                                         final Value val = finalData.getValue().get(position);
-                                        Log.d("tag****", val.getArticle());
+                                        
                                         txt_code_article.setText(val.getArticle());
                                         edt_qt.setText(val.getQuantite());
                                         txt_bin_code.setText(val.getPiece());
@@ -371,7 +371,7 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -400,7 +400,6 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -425,7 +424,7 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
 
                             helper.DeleteLigneStock();
 
@@ -470,7 +469,6 @@ public class StockActivity extends AppCompatActivity implements View.OnTouchList
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("***error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }

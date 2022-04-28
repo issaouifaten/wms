@@ -267,12 +267,12 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             ListPreparation data = new ListPreparation();
                             JSONObject obj = null;
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -399,12 +399,12 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             TypeColis data = new TypeColis();
                             JSONObject obj = null;
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -547,7 +547,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             ListColis data = new ListColis();
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -638,7 +638,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             ListColisCreated data = new ListColisCreated();
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -728,7 +728,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                             SearchColis data = new SearchColis();
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
 
 
                                 Gson gson = new Gson();
@@ -1463,7 +1463,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             JSONObject obj = null;
 
                             try {
@@ -1471,7 +1471,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                 String res= obj.getString("value");
                                 if(res.equals("Done"))
                                 {
-                                    Log.d("tag****Response", obj.getString("value"));
+                                    
                                     helper.DeleteLigneBonCommandPrelevementColisage();
                                     helper.DeleteLigneColisCreated();
                                     txt_no_colis.setText("");
@@ -1497,7 +1497,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -1526,7 +1526,6 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -1541,7 +1540,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", jsonEAN.toString());
             Log.e("***inputjsoncloture", jsonBody.toString());
-//{ "inputJson" : "{\"EAN\":\"3268840001008\"}"}
+
             final String mRequestBody = jsonBody.toString();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
@@ -1557,7 +1556,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                                 obj = new JSONObject(response);
                                 Toast.makeText(getApplicationContext(),obj.getString("value") , Toast.LENGTH_SHORT).show();
 
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                             } catch (Exception e) {
                             }
 
@@ -1568,7 +1567,7 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -1597,7 +1596,6 @@ public class ColisageActivity extends Activity implements View.OnTouchListener {
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
 
         }

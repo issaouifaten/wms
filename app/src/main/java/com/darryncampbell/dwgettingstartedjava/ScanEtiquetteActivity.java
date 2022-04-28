@@ -80,8 +80,8 @@ public class ScanEtiquetteActivity extends AppCompatActivity implements View.OnT
             JSONObject jsonEAN = new JSONObject().put("SSCC", scan);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", jsonEAN.toString());
-            Log.e("***input", jsonBody.toString());
-//{ "inputJson" : "{\"EAN\":\"3268840001008\"}"}
+            
+
             final String mRequestBody = jsonBody.toString();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
@@ -89,13 +89,13 @@ public class ScanEtiquetteActivity extends AppCompatActivity implements View.OnT
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             JSONObject obj = null;
 
                             try {
                                 obj = new JSONObject(response);
 
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -155,7 +155,7 @@ public class ScanEtiquetteActivity extends AppCompatActivity implements View.OnT
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -184,7 +184,6 @@ public class ScanEtiquetteActivity extends AppCompatActivity implements View.OnT
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }

@@ -394,7 +394,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             JSONObject jsonEAN = new JSONObject().put("EAN", scan);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", jsonEAN.toString());
-            Log.e("***input", jsonBody.toString());
+            
 
             final String mRequestBody = jsonBody.toString();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
@@ -403,13 +403,13 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             JSONObject obj = null;
 
                             try {
                                 obj = new JSONObject(response);
 
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 if (obj.getString("value").equals("Article Introuvable")) {
                                     mediaPlayerStart(false);
 
@@ -467,7 +467,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
 
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api article : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -496,7 +496,6 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
 
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -512,7 +511,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             JSONObject jsonEAN = new JSONObject().put("GLN", scan);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", jsonEAN.toString());
-            Log.e("***input", jsonBody.toString());
+            
 
             final String mRequestBody = jsonBody.toString();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
@@ -521,13 +520,13 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             JSONObject obj = null;
 
                             try {
                                 obj = new JSONObject(response);
 
-                                Log.d("tag****Response", obj.getString("value"));
+                                
 
                                 Client data = new Client();
                                 Gson gson = new Gson();
@@ -554,7 +553,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -583,7 +582,6 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -864,7 +862,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
 
                             helper.DeleteClientReturn();
                             helper.DeleteLigneReturn();
@@ -881,7 +879,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -910,7 +908,6 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -946,7 +943,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
 
                             helper.DeleteClientReturn();
                             helper.DeleteLigneReturn();
@@ -963,7 +960,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -992,7 +989,6 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -1011,12 +1007,12 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             ListSelectReturn data = new ListSelectReturn();
                             JSONObject obj = null;
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -1133,8 +1129,8 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
             JSONObject jsonEAN = new JSONObject().put("NoDoc", codeDoc);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", jsonEAN.toString());
-            Log.e("***input", jsonBody.toString());
-//{ "inputJson" : "{\"EAN\":\"3268840001008\"}"}
+            
+
             final String mRequestBody = jsonBody.toString();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
 
@@ -1143,12 +1139,12 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             ListLigneSelectReturn data = new ListLigneSelectReturn();
                             JSONObject obj = null;
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -1246,12 +1242,12 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             ListEcartReturn data = new ListEcartReturn();
                             JSONObject obj = null;
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -1288,7 +1284,7 @@ public class ReturnActivity extends AppCompatActivity implements View.OnTouchLis
                                         final TextView txt_qt_scan = (TextView) convertView.findViewById(R.id.txt_qt_scan);
                                         final TextView txt_preview = (TextView) convertView.findViewById(R.id.txt_preview);
 
-                                        Log.d("tag****", finalData.getValue().get(position).toString());
+                                       
                                         final LigneEcartReturn val = finalData.getValue().get(position);
 
                                         txt_article.setText(val.getArticle());

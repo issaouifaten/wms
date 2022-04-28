@@ -77,8 +77,8 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
             JSONObject jsonEAN = new JSONObject().put("EAN", scan);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("inputJson", jsonEAN.toString());
-            Log.e("***input", jsonBody.toString());
-//{ "inputJson" : "{\"EAN\":\"3268840001008\"}"}
+
+
             final String mRequestBody = jsonBody.toString();
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
@@ -86,13 +86,13 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+
                             JSONObject obj = null;
 
                             try {
                                 obj = new JSONObject(response);
 
-                                Log.d("tag****Response", obj.getString("value"));
+
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -133,9 +133,7 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
                                         final TextView txt_bin_code = (TextView) convertView.findViewById(R.id.txt_bin_code);
                                         final Button bt_transfert = (Button) convertView.findViewById(R.id.bt_transfert);
                                         final TextView txt_poids = (TextView) convertView.findViewById(R.id.txt_poids);
-                                        Log.d("tag****", finalData.getValue().get(position).toString());
                                         final Value val = finalData.getValue().get(position);
-                                        Log.d("tag****", val.getArticle());
                                         txt_item_num.setText(val.getArticle());
                                         txt_location_code.setText(val.getPiece());
                                         txt_sum_qty_base.setText(val.getQuantite() + "");
@@ -180,7 +178,7 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -209,7 +207,6 @@ public class ConsultActivity extends AppCompatActivity implements View.OnTouchLi
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }

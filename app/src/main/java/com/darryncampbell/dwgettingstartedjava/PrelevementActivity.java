@@ -240,12 +240,12 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
                             ListeBonCommande data = new ListeBonCommande();
                             JSONObject obj = null;
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -282,7 +282,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                                         final TextView txt_nom_client = (TextView) convertView.findViewById(R.id.tx_nom_client);
                                         final Button btplus = (Button) convertView.findViewById(R.id.btplus);
                                         final Button btdelete = (Button) convertView.findViewById(R.id.btdelete);
-                                        Log.d("tag****", finalData.getValue().get(position).toString());
+                                       
                                         final Value val = finalData.getValue().get(position);
                                         if (helper.testExistBonCommandPrelevement(val.getNo_())) {
                                             btdelete.setVisibility(View.VISIBLE);
@@ -385,7 +385,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                             ListLigneBcPrelevement data = new ListLigneBcPrelevement();
                             try {
                                 obj = new JSONObject(response);
-                                Log.d("tag****Response", obj.getString("value"));
+                                
                                 JSONArray array = new JSONArray(obj.getString("value"));
 
                                 JSONObject jsonList = new JSONObject().put("value", array);
@@ -486,7 +486,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            Log.d("tag****Response", response);
+                            
 
                             helper.DeleteListBonCommandPrelevement();
                             helper.DeleteLigneBonCommandPrelevement();
@@ -504,7 +504,7 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
                         public void onErrorResponse(VolleyError error) {
                             progressBar.setVisibility(View.GONE);
                             // TODO Auto-generated method stub
-                            Log.d("ERROR", "error => " + error.getLocalizedMessage());
+                            
                             Log.d("ERROR", "error => " + error.getMessage());
                             Toast.makeText(getApplicationContext(), " error api : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -533,7 +533,6 @@ public class PrelevementActivity extends AppCompatActivity implements View.OnTou
             };
             queue.add(getRequest);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "eror exception" + e.toString(), Toast.LENGTH_SHORT).show();
             Log.e("error", e.toString());
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
