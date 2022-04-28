@@ -624,12 +624,12 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                             String s = edt_qt_scan.getText().toString();
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
-                                        float qt =1;
+                                        int qt =1;
                             if(!edt_qt_scan.getText().toString().equals(""))
-                            {qt = Float.valueOf(edt_qt_scan.getText().toString());}
-                                    float qtNbrExemplairePaquet=Float.parseFloat(txt_nb_paquet.getText().toString());
-                                    float qtNbrPaquetCouche=Float.parseFloat(txt_nb_couche.getText().toString());
-                                    float qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
+                            {qt = Integer.parseInt(edt_qt_scan.getText().toString());}
+                                    int qtNbrExemplairePaquet=Integer.parseInt(txt_nb_paquet.getText().toString());
+                                    int qtNbrPaquetCouche=Integer.parseInt(txt_nb_couche.getText().toString());
+                                    int qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
                                     txt_qt_total.setText(""+qtTotal);
                                     helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
                                             , "" + qt,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
@@ -642,16 +642,16 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                     btmoin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            float qt =1;
+                            int qt =1;
                             if(!edt_qt_scan.getText().toString().equals(""))
-                            {qt = Float.valueOf(edt_qt_scan.getText().toString());qt--;}
+                            {qt = Integer.parseInt(edt_qt_scan.getText().toString());qt--;}
 
                             if(qt<0)
                             { qt=0;}
                             edt_qt_scan.setText("" + qt);
-                            float qtNbrExemplairePaquet=Float.parseFloat(txt_nb_paquet.getText().toString());
-                            float qtNbrPaquetCouche=Float.parseFloat(txt_nb_couche.getText().toString());
-                            float qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
+                            int qtNbrExemplairePaquet=Integer.parseInt(txt_nb_paquet.getText().toString());
+                            int qtNbrPaquetCouche=Integer.parseInt(txt_nb_couche.getText().toString());
+                            int qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
                             txt_qt_total.setText(""+qtTotal);
                             helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
                                     , "" + qt,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
@@ -663,13 +663,13 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                     btplus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                float qt =1;
+                                int qt =1;
                             if(!edt_qt_scan.getText().toString().equals(""))
-                            {qt = Float.valueOf(edt_qt_scan.getText().toString());qt++;}
+                            {qt = Integer.parseInt(edt_qt_scan.getText().toString());qt++;}
 
-                            float qtNbrExemplairePaquet=Float.parseFloat(txt_nb_paquet.getText().toString());
-                            float qtNbrPaquetCouche=Float.parseFloat(txt_nb_couche.getText().toString());
-                            float qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
+                            int qtNbrExemplairePaquet=Integer.parseInt(txt_nb_paquet.getText().toString());
+                            int qtNbrPaquetCouche=Integer.parseInt(txt_nb_couche.getText().toString());
+                            int qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
                             txt_qt_total.setText(""+qtTotal);
 
 
@@ -939,12 +939,12 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                             String s = edt_qt_scan.getText().toString();
                             if (i != KEYCODE_DEL) {
                                 if (!s.equals("")) {
-                                        float qt =1;
+                                        int qt =1;
                             if(!edt_qt_scan.getText().toString().equals(""))
-                            {qt = Float.valueOf(edt_qt_scan.getText().toString());}
-                                    float qtNbrExemplairePaquet=Float.parseFloat(txt_nb_paquet.getText().toString());
-                                    float qtNbrPaquetCouche=Float.parseFloat(txt_nb_couche.getText().toString());
-                                    float qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
+                            {qt = Integer.parseInt(edt_qt_scan.getText().toString());}
+                                    int qtNbrExemplairePaquet=Integer.parseInt(txt_nb_paquet.getText().toString());
+                                    int qtNbrPaquetCouche=Integer.parseInt(txt_nb_couche.getText().toString());
+                                    int qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
                                     txt_qt_total.setText(""+qtTotal);
                                     helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
                                             , "" + qt,txt_nb_paquet.getText().toString(),""+txt_nb_couche.getText().toString(),""
@@ -961,16 +961,16 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                         @Override
                         public void onClick(View v) {
 
-                                float qt =1;
+                                int qt =1;
                             if(!edt_qt_scan.getText().toString().equals(""))
-                            {qt = Float.valueOf(edt_qt_scan.getText().toString());qt--;}
+                            {qt = Integer.parseInt(edt_qt_scan.getText().toString());qt--;}
 
                             if(qt<0)
                             { qt=0;}
                             edt_qt_scan.setText("" + qt);
-                            float qtNbrExemplairePaquet=Float.parseFloat(txt_nb_paquet.getText().toString());
-                            float qtNbrPaquetCouche=Float.parseFloat(txt_nb_couche.getText().toString());
-                            float qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
+                            int qtNbrExemplairePaquet=Integer.parseInt(txt_nb_paquet.getText().toString());
+                            int qtNbrPaquetCouche=Integer.parseInt(txt_nb_couche.getText().toString());
+                            int qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
                             txt_qt_total.setText(""+qtTotal);
                             //helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString(), "" + qt));
                             helper.UpdateLigneBonCommandeReception(new LigneBcReception(txt_noDoc.getText().toString(), txt_ean.getText().toString(), txt_code_article.getText().toString(), txt_piece.getText().toString(), txt_qt.getText().toString()
@@ -983,13 +983,13 @@ public class ReceptionActivity extends AppCompatActivity implements View.OnTouch
                     btplus.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                float qt =1;
+                                int qt =1;
                             if(!edt_qt_scan.getText().toString().equals(""))
-                            {qt = Float.valueOf(edt_qt_scan.getText().toString()); qt++;}
+                            {qt = Integer.parseInt(edt_qt_scan.getText().toString()); qt++;}
 
-                            float qtNbrExemplairePaquet=Float.parseFloat(txt_nb_paquet.getText().toString());
-                            float qtNbrPaquetCouche=Float.parseFloat(txt_nb_couche.getText().toString());
-                            float qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
+                            int qtNbrExemplairePaquet=Integer.parseInt(txt_nb_paquet.getText().toString());
+                            int qtNbrPaquetCouche=Integer.parseInt(txt_nb_couche.getText().toString());
+                            int qtTotal=qt*qtNbrExemplairePaquet*qtNbrPaquetCouche;
                             txt_qt_total.setText(""+qtTotal);
 
                             edt_qt_scan.setText("" + qt);
