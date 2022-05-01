@@ -338,7 +338,7 @@ actionScan("3294680002776");
 
         layoutInfo.setVisibility(View.VISIBLE);
         btCancel.setVisibility(View.VISIBLE);
-        btValid.setVisibility(View.VISIBLE);
+
         bt_ecart.setVisibility(View.VISIBLE);
         edtReference.setVisibility(View.VISIBLE);
         layout_search.setVisibility(View.GONE);
@@ -355,7 +355,7 @@ actionScan("3294680002776");
     }
 
     void initInfo() {
-
+        btValid.setVisibility(View.GONE);
         Cursor cr = helper.getClientReturn();
         Log.d("getClient", cr.getCount() + "");
         if (cr.getCount() > 0) {
@@ -1212,6 +1212,7 @@ actionScan("3294680002776");
     void FillLigneEcartReturn(String codeDoc) {
         try {
             visibleListScan();
+
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = baseUrlEcartReturn;
             progressBar.setVisibility(View.VISIBLE);
@@ -1244,7 +1245,7 @@ actionScan("3294680002776");
                         public void onResponse(String response) {
                             // response
                             progressBar.setVisibility(View.GONE);
-                            
+                            btValid.setVisibility(View.VISIBLE);
                             ListEcartReturn data = new ListEcartReturn();
                             JSONObject obj = null;
                             try {
